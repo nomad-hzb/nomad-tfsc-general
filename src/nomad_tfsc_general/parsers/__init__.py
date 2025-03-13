@@ -1,18 +1,36 @@
 from nomad.config.models.plugins import ParserEntryPoint
-from pydantic import Field
 
 
-class NewParserEntryPoint(ParserEntryPoint):
-    parameter: int = Field(0, description='Custom configuration parameter')
-
+class TFSCGeneralParserEntryPoint(ParserEntryPoint):
     def load(self):
-        from nomad_tfsc_general.parsers.parser import NewParser
+        from nomad_tfsc_general.parsers.tfsc_general_measurement_parser import (
+            TFSCGeneralParser,
+        )
 
-        return NewParser(**self.dict())
+        return TFSCGeneralParser(**self.dict())
 
 
-parser_entry_point = NewParserEntryPoint(
-    name='NewParser',
-    description='New parser entry point configuration.',
-    mainfile_name_re='.*\.newmainfilename',
+class TFSCGeneralExperimentParserEntryPoint(ParserEntryPoint):
+    def load(self):
+        from nomad_tfsc_general.parsers.tfsc_general_batch_parser import (
+            TFSCGeneralExperimentParser,
+        )
+
+        return TFSCGeneralExperimentParser(**self.dict())
+
+
+tfsc_general_parser = TFSCGeneralParserEntryPoint(
+    name='TFSCGeneralParser',
+    description='Parser for TFSC General files',
+    mainfile_name_re="""^(.+tfsc_general\..{1,5})$""",
+    mainfile_mime_re='(application|text|image)/.*',
+)
+
+
+tfsc_general_experiment_experiment_parser = TFSCGeneralExperimentParserEntryPoint(
+    name='TFSCGeneralBatchParser',
+    description='Parser for TFSC General Batch xlsx files',
+    mainfile_name_re="""^(.+\.xlsx)$""",
+    # mainfile_contents_re='Experiment Info',
+    mainfile_mime_re='(application|text|image)/.*',
 )
