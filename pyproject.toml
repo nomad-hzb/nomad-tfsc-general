@@ -111,10 +111,12 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [project.entry-points.'nomad.plugin']
-parser_entry_point = "nomad_tfsc_general.parsers:parser_entry_point"
-schema_package_entry_point = "nomad_tfsc_general.schema_packages:schema_package_entry_point"
+tfsc_general_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_parser"
+tfsc_general_experiment_experiment_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_experiment_experiment_parser"
 
-app_entry_point = "nomad_tfsc_general.apps:app_entry_point"
+tfsc_general_package_entry_point = "nomad_tfsc_general.schema_packages:tfsc_general_package"
+
+tfsc_voila_documentation_app_entry_point = "nomad_tfsc_general.apps:tfsc_voila_documentation_app"
 
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues
