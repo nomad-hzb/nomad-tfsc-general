@@ -101,6 +101,16 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         label_quantity='sample_id',
     )
 
+class Perseus_Sample(SolcarCellSample, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=['users', 'components', 'elemental_composition'],
+            properties=dict(order=['name', 'substrate', 'architecture']),
+        ),
+        a_template = dict(institute = 'Perseus_Project'),
+        label_quantity='sample_id',
+    )
+
 
 class TFSC_General_Batch(Batch, EntryData):
     m_def = Section(
