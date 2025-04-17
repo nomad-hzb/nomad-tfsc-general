@@ -23,6 +23,7 @@ from baseclasses import (
     BaseProcess,
     Batch,
     LayerDeposition,
+    LayerProperties,
 )
 from baseclasses.helper.add_solar_cell import add_band_gap
 from baseclasses.helper.utilities import (
@@ -86,6 +87,9 @@ class TFSC_General_Substrate(Substrate, EntryData):
                     'solar_cell_area',
                     'pixel_area',
                     'number_of_pixels',
+                    'conducting_material_thickness',
+                    'conducting_material_sheet_resistance',
+                    'conducting_material_transmission'
                 ]
             ),
         )
@@ -98,16 +102,6 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
             hide=['users', 'components', 'elemental_composition'],
             properties=dict(order=['name', 'substrate', 'architecture']),
         ),
-        label_quantity='sample_id',
-    )
-
-class Perseus_Sample(SolcarCellSample, EntryData):
-    m_def = Section(
-        a_eln=dict(
-            hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['name', 'substrate', 'architecture']),
-        ),
-        a_template = dict(institute = 'Perseus_Project'),
         label_quantity='sample_id',
     )
 
@@ -318,6 +312,11 @@ class TFSC_General_LaserScribing(LaserScribing, EntryData):
             ),
         )
     )
+
+
+# %% ## Properties
+
+
 
 
 # %%####################################### Measurements
