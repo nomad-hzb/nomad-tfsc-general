@@ -219,12 +219,6 @@ class TFSCGeneralExperimentParser(MatchingParser):
                         )
                     )
 
-                if 'Ink Properties' in col:
-                    pass
-
-                if 'Film Characterization' in col:
-                    pass
-
                 if 'Room Conditions' in col:
                     pass
 
