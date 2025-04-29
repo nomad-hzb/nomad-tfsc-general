@@ -87,9 +87,9 @@ class TFSC_General_Substrate(Substrate, EntryData):
                     'solar_cell_area',
                     'pixel_area',
                     'number_of_pixels',
-                    'conducting_material_thickness',
-                    'conducting_material_sheet_resistance',
-                    'conducting_material_transmission'
+                    'layer_thickness',
+                    'layer_sheet_resistance',
+                    'layer_transmission'
                 ]
             ),
         )
