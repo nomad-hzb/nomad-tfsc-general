@@ -166,6 +166,7 @@ class TFSC_General_Inkjet_Printing(LP50InkjetPrinting, EntryData):
                     'nozzle_voltage_profile',
                     'quenching',
                     'annealing',
+                    'atmosphere',
                 ]
             ),
         ),
