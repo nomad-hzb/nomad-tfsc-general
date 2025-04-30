@@ -217,13 +217,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             upload_id,
                             TFSC_General_AtomicLayerDeposition,
                         )
-                    )
-
-                if 'Room Conditions' in col:
-                    pass
-
-                if 'Carbon Paste' in col:
-                    pass        
+                    )  
 
         refs = []
         for subs in substrates:
