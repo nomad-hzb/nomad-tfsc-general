@@ -18,14 +18,6 @@ class TFSCGeneralExperimentParserEntryPoint(ParserEntryPoint):
 
         return TFSCGeneralExperimentParser(**self.dict())
 
-class TFSCPerseusExperimentParserEntryPoint(ParserEntryPoint):
-    def load(self):
-        from nomad_tfsc_general.parsers.tfsc_perseus_batch_parser import (
-            TFSCGeneralExperimentParser,
-        )
-
-        return TFSCGeneralExperimentParser(**self.dict())
-
 tfsc_general_parser = TFSCGeneralParserEntryPoint(
     name='TFSCGeneralParser',
     description='Parser for TFSC General files',
@@ -42,10 +34,3 @@ tfsc_general_experiment_experiment_parser = TFSCGeneralExperimentParserEntryPoin
     mainfile_mime_re='(application|text|image)/.*',
 )
 
-tfsc_perseus_experiment_parser = TFSCPerseusExperimentParserEntryPoint(
-    name='TFSCPerseusBatchParser',
-    description='Parser for TFSC Perseus Batch xlsx files',
-    mainfile_name_re="""^(.+\.xlsx)$""",
-    # mainfile_contents_re='Experiment Info',
-    mainfile_mime_re='(application|text|image)/.*',
-)
