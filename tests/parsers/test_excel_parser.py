@@ -45,13 +45,13 @@ def test_tfsc_batch_parser(monkeypatch):
             if 'Sample' in str(type(m.data)):
                 assert m.data.description == '1000 rpm'
                 assert m.data.number_of_junctions == 1
-        # elif 'Substrate' in str(type(m.data)):
-        #     assert m.data.solar_cell_area == 10 * ureg('cm**2')
-        #     assert m.data.pixel_area == 0.16 * ureg('cm**2')
-        #     assert m.data.number_of_pixels == 6
-        #     assert m.data.description == 'Normal'
-        #     assert m.data.substrate == 'Glass'
-        #     assert m.data.conducting_material[0] == 'ITO'
+        elif 'Substrate' in str(type(m.data)):
+            assert m.data.solar_cell_area == 10 * ureg('cm**2')
+            assert m.data.pixel_area == 0.16 * ureg('cm**2')
+            assert m.data.number_of_pixels == 6
+            assert m.data.description == 'Normal'
+            assert m.data.substrate == 'Glass'
+            assert m.data.conducting_material[0] == 'ITO'
 
 #         elif m.data.positon_in_experimental_plan == 1:
 #             assert 'Cleaning' in str(type(m.data))
