@@ -71,6 +71,8 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Substrate,
 )
 
+from .utils import get_datetime
+
 
 class RawTFSCGeneralExperiment(EntryData):
     processed_archive = Quantity(type=Entity, shape=['*'])
@@ -104,7 +106,8 @@ class TFSCGeneralExperimentParser(MatchingParser):
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
-        archives = [map_batch(sample_ids, batch_id, upload_id, TFSC_General_Batch)]
+        datetime = get_datetime(df['Experiment Info']['Date'].dropna().to_list())
+        archives = [map_batch(sample_ids, batch_id, upload_id, datetime, TFSC_General_Batch)]
         substrates = []
         substrates_col = [
             'Sample dimension',
@@ -140,7 +143,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 continue
             substrate_name = find_substrate(row[substrates_col]) + '.archive.json'
             archives.append(
-                map_basic_sample(row, substrate_name, upload_id, TFSC_General_Sample)
+                map_basic_sample(row, substrate_name, upload_id, datetime, TFSC_General_Sample)
             )
 
         for i, col in enumerate(df.columns.get_level_values(0).unique()):
