@@ -183,5 +183,5 @@ def test_tfsc_batch_parser(monkeypatch):
             assert 'Process' in str(type(m.data))
             assert m.data.name == 'Test Generic Process'
             assert m.data.description == 'This is a test generic process'
-    delete_json()
+    #delete_json()
 

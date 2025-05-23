@@ -200,6 +200,7 @@ class TFSC_General_SpinCoating(SpinCoating, EntryData):
                     'layer',
                     'quenching',
                     'annealing',
+                    'atmosphere',
                 ]
             ),
         ),
@@ -235,6 +236,7 @@ class TFSC_General_SlotDieCoating(SlotDieCoating, EntryData):
                     'properties',
                     'quenching',
                     'annealing',
+                    'atmosphere',
                 ]
             ),
         ),
@@ -255,6 +257,7 @@ class TFSC_General_Sputtering(Sputtering, EntryData):
                     'batch',
                     'samples',
                     'layer',
+                    'atmosphere',
                 ]
             ),
         )
@@ -275,6 +278,7 @@ class TFSC_General_AtomicLayerDeposition(AtomicLayerDeposition, EntryData):
                     'batch',
                     'samples',
                     'layer',
+                    'atmosphere',
                 ]
             ),
         )
@@ -297,6 +301,7 @@ class TFSC_General_Evaporation(Evaporations, EntryData):
                     'batch',
                     'samples',
                     'layer',
+                    'atmosphere',
                 ]
             ),
         )
