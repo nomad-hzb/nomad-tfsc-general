@@ -100,7 +100,7 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['name', 'substrate', 'architecture', 'datetime']),
+            properties=dict(order=['name', 'substrate', 'architecture']),
         ),
         label_quantity='sample_id',
     )
@@ -110,7 +110,7 @@ class TFSC_General_Batch(Batch, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'samples'],
-            properties=dict(order=['name', 'export_batch_ids', 'csv_export_file', 'datetime']),
+            properties=dict(order=['name', 'export_batch_ids', 'csv_export_file']),
         )
     )
 
