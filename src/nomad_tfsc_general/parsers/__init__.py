@@ -18,6 +18,7 @@ class TFSCGeneralExperimentParserEntryPoint(ParserEntryPoint):
 
         return TFSCGeneralExperimentParser(**self.dict())
 
+
 tfsc_general_parser = TFSCGeneralParserEntryPoint(
     name='TFSCGeneralParser',
     description='Parser for TFSC General files',
@@ -33,4 +34,3 @@ tfsc_general_experiment_experiment_parser = TFSCGeneralExperimentParserEntryPoin
     # mainfile_contents_re='Experiment Info',
     mainfile_mime_re='(application|text|image)/.*',
 )
-

@@ -23,7 +23,6 @@ from baseclasses import (
     BaseProcess,
     Batch,
     LayerDeposition,
-    LayerProperties,
 )
 from baseclasses.helper.add_solar_cell import add_band_gap
 from baseclasses.helper.utilities import (
@@ -89,7 +88,7 @@ class TFSC_General_Substrate(Substrate, EntryData):
                     'number_of_pixels',
                     'layer_thickness',
                     'layer_sheet_resistance',
-                    'layer_transmission'
+                    'layer_transmission',
                 ]
             ),
         )
@@ -336,8 +335,6 @@ class TFSC_General_LaserScribing(LaserScribing, EntryData):
 
 
 # %% ## Properties
-
-
 
 
 # %%####################################### Measurements
