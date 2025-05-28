@@ -221,7 +221,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             upload_id,
                             TFSC_General_AtomicLayerDeposition,
                         )
-                    )  
+                    )
 
         refs = []
         for subs in substrates:
