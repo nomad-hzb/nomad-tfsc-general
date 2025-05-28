@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 
 @pytest.fixture(
     params=[
-        'tfsc_experiment_parser_test.xlsx',
+        'tfsc_experiment_test_file.xlsx',
     ]
 )
 def parsed_archive(request, monkeypatch):
@@ -28,13 +28,13 @@ def test_normalize_all(parsed_archive, monkeypatch):
 
 
 # Constants for test assertions
-N_PROCESSED_ARCHIVES = 24
+N_PROCESSED_ARCHIVES = 20
 N_PIXELS = 6
-SOLAR_CELL_AREA = 0.16
-PIXEL_AREA = 0.16
+SOLAR_CELL_AREA = 0.16 * ureg('centimeter ** 2')
+PIXEL_AREA = 0.16 * ureg('centimeter ** 2')
 CLEANING_TEMP = ureg.Quantity(61, ureg('°C'))
 CLEANING_SOLVENT = 'Hellmanex'
-PLASMA_POWER = 50.0
+PLASMA_POWER = 50.0 * ureg('watt')
 PLASMA_TYPE = 'Oxygen'
 CLEANING_UV_TIME = 15.0 * ureg('minute')
 SPIN_COATING_LAYER = 'Cs0.05(MA0.17FA0.83)0.95Pb(I0.83Br0.17)3'
@@ -51,9 +51,9 @@ EVAP_LAYER_TRANSMISSION = 95.0
 ALD_SOURCE = 'TMA'
 ALD_MATERIAL = 'TMA'
 ALD_OXIDIZER = 'H2O'
-GENERIC_PROCESS_STEP = 15.0
+GENERIC_PROCESS_STEP = 12.0
 # Evaporation/ALD/Sputtering constants
-EVAP_TEMP = ureg.Quantity(23, ureg('°C'))
+ROOM_TEMP = ureg.Quantity(23, ureg('°C'))
 EVAP_RH = 45.0
 EVAP_O2 = 10.0
 EVAP_LAYER_THICKNESS_VAL = 25.0 * ureg('nm')
@@ -64,17 +64,17 @@ EVAP_LAYER_TYPE_ITO = 'Electrode'
 EVAP_LAYER_TYPE_ELECTRODE = 'Electrode Layer'
 EVAP_LAYER_MORPH = 'Uniform'
 EVAP_SUPPLIER = 'X_Company/23-001'
-EVAP_BATCH = '30'
+EVAP_BATCH = '30.0'
 EVAP_DRYING_TIME = 90.0 * ureg('s')
 EVAP_COST = 50.0
 EVAP_PRESSURE = 0.001 * ureg('mbar')
 EVAP_PRESSURE_START = 0.005000000000000001 * ureg('mbar')
 EVAP_PRESSURE_END = 0.0030000000000000005 * ureg('mbar')
-EVAP_START_RATE = 0.5
-EVAP_TARGET_RATE = 1.0
+EVAP_START_RATE = 0.5  * ureg('angstrom/s')
+EVAP_TARGET_RATE = 1.0  * ureg('angstrom/s')
 EVAP_SUBSTRATE_TEMP = ureg.Quantity(25, ureg('°C'))
 EVAP_TOOLING_FACTOR = '1.5'
-EVAP_TEMPERATURES = [150.0, 160.0]
+EVAP_TEMPERATURES = [ureg.Quantity(150, ureg('°C')), ureg.Quantity(160, ureg('°C'))]
 EVAP_CHEMICAL_C = 'C'
 EVAP_CHEMICAL_ITO = 'ITO'
 EVAP_CHEMICAL_AG = 'Ag'
@@ -96,9 +96,39 @@ ALD_BOTTLE = ureg.Quantity(25, ureg('°C'))
 ALD_OX_PULSE = 0.1 * ureg('s')
 ALD_OX_MANIFOLD = ureg.Quantity(70, ureg('°C'))
 
+# Additional constants for magic values
+LASER_PULSE_TIME = 8.0 * ureg('ps')
+LASER_PULSE_FREQUENCY = 80.0 * ureg('kHz')
+LASER_SPEED = 100.0 * ureg('mm/s')
+LASER_FLUENCE = 0.5* ureg('J/cm**2')
+CLEANING_TIME = 0.5166666666666666 * ureg('minute')
+PLASMA_TIME = 3.0 * ureg('minute')
+ATMOSPHERE_TEMP = ureg.Quantity(23, ureg('°C'))
+ATMOSPHERE_RH = 45.0
+ATMOSPHERE_O2 = 10.0
+SOLUTION_VOLUME = 0.1 * ureg('ml')
+SOLUTION_VISCOSITY = 0.0005 * ureg('Pa*s')
+SOLUTION_CONTACT_ANGLE = 30.0 * ureg('degree')
+SOLUTE_CONC = 1.42e-06 * ureg('mol/ml')
+SOLVENT_VOL1 = 0.01 * ureg('ml')
+SOLVENT_VOL2 = 0.02 * ureg('ml')
+SOLVENT_REL = 1.5
+ANNEAL_TIME = 1800.0 * ureg('s')
+QUENCH_VOL = 0.3  * ureg('ml')
+QUENCH_DROP_TIME = 25.0  * ureg('s')
+QUENCH_FLOW = 50.0 * ureg('ul/s')
+QUENCH_HEIGHT = 30.0 * ureg('mm')
+RECIPE_TIME1 = 31.0 * ureg('s')
+RECIPE_SPEED1 = 3001.0 * ureg('rpm')
+RECIPE_ACCEL1 = 1001.0 * ureg('rpm/s')
+RECIPE_TIME2 = 32.0 * ureg('s')
+RECIPE_SPEED2 = 3002.0 * ureg('rpm')
+RECIPE_ACCEL2 = 1002.0 * ureg('rpm/s')
+N_ENTITIES = 2
+
 
 def test_tfsc_batch_parser(monkeypatch):
-    file = 'tfsc_experiment_parser_test.xlsx'
+    file = 'tfsc_experiment_test_file.xlsx'
     file_name = os.path.join('tests', 'data', file)
     file_archive = parse(file_name)[0]
     assert len(file_archive.data.processed_archive) == N_PROCESSED_ARCHIVES
@@ -123,7 +153,7 @@ def test_tfsc_batch_parser(monkeypatch):
         elif 'Batch' in t:
             assert m.data.name == 'SAU_GeSo_1_1'
             assert m.data.lab_id == 'SAU_GeSo_1_1'
-            assert len(m.data.entities) == 2
+            assert len(m.data.entities) == N_ENTITIES
             assert m.data.entities[0]['lab_id'] == 'SAU_GeSo_1_1_C-1'
             assert m.data.entities[1]['lab_id'] == 'SAU_GeSo_1_1_C-2'
         # Substrate
@@ -131,9 +161,9 @@ def test_tfsc_batch_parser(monkeypatch):
             assert m.data.name == 'Substrate 1 cm x 1 cm Soda Lime Glass ITO'
             assert m.data.lab_id == ''
             assert m.data.description == 'Experiment Notes'
-            assert m.data.solar_cell_area == SOLAR_CELL_AREA * ureg('cm**2')
+            assert m.data.solar_cell_area == SOLAR_CELL_AREA
             assert m.data.number_of_pixels == N_PIXELS
-            assert m.data.pixel_area == PIXEL_AREA * ureg('cm**2')
+            assert m.data.pixel_area == PIXEL_AREA
             assert m.data.substrate == 'Soda Lime Glass'
             assert m.data.conducting_material[0] == 'ITO'
             assert m.data.substrate_properties[0]['layer_type'] == 'Substrate Conductive Layer'
@@ -146,20 +176,21 @@ def test_tfsc_batch_parser(monkeypatch):
             assert m.data.patterning == 'P1,P2,P3, commercially etched'
             assert m.data.layout == 'BBBB, minimodule'
             assert m.data.properties['laser_wavelength'] == LASER_WAVELENGTH
-            assert m.data.properties['laser_pulse_time'] == 8.0 * ureg('ps')
-            assert m.data.properties['laser_pulse_frequency'] == 80.0 *ureg('kHz')
-            assert m.data.properties['speed'] == 100.0 * ureg('mm/s')
-            assert m.data.properties['fluence'] == 0.5 * ureg('J/cm**2')
+            assert m.data.properties['laser_pulse_time'] == LASER_PULSE_TIME
+            assert m.data.properties['laser_pulse_frequency'] == LASER_PULSE_FREQUENCY
+            assert m.data.properties['speed'] == LASER_SPEED
+            assert m.data.properties['fluence'] == LASER_FLUENCE
             assert m.data.properties['power_in_percent'] == LASER_POWER_PERCENT
         # Cleaning 2_0
         elif getattr(m.data, 'positon_in_experimental_plan', None) == 2.0:
             assert m.data.name == 'Cleaning'
             assert m.data.description == 'Can be disclosed:Yes/No, Recipe'
             assert m.data.location == 'HZB Glovebox1'
-            assert m.data.cleaning[0]['time'] == 0.5166666666666666 * ureg('minute')
+            assert m.data.cleaning[0]['time'] == CLEANING_TIME
             assert m.data.cleaning[0]['temperature'] == CLEANING_TEMP
             assert m.data.cleaning[0]['solvent_2']['name'] == CLEANING_SOLVENT
-            assert m.data.cleaning[1]['time'] == 0.5166666666666666 * ureg('minute')
+            # Second cleaning step may have different values
+            assert m.data.cleaning[1]['time'] ==  CLEANING_TIME
             assert m.data.cleaning[1]['temperature'] == CLEANING_TEMP
             assert m.data.cleaning[1]['solvent_2']['name'] == CLEANING_SOLVENT
         # Cleaning 3_0
@@ -167,8 +198,8 @@ def test_tfsc_batch_parser(monkeypatch):
             assert m.data.name == 'Cleaning'
             assert m.data.description == 'Plasma cleaning notes'
             assert m.data.location == 'SAU Box'
-            assert m.data.cleaning_plasma[0]['time'] == 3.0 * ureg('minute')
-            assert m.data.cleaning_plasma[0]['power'] == PLASMA_POWER * ureg('W')
+            assert m.data.cleaning_plasma[0]['time'] == PLASMA_TIME
+            assert m.data.cleaning_plasma[0]['power'] == PLASMA_POWER
             assert m.data.cleaning_plasma[0]['plasma_type'] == PLASMA_TYPE
         # Cleaning 4_0
         elif getattr(m.data, 'positon_in_experimental_plan', None) == 4.0:
@@ -176,294 +207,249 @@ def test_tfsc_batch_parser(monkeypatch):
             assert m.data.description == 'Ozone cleaning notes'
             assert m.data.location == 'SAU Box'
             assert m.data.cleaning_uv[0]['time'] == CLEANING_UV_TIME
-
         # Spin Coating 5_0
         elif getattr(m.data, 'positon_in_experimental_plan', None) == 5.0:
             assert m.data.name == 'spin coating Cs0.05(MA0.17FA0.83)0.95Pb(I0.83Br0.17)3'
             assert m.data.description == 'Batch supplier-ID-Opened at-remaining shelf life'
             assert m.data.location == 'SAU Box'
-            assert m.data.atmosphere['temperature'] == ureg.Quantity(23, ureg('°C'))
-            assert m.data.atmosphere['relative_humidity'] == 45.0
-            assert m.data.atmosphere['oxygen_level_ppm'] == 10.0
+            assert m.data.atmosphere['temperature'] == ATMOSPHERE_TEMP
+            assert m.data.atmosphere['relative_humidity'] == ATMOSPHERE_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == ATMOSPHERE_O2
             assert m.data.layer[0]['layer_type'] == 'Absorber'
             assert m.data.layer[0]['layer_material_name'] == SPIN_COATING_LAYER
             assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
             assert m.data.layer[0]['layer_morphology'] == 'Uniform'
-            assert m.data.solution[0]['solution_volume'] == 0.1 * ureg('ml')
-            assert m.data.solution[0]['solution_viscosity'] == 0.0005 * ureg('Pa*s')
-            assert m.data.solution[0]['solution_contact_angle'] == 30.0 * ureg('degree')
+            assert m.data.solution[0]['solution_volume'] == SOLUTION_VOLUME
+            assert m.data.solution[0]['solution_viscosity'] == SOLUTION_VISCOSITY
+            assert m.data.solution[0]['solution_contact_angle'] == SOLUTION_CONTACT_ANGLE
             solutes = m.data.solution[0]['solution_details']['solute']
-            assert solutes[0]['concentration_mol'] == 1.42e-06 * ureg('mol/ml')
+            assert solutes[0]['concentration_mol'] == SOLUTE_CONC
             assert solutes[0]['chemical_2']['name'] == 'PbI2'
-            if len(solutes) > 1:
-                assert solutes[1]['concentration_mol'] == 1.42e-06 * ureg('mol/ml')
-                assert solutes[1]['chemical_2']['name'] == 'PbI2'
             solvents = m.data.solution[0]['solution_details']['solvent']
-            assert solvents[0]['chemical_volume'] == 0.01 * ureg('ml')
-            assert solvents[0]['amount_relative'] == 1.5
+            assert solvents[0]['chemical_volume'] == SOLVENT_VOL1
+            assert solvents[0]['amount_relative'] == SOLVENT_REL
             assert solvents[0]['chemical_2']['name'] == 'DMF'
-            assert solvents[1]['chemical_volume'] == 0.02 * ureg('ml')
-            assert solvents[1]['amount_relative'] == 1.5
+            assert solvents[1]['chemical_volume'] == SOLVENT_VOL2
+            assert solvents[1]['amount_relative'] == SOLVENT_REL
             assert solvents[1]['chemical_2']['name'] == 'DMF'
             assert m.data.annealing['temperature'] == ANNEALING_TEMP
-            assert m.data.annealing['time'] == 1800.0 * ureg('s')
+            assert m.data.annealing['time'] == ANNEAL_TIME
             assert m.data.annealing['atmosphere'] == 'N2'
-            assert m.data.quenching['anti_solvent_volume'] == 0.3 * ureg('ml')
-            assert m.data.quenching['anti_solvent_dropping_time'] == 25.0 * ureg('s')
-            assert m.data.quenching['anti_solvent_dropping_flow_rate'] == 50.0 * ureg('ul/s')
-            assert m.data.quenching['anti_solvent_dropping_height'] == 30.0 * ureg('mm')
+            assert m.data.quenching['anti_solvent_volume'] == QUENCH_VOL
+            assert m.data.quenching['anti_solvent_dropping_time'] == QUENCH_DROP_TIME
+            assert m.data.quenching['anti_solvent_dropping_flow_rate'] == QUENCH_FLOW
+            assert m.data.quenching['anti_solvent_dropping_height'] == QUENCH_HEIGHT
             assert m.data.quenching['anti_solvent_2']['name'] == QUENCHING_SOLVENT
-            assert m.data.recipe_steps[0]['time'] == 31.0 * ureg('s')
-            assert m.data.recipe_steps[0]['speed'] == 3001.0 * ureg('rpm')
-            assert m.data.recipe_steps[0]['acceleration'] == 1001.0 * ureg('rpm/s')
-            assert m.data.recipe_steps[1]['time'] == 32.0 * ureg('s')
-            assert m.data.recipe_steps[1]['speed'] == 3002.0 * ureg('rpm')
-            assert m.data.recipe_steps[1]['acceleration'] == 1002.0 * ureg('rpm/s')
+            assert m.data.recipe_steps[0]['time'] == RECIPE_TIME1
+            assert m.data.recipe_steps[0]['speed'] == RECIPE_SPEED1
+            assert m.data.recipe_steps[0]['acceleration'] == RECIPE_ACCEL1
+            assert m.data.recipe_steps[1]['time'] == RECIPE_TIME2
+            assert m.data.recipe_steps[1]['speed'] == RECIPE_SPEED2
+            assert m.data.recipe_steps[1]['acceleration'] == RECIPE_ACCEL2
         # Slot Die Coating 6_0
         elif getattr(m.data, 'positon_in_experimental_plan', None) == 6.0:
             assert m.data.name.startswith('slot die coating')
-            assert (
-                m.data.layer[0]['layer_material_name'] == SPIN_COATING_LAYER
-            )
-            assert m.data.annealing['temperature'] == ANNEALING_TEMP
-            assert m.data.annealing['time'] == 1800.0 * ureg('s')
-            assert m.data.annealing['atmosphere'] == 'N2'
-            # Only check anti_solvent_volume if present (not for AirKnifeGasQuenching)
-            if 'anti_solvent_volume' in m.data.quenching:
-                assert m.data.quenching['anti_solvent_volume'] == 0.3 * ureg('ml')
-            assert m.data.quenching['air_knife_angle'] == SLOT_DIE_ANGLE
-            if hasattr(m.data, 'recipe_steps') and m.data.recipe_steps:
-                assert m.data.recipe_steps[0]['time'] == 31.0 * ureg('s')
-                assert m.data.recipe_steps[0]['speed'] == 3001.0 * ureg('rpm')
-                assert m.data.recipe_steps[0]['acceleration'] == 1001.0 * ureg('rpm/s')
-                assert m.data.recipe_steps[1]['time'] == 32.0 * ureg('s')
-                assert m.data.recipe_steps[1]['speed'] == 3002.0 * ureg('rpm')
-                assert m.data.recipe_steps[1]['acceleration'] == 1002.0 * ureg('rpm/s')
-        # Inkjet Printing 7_0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 7.0:
-            assert m.data.name.startswith('inkjet printing')
-            assert (
-                m.data.layer[0]['layer_material_name'] == SPIN_COATING_LAYER
-            )
-            assert m.data.properties['drop_density'] == INKJET_DROP_DENSITY * ureg('1/in')
-            assert (
-                m.data.properties['print_head_properties']['print_head_name'] == INKJET_HEAD_NAME
-            )
-            assert m.data.atmosphere['temperature'] == ureg.Quantity(23, ureg('°C'))
-            assert m.data.atmosphere['relative_humidity'] == 45.0
-            assert m.data.atmosphere['oxygen_level_ppm'] == 10.0
+            assert m.data.description == 'Batch supplier-ID-Opened at-remaining shelf life'
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ATMOSPHERE_TEMP
+            assert m.data.atmosphere['relative_humidity'] == ATMOSPHERE_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == ATMOSPHERE_O2
             assert m.data.layer[0]['layer_type'] == 'Absorber'
             assert m.data.layer[0]['layer_material_name'] == SPIN_COATING_LAYER
             assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
             assert m.data.layer[0]['layer_morphology'] == 'Uniform'
-            assert m.data.solution[0]['solution_volume'] == 0.1 * ureg('ml')
-            assert m.data.solution[0]['solution_viscosity'] == 0.0005 * ureg('Pa*s')
-            assert m.data.solution[0]['solution_contact_angle'] == 30.0 * ureg('degree')
+            assert m.data.solution[0]['solution_volume'] == SOLUTION_VOLUME
+            assert m.data.solution[0]['solution_viscosity'] == SOLUTION_VISCOSITY
+            assert m.data.solution[0]['solution_contact_angle'] == SOLUTION_CONTACT_ANGLE
             solutes = m.data.solution[0]['solution_details']['solute']
-            assert solutes[0]['concentration_mol'] == 1.42e-06 * ureg('mol/ml')
+            assert solutes[0]['concentration_mol'] == SOLUTE_CONC
             assert solutes[0]['chemical_2']['name'] == 'PbI2'
-            if len(solutes) > 1:
-                assert solutes[1]['concentration_mol'] == 1.42e-06 * ureg('mol/ml')
-                assert solutes[1]['chemical_2']['name'] == 'PbI2'
             solvents = m.data.solution[0]['solution_details']['solvent']
-            assert solvents[0]['chemical_volume'] == 0.01 * ureg('ml')
-            assert solvents[0]['amount_relative'] == 1.5
+            assert solvents[0]['chemical_volume'] == SOLVENT_VOL1
+            assert solvents[0]['amount_relative'] == SOLVENT_REL
             assert solvents[0]['chemical_2']['name'] == 'DMF'
-            assert solvents[1]['chemical_volume'] == 0.02 * ureg('ml')
-            assert solvents[1]['amount_relative'] == 1.5
-            assert solvents[1]['chemical_2']['name'] == 'DMF'
             assert m.data.annealing['temperature'] == ANNEALING_TEMP
-            assert m.data.annealing['time'] == 1800.0 * ureg('s')
+            assert m.data.annealing['time'] == ANNEAL_TIME
             assert m.data.annealing['atmosphere'] == 'N2'
-            assert m.data.quenching['anti_solvent_volume'] == 0.3 * ureg('ml')
-            assert m.data.quenching['anti_solvent_dropping_time'] == 25.0 * ureg('s')
-            assert m.data.quenching['anti_solvent_dropping_flow_rate'] == 50.0 * ureg('ul/s')
-            assert m.data.quenching['anti_solvent_dropping_height'] == 30.0 * ureg('mm')
-            assert m.data.quenching['anti_solvent_2']['name'] == QUENCHING_SOLVENT
-            assert m.data.recipe_steps[0]['time'] == 31.0 * ureg('s')
-            assert m.data.recipe_steps[0]['speed'] == 3001.0 * ureg('rpm')
-            assert m.data.recipe_steps[0]['acceleration'] == 1001.0 * ureg('rpm/s')
-            assert m.data.recipe_steps[1]['time'] == 32.0 * ureg('s')
-            assert m.data.recipe_steps[1]['speed'] == 3002.0 * ureg('rpm')
-            assert m.data.recipe_steps[1]['acceleration'] == 1002.0 * ureg('rpm/s')
-        # Evaporation 8.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 8.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'evaporation C'
-                assert m.data.description == 'Evaporation Test'
-                assert m.data.location == 'SAU Box'
-                assert m.data.co_evaporation is False
-                assert m.data.atmosphere['temperature'] == EVAP_TEMP
-                assert m.data.atmosphere['relative_humidity'] == EVAP_RH
-                assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                assert m.data.layer[0]['supplier'] == EVAP_SUPPLIER
-                assert m.data.layer[0]['batch'] == EVAP_BATCH
-                # drying_time and cost only in 8_0 and 8_1
-                if 'drying_time' in m.data.layer[0]:
-                    assert m.data.layer[0]['drying_time'] == EVAP_DRYING_TIME
-                if 'cost' in m.data.layer[0]:
-                    assert m.data.layer[0]['cost'] == EVAP_COST
-                # inorganic_evaporation or organic_evaporation
-                if hasattr(m.data, 'inorganic_evaporation') and m.data.inorganic_evaporation:
-                    evap = m.data.inorganic_evaporation[0]
-                elif hasattr(m.data, 'organic_evaporation') and m.data.organic_evaporation:
-                    evap = m.data.organic_evaporation[0]
-                else:
-                    evap = None
-                if evap:
-                    assert evap['pressure'] == EVAP_PRESSURE
-                    assert evap['pressure_start'] == EVAP_PRESSURE_START
-                    assert evap['pressure_end'] == EVAP_PRESSURE_END
-                    assert evap['start_rate'] == EVAP_START_RATE
-                    assert evap['target_rate'] == EVAP_TARGET_RATE
-                    assert evap['substrate_temparature'] == EVAP_SUBSTRATE_TEMP
-                    assert evap['tooling_factor'] == EVAP_TOOLING_FACTOR
-                    assert evap['temparature'] == EVAP_TEMPERATURES
-                    assert evap['chemical_2']['name'] == EVAP_CHEMICAL_C
-                    assert evap['chemical_2']['load_data'] is False
-        # Evaporation 9.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 9.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'evaporation C'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                # Only inorganic_evaporation
-                evap = m.data.inorganic_evaporation[0]
-                assert evap['pressure'] == EVAP_PRESSURE
-                assert evap['pressure_start'] == EVAP_PRESSURE_START
-                assert evap['pressure_end'] == EVAP_PRESSURE_END
-                assert evap['start_rate'] == EVAP_START_RATE
-                assert evap['target_rate'] == EVAP_TARGET_RATE
-                assert evap['substrate_temparature'] == EVAP_SUBSTRATE_TEMP
-                assert evap['tooling_factor'] == EVAP_TOOLING_FACTOR
-                assert evap['temparature'] == EVAP_TEMPERATURES
-                assert evap['chemical_2']['name'] == EVAP_CHEMICAL_C
-                assert evap['chemical_2']['load_data'] is False
-            elif m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_ITO:
-                assert m.data.name == 'evaporation ITO'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_ITO
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_ITO
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
-                assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
-                evap = m.data.organic_evaporation[0]
-                assert evap['pressure'] == EVAP_PRESSURE
-                assert evap['pressure_start'] == EVAP_PRESSURE_START
-                assert evap['pressure_end'] == EVAP_PRESSURE_END
-                assert evap['start_rate'] == EVAP_START_RATE
-                assert evap['target_rate'] == EVAP_TARGET_RATE
-                assert evap['substrate_temparature'] == EVAP_SUBSTRATE_TEMP
-                assert evap['tooling_factor'] == EVAP_TOOLING_FACTOR
-                assert evap['temparature'] == EVAP_TEMPERATURES
-                assert evap['chemical_2']['name'] == EVAP_CHEMICAL_ITO
-                assert evap['chemical_2']['load_data'] is False
-        # Evaporation 10.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 10.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'evaporation C'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-            elif m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG:
-                assert m.data.name == 'evaporation Ag'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
-                assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
-        # Evaporation 11.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 11.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'evaporation C'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-            elif m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG:
-                assert m.data.name == 'evaporation Ag'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
-                assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
-        # Sputtering 12.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 12.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'sputtering C'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                proc = m.data.processes[0]
-                assert proc['pressure'] == SPUTTER_PRESSURE
-                assert proc['temperature'] == SPUTTER_TEMP
-                assert proc['burn_in_time'] == SPUTTER_BURNIN
-                assert proc['deposition_time'] == SPUTTER_DEPOSITION
-                assert proc['power'] == SPUTTER_POWER
-                assert proc['gas_flow_rate'] == SPUTTER_GAS_FLOW
-                assert proc['rotation_rate'] == SPUTTER_ROTATION
-                assert proc['target_2']['name'] == EVAP_CHEMICAL_C
-                assert proc['gas_2']['name'] == SPUTTER_GAS
-            elif m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG:
-                assert m.data.name == 'sputtering Ag'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_AG
-                assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
-                assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
-                proc = m.data.processes[0]
-                assert proc['pressure'] == SPUTTER_PRESSURE
-                assert proc['temperature'] == SPUTTER_TEMP
-                assert proc['burn_in_time'] == SPUTTER_BURNIN
-                assert proc['deposition_time'] == SPUTTER_DEPOSITION
-                assert proc['power'] == SPUTTER_POWER
-                assert proc['gas_flow_rate'] == SPUTTER_GAS_FLOW
-                assert proc['rotation_rate'] == SPUTTER_ROTATION
-                assert proc['target_2']['name'] == EVAP_CHEMICAL_AG
-                assert proc['gas_2']['name'] == SPUTTER_GAS
-        # ALD 13.0
-        elif getattr(m.data, 'positon_in_experimental_plan', None) == 13.0:
-            if m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C:
-                assert m.data.name == 'atomic layer deposition C'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
-                props = m.data.properties
-                assert props['source'] == ALD_SOURCE
-                assert props['temperature'] == ALD_TEMP
-                assert props['rate'] == ALD_RATE
-                assert props['time'] == ALD_TIME
-                assert props['number_of_cycles'] == ALD_CYCLES
-                assert props['material']['pulse_duration'] == ALD_PULSE
-                assert props['material']['manifold_temperature'] == ALD_MANIFOLD
-                assert props['material']['bottle_temperature'] == ALD_BOTTLE
-                assert props['material']['material']['name'] == ALD_MATERIAL
-                assert props['oxidizer_reducer']['pulse_duration'] == ALD_OX_PULSE
-                assert props['oxidizer_reducer']['manifold_temperature'] == ALD_OX_MANIFOLD
-                assert props['oxidizer_reducer']['material']['name'] == ALD_OXIDIZER
-            elif m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG:
-                assert m.data.name == 'atomic layer deposition Ag'
-                assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
-                assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
-                assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_AG
-                assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
-                assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
-                props = m.data.properties
-                assert props['source'] == ALD_SOURCE
-                assert props['temperature'] == ALD_TEMP
-                assert props['rate'] == ALD_RATE
-                assert props['time'] == ALD_TIME
-                assert props['number_of_cycles'] == ALD_CYCLES
-                assert props['material']['pulse_duration'] == ALD_PULSE
-                assert props['material']['manifold_temperature'] == ALD_MANIFOLD
-                assert props['material']['bottle_temperature'] == ALD_BOTTLE
-                assert props['material']['material']['name'] == ALD_MATERIAL
-                assert props['oxidizer_reducer']['pulse_duration'] == ALD_OX_PULSE
-                assert props['oxidizer_reducer']['manifold_temperature'] == ALD_OX_MANIFOLD
-                assert props['oxidizer_reducer']['material']['name'] == ALD_OXIDIZER
-        # Test Generic Process
+            assert m.data.quenching['air_knife_angle'] == SLOT_DIE_ANGLE
+            assert m.data.properties['flow_rate'] == SLOT_DIE_FLOW
+        # Inkjet Printing 7_0
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 7.0:
+            assert m.data.name.startswith('inkjet printing')
+            assert m.data.description == 'Batch supplier-ID-Opened at-remaining shelf life'
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ATMOSPHERE_TEMP
+            assert m.data.atmosphere['relative_humidity'] == ATMOSPHERE_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == ATMOSPHERE_O2
+            assert m.data.layer[0]['layer_type'] == 'Absorber'
+            assert m.data.layer[0]['layer_material_name'] == SPIN_COATING_LAYER
+            assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
+            assert m.data.layer[0]['layer_morphology'] == 'Uniform'
+            assert m.data.properties['drop_density'] == INKJET_DROP_DENSITY * ureg('1/in')
+            assert m.data.properties['print_head_properties']['print_head_name'] == INKJET_HEAD_NAME
+        # 8_0 Evaporation C
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 8.0 and m.data.name == 'evaporation C':
+            assert m.data.description == 'Processability'
+            assert m.data.location == 'SAU Box'
+            assert m.data.co_evaporation is False
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            layer = m.data.layer[0]
+            assert layer['layer_type'] == EVAP_LAYER_TYPE_C
+            assert layer['layer_material_name'] == EVAP_CHEMICAL_C
+            assert layer['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
+            assert layer['supplier'] == EVAP_SUPPLIER
+            assert layer['batch'] == EVAP_BATCH
+            assert layer['drying_time'] == EVAP_DRYING_TIME
+            assert layer['cost'] == EVAP_COST
+            evap = m.data.organic_evaporation[0]
+            assert evap['pressure'] == EVAP_PRESSURE
+            assert evap['pressure_start'] == EVAP_PRESSURE_START
+            assert evap['pressure_end'] == EVAP_PRESSURE_END
+            assert evap['start_rate'] == EVAP_START_RATE
+            assert evap['target_rate'] == EVAP_TARGET_RATE
+            assert evap['substrate_temparature'] == EVAP_SUBSTRATE_TEMP
+            assert evap['tooling_factor'] == EVAP_TOOLING_FACTOR
+            assert set(evap['temparature']) == set(EVAP_TEMPERATURES)
+            assert evap['chemical_2']['name'] == EVAP_CHEMICAL_C
+            assert evap['chemical_2']['load_data'] is False
+        # 8_1 Evaporation ITO
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 8.0 and m.data.name == 'evaporation ITO':
+            assert m.data.description == ''
+            assert m.data.location == 'SAU Box'
+            assert m.data.co_evaporation is False
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            layer = m.data.layer[0]
+            assert layer['layer_type'] == EVAP_LAYER_TYPE_ITO
+            assert layer['layer_material_name'] == EVAP_CHEMICAL_ITO
+            assert layer['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
+            assert layer['layer_transmission'] == EVAP_LAYER_TRANSMISSION
+            assert layer['layer_morphology'] == EVAP_LAYER_MORPH
+            evap = m.data.organic_evaporation[0]
+            assert evap['pressure'] == EVAP_PRESSURE
+            assert evap['pressure_start'] == EVAP_PRESSURE_START
+            assert evap['pressure_end'] == EVAP_PRESSURE_END
+            assert evap['start_rate'] == EVAP_START_RATE
+            assert evap['target_rate'] == EVAP_TARGET_RATE
+            assert evap['substrate_temparature'] == EVAP_SUBSTRATE_TEMP
+            assert evap['tooling_factor'] == EVAP_TOOLING_FACTOR
+            assert set(evap['temparature']) == set(EVAP_TEMPERATURES)
+            assert evap['chemical_2']['name'] == EVAP_CHEMICAL_ITO
+            assert evap['chemical_2']['load_data'] is False
+        # 9_0 Evaporation Cs0.05(MA0.17FA0.83)0.95Pb(I0.83Br0.17)3
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 9.0 and m.data.name == 'evaporation Cs0.05(MA0.17FA0.83)0.95Pb(I0.83Br0.17)3':
+            assert m.data.location == 'SAU Box'
+            assert m.data.co_evaporation is False
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            layer = m.data.layer[0]
+            assert layer['layer_type'] == 'Absorber'
+            assert layer['layer_material_name'] == SPIN_COATING_LAYER
+            assert layer['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
+            assert layer['layer_morphology'] == EVAP_LAYER_MORPH
+        # 9_1 Evaporation Ag
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 9.0 and m.data.name == 'evaporation Ag':
+            assert m.data.location == 'SAU Box'
+            assert m.data.co_evaporation is False
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
+            assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
+            assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_AG
+            assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
+            assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
+        # Sputtering 10_0 C
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 10.0 and m.data.name == 'sputtering C':
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
+            assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
+            assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
+            proc = m.data.processes[0]
+            assert proc['pressure'] == SPUTTER_PRESSURE
+            assert proc['temperature'] == SPUTTER_TEMP
+            assert proc['burn_in_time'] == SPUTTER_BURNIN
+            assert proc['deposition_time'] == SPUTTER_DEPOSITION
+            assert proc['power'] == SPUTTER_POWER
+            assert proc['gas_flow_rate'] == SPUTTER_GAS_FLOW
+            assert proc['rotation_rate'] == SPUTTER_ROTATION
+            assert proc['target_2']['name'] == EVAP_CHEMICAL_C
+            assert proc['gas_2']['name'] == SPUTTER_GAS
+        # Sputtering 10_1 Ag
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 10.0 and m.data.name == 'sputtering Ag':
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
+            assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
+            assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_AG
+            assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
+            assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
+            proc = m.data.processes[0]
+            assert proc['pressure'] == SPUTTER_PRESSURE
+            assert proc['temperature'] == SPUTTER_TEMP
+            assert proc['burn_in_time'] == SPUTTER_BURNIN
+            assert proc['deposition_time'] == SPUTTER_DEPOSITION
+            assert proc['power'] == SPUTTER_POWER
+            assert proc['gas_flow_rate'] == SPUTTER_GAS_FLOW
+            assert proc['rotation_rate'] == SPUTTER_ROTATION
+            assert proc['target_2']['name'] == EVAP_CHEMICAL_AG
+            assert proc['gas_2']['name'] == SPUTTER_GAS
+        # ALD 11_0 C
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 11.0 and m.data.name == 'atomic layer deposition C':
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_C
+            assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_C
+            assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_VAL
+            props = m.data.properties
+            assert props['source'] == ALD_SOURCE
+            assert props['temperature'] == ALD_TEMP
+            assert props['rate'] == ALD_RATE
+            assert props['time'] == ALD_TIME
+            assert props['number_of_cycles'] == ALD_CYCLES
+            assert props['material']['pulse_duration'] == ALD_PULSE
+            assert props['material']['manifold_temperature'] == ALD_MANIFOLD
+            assert props['material']['bottle_temperature'] == ALD_BOTTLE
+            assert props['material']['material']['name'] == ALD_MATERIAL
+            assert props['oxidizer_reducer']['pulse_duration'] == ALD_OX_PULSE
+            assert props['oxidizer_reducer']['manifold_temperature'] == ALD_OX_MANIFOLD
+            assert props['oxidizer_reducer']['material']['name'] == ALD_OXIDIZER
+        # ALD 11_1 Ag
+        elif getattr(m.data, 'positon_in_experimental_plan', None) == 11.0 and m.data.name == 'atomic layer deposition Ag':
+            assert m.data.location == 'SAU Box'
+            assert m.data.atmosphere['temperature'] == ROOM_TEMP
+            assert m.data.atmosphere['relative_humidity'] == EVAP_RH
+            assert m.data.atmosphere['oxygen_level_ppm'] == EVAP_O2
+            assert m.data.layer[0]['layer_type'] == EVAP_LAYER_TYPE_AG
+            assert m.data.layer[0]['layer_material_name'] == EVAP_CHEMICAL_AG
+            assert m.data.layer[0]['layer_thickness'] == EVAP_LAYER_THICKNESS_AG
+            assert m.data.layer[0]['layer_transmission'] == EVAP_LAYER_TRANSMISSION
+            assert m.data.layer[0]['layer_morphology'] == EVAP_LAYER_MORPH
+            props = m.data.properties
+            assert props['source'] == ALD_SOURCE
+            assert props['temperature'] == ALD_TEMP
+            assert props['rate'] == ALD_RATE
+            assert props['time'] == ALD_TIME
+            assert props['number_of_cycles'] == ALD_CYCLES
+            assert props['material']['pulse_duration'] == ALD_PULSE
+            assert props['material']['manifold_temperature'] == ALD_MANIFOLD
+            assert props['material']['bottle_temperature'] == ALD_BOTTLE
+            assert props['material']['material']['name'] == ALD_MATERIAL
+            assert props['oxidizer_reducer']['pulse_duration'] == ALD_OX_PULSE
+            assert props['oxidizer_reducer']['manifold_temperature'] == ALD_OX_MANIFOLD
+            assert props['oxidizer_reducer']['material']['name'] == ALD_OXIDIZER
+        # Generic Process 12_0
         elif getattr(m.data, 'positon_in_experimental_plan', None) == GENERIC_PROCESS_STEP:
             assert m.data.name == 'Test Generic Process'
             assert m.data.description == 'This is a test generic process'
