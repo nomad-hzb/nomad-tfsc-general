@@ -1,4 +1,4 @@
-# seq-evaporation not tracked yet
+# dip coating, blade coating, sublimation, Annealing class and seq/co-evaporation are not tracked yet. antisolvent, vacuum and gas quenching get mapped only to spin coating, and air knife quenching only to slot die coating.
 
 import os
 
@@ -10,7 +10,7 @@ from utils import delete_json, get_archive
 
 @pytest.fixture(
     params=[
-        'tfsc_experiment_test_file.xlsx',
+        'tfsc_test_exp_parser.xlsx',
     ]
 )
 def parsed_archive(request, monkeypatch):
@@ -26,7 +26,7 @@ def test_normalize_all(parsed_archive, monkeypatch):
 
 
 # Constants for test assertions
-N_PROCESSED_ARCHIVES = 20
+N_PROCESSED_ARCHIVES = 15
 N_PIXELS = 6
 SOLAR_CELL_AREA = 0.16 * ureg('centimeter ** 2')
 PIXEL_AREA = 0.16 * ureg('centimeter ** 2')
@@ -143,7 +143,7 @@ STEP_ALD_AG = 11.0
 
 
 def test_tfsc_batch_parser(monkeypatch):
-    file = 'tfsc_experiment_test_file.xlsx'
+    file = 'tfsc_test_exp_parser.xlsx'
     file_name = os.path.join('tests', 'data', file)
     file_archive = parse(file_name)[0]
     assert len(file_archive.data.processed_archive) == N_PROCESSED_ARCHIVES
