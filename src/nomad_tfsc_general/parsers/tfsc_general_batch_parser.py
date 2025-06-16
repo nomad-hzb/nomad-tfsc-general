@@ -3,6 +3,10 @@
 Created on Fri Sep 27 09:08:03 2024
 
 @author: a2853
+
+Adapted for PERSEUS needs on Tue May 19 16:00:00 2024
+
+@author: a5263
 """
 
 #
@@ -110,6 +114,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
             'Notes',
             'Substrate material',
             'Substrate conductive layer',
+            'Transmission [%]',
+            'Sheet Resistance [Ohms/square]',
+            'TCO thickness [nm]',
         ]
         substrates_col = [
             s for s in substrates_col if s in df['Experiment Info'].columns
