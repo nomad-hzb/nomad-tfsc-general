@@ -359,7 +359,6 @@ def check_inkjet(m):
 
 def check_evap_org(m):
     if not getattr(m.data, 'organic_evaporation', None) or len(m.data.organic_evaporation) == 0:
-        print('No organic_evaporation data found, skipping check_evap_org.')
         return
     assert m.data.name == 'evaporation C'
     assert m.data.description == 'Processability'
@@ -396,7 +395,6 @@ def check_evap_org(m):
 
 def check_evap_inorg(m):
     if not getattr(m.data, 'inorganic_evaporation', None) or len(m.data.inorganic_evaporation) == 0:
-        print('No inorganic_evaporation data found, skipping check_evap_inorg.')
         return
     assert m.data.name == 'evaporation C'
     assert m.data.description == 'Processability'
