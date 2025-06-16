@@ -306,21 +306,6 @@ class TFSC_General_Evaporation(Evaporations, EntryData):
         )
     )
 
-    location = Quantity(
-        type=str,
-        a_eln=dict(
-            component='EnumEditQuantity',
-            props=dict(
-                suggestions=[
-                    'IRIS HZBGloveBoxes Pero5Evaporation',
-                    'HySprint HyVap',
-                    'HySprint HyPeroVap',
-                    'HySprint ProtoVap',
-                ]
-            ),
-        ),
-    )
-
 
 # %% ## Laser Scribing
 class TFSC_General_LaserScribing(LaserScribing, EntryData):
