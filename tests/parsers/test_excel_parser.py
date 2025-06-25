@@ -133,6 +133,7 @@ def test_tfsc_batch_parser(monkeypatch):
 def check_sample(m):
     assert m.data.name in ['SAU_GeSo_1_1_C-1', 'SAU_GeSo_1_1_C-2']
     assert m.data.lab_id in ['SAU_GeSo_1_1_C-1', 'SAU_GeSo_1_1_C-2']
+    assert m.data.datetime.isoformat() == '2025-05-21T00:00:00+00:00'
     assert m.data.description == '1000 rpm'
     assert m.data.number_of_junctions == 1
 
@@ -146,6 +147,7 @@ def check_batch(m):
 
 
 def check_substrate(m):
+    assert m.data.datetime.isoformat() == '2025-05-21T00:00:00+00:00'
     assert m.data.name == 'Substrate 1 cm x 1 cm Soda Lime Glass ITO'
     assert m.data.solar_cell_area == 0.16 * ureg('cm**2')
     assert m.data.number_of_pixels == 6.0
