@@ -80,6 +80,7 @@ class TFSC_General_Substrate(Substrate, EntryData):
             hide=['lab_id', 'users', 'components', 'elemental_composition'],
             properties=dict(
                 order=[
+                    'datetime',
                     'name',
                     'substrate',
                     'conducting_material',
@@ -99,7 +100,7 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['name', 'substrate', 'architecture']),
+            properties=dict(order=['datetime','name', 'substrate', 'architecture']),
         ),
         label_quantity='sample_id',
     )
