@@ -90,7 +90,8 @@ pylint.max-statements = 100
 pylint.max-args = 6
 ignore = [
     "F403", # 'from module import *' used; unable to detect undefined names
-    "PLR2004"
+    "PLR2004",
+    "PLC0415"
 ]
 
 fixable = ["ALL"]
@@ -119,8 +120,8 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [project.entry-points.'nomad.plugin']
-tfsc_general_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_parser"
-tfsc_general_experiment_experiment_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_experiment_experiment_parser"
+#tfsc_general_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_parser"
+#tfsc_general_experiment_experiment_parser_entry_point = "nomad_tfsc_general.parsers:tfsc_general_experiment_experiment_parser"
 
 tfsc_general_package_entry_point = "nomad_tfsc_general.schema_packages:tfsc_general_package"
 
