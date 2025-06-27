@@ -85,9 +85,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
         decoded_buffer: str,
         compression: str = None,
     ):
-        is_mainfile_super = super().is_mainfile(
-            filename, mime, buffer, decoded_buffer, compression
-        )
+        is_mainfile_super = super().is_mainfile(filename, mime, buffer, decoded_buffer, compression)
         if not is_mainfile_super:
             return False
         try:
@@ -107,6 +105,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
         archives = [map_batch(sample_ids, batch_id, upload_id, TFSC_General_Batch)]
         substrates = []
         substrates_col = [
+            'Date',
             'Sample dimension',
             'Sample area [cm^2]',
             'Pixel area [cm^2]',
@@ -118,17 +117,11 @@ class TFSCGeneralExperimentParser(MatchingParser):
             'Sheet Resistance [Ohms/square]',
             'TCO thickness [nm]',
         ]
-        substrates_col = [
-            s for s in substrates_col if s in df['Experiment Info'].columns
-        ]
-        for i, sub in (
-            df['Experiment Info'][substrates_col].drop_duplicates().iterrows()
-        ):
+        substrates_col = [s for s in substrates_col if s in df['Experiment Info'].columns]
+        for i, sub in df['Experiment Info'][substrates_col].drop_duplicates().iterrows():
             if pd.isna(sub).all():
                 continue
-            substrates.append(
-                (f'{i}_substrate', sub, map_substrate(sub, TFSC_General_Substrate))
-            )
+            substrates.append((f'{i}_substrate', sub, map_substrate(sub, TFSC_General_Substrate)))
 
         def find_substrate(d):
             for s in substrates:
@@ -139,9 +132,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
             if pd.isna(row).all():
                 continue
             substrate_name = find_substrate(row[substrates_col]) + '.archive.json'
-            archives.append(
-                map_basic_sample(row, substrate_name, upload_id, TFSC_General_Sample)
-            )
+            archives.append(map_basic_sample(row, substrate_name, upload_id, TFSC_General_Sample))
 
         for i, col in enumerate(df.columns.get_level_values(0).unique()):
             if col == 'Experiment Info':
@@ -155,60 +146,34 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     if x[col].astype('object').equals(row.astype('object'))
                 ]
                 if 'Cleaning' in col:
-                    archives.append(
-                        map_cleaning(
-                            i, j, lab_ids, row, upload_id, TFSC_General_Cleaning
-                        )
-                    )
+                    archives.append(map_cleaning(i, j, lab_ids, row, upload_id, TFSC_General_Cleaning))
 
                 if 'Laser Scribing' in col:
                     archives.append(
-                        map_laser_scribing(
-                            i, j, lab_ids, row, upload_id, TFSC_General_LaserScribing
-                        )
+                        map_laser_scribing(i, j, lab_ids, row, upload_id, TFSC_General_LaserScribing)
                     )
 
                 if 'Generic Process' in col:  # move up
-                    archives.append(
-                        map_generic(i, j, lab_ids, row, upload_id, TFSC_General_Process)
-                    )
+                    archives.append(map_generic(i, j, lab_ids, row, upload_id, TFSC_General_Process))
 
                 if pd.isna(row.get('Material name')):
                     continue
 
                 if 'Evaporation' in col:
-                    archives.append(
-                        map_evaporation(
-                            i, j, lab_ids, row, upload_id, TFSC_General_Evaporation
-                        )
-                    )
+                    archives.append(map_evaporation(i, j, lab_ids, row, upload_id, TFSC_General_Evaporation))
 
                 if 'Spin Coating' in col:
-                    archives.append(
-                        map_spin_coating(
-                            i, j, lab_ids, row, upload_id, TFSC_General_SpinCoating
-                        )
-                    )
+                    archives.append(map_spin_coating(i, j, lab_ids, row, upload_id, TFSC_General_SpinCoating))
 
                 if 'Slot Die Coating' in col:
-                    archives.append(
-                        map_sdc(
-                            i, j, lab_ids, row, upload_id, TFSC_General_SlotDieCoating
-                        )
-                    )
+                    archives.append(map_sdc(i, j, lab_ids, row, upload_id, TFSC_General_SlotDieCoating))
 
                 if 'Sputtering' in col:
-                    archives.append(
-                        map_sputtering(
-                            i, j, lab_ids, row, upload_id, TFSC_General_Sputtering
-                        )
-                    )
+                    archives.append(map_sputtering(i, j, lab_ids, row, upload_id, TFSC_General_Sputtering))
 
                 if 'Inkjet Printing' in col:
                     archives.append(
-                        map_inkjet_printing(
-                            i, j, lab_ids, row, upload_id, TFSC_General_Inkjet_Printing
-                        )
+                        map_inkjet_printing(i, j, lab_ids, row, upload_id, TFSC_General_Inkjet_Printing)
                     )
 
                 if 'ALD' in col:
