@@ -80,6 +80,7 @@ class TFSC_General_Substrate(Substrate, EntryData):
             hide=['lab_id', 'users', 'components', 'elemental_composition'],
             properties=dict(
                 order=[
+                    'datetime',
                     'name',
                     'substrate',
                     'conducting_material',
@@ -99,7 +100,7 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['name', 'substrate', 'architecture']),
+            properties=dict(order=['datetime', 'name', 'substrate', 'architecture']),
         ),
         label_quantity='sample_id',
     )
@@ -312,9 +313,7 @@ class TFSC_General_LaserScribing(LaserScribing, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
-            properties=dict(
-                order=['name', 'location', 'present', 'datetime', 'batch', 'samples']
-            ),
+            properties=dict(order=['name', 'location', 'present', 'datetime', 'batch', 'samples']),
         )
     )
 
@@ -382,9 +381,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
             with archive.m_context.raw_file(self.data_file, 'br') as f:
                 encoding = get_encoding(f)
 
-            with archive.m_context.raw_file(
-                self.data_file, 'tr', encoding=encoding
-            ) as f:
+            with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 jv_dict, location = get_jv_data(f.read())
                 self.location = location
                 get_jv_archive(jv_dict, self.data_file, self)
@@ -433,9 +430,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
             with archive.m_context.raw_file(self.data_file, 'br') as f:
                 encoding = get_encoding(f)
 
-            with archive.m_context.raw_file(
-                self.data_file, 'tr', encoding=encoding
-            ) as f:
+            with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 data = read_mppt_file(f.read())
 
             self.time = data['time_data']
@@ -491,9 +486,7 @@ class TFSC_General_EQEmeasurement(EQEMeasurement, EntryData):
         if self.data_file:
             with archive.m_context.raw_file(self.data_file, 'br') as f:
                 encoding = get_encoding(f)
-            with archive.m_context.raw_file(
-                self.data_file, 'tr', encoding=encoding
-            ) as f:
+            with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 filedata = f.read()
                 if filedata.startswith('[Header]'):
                     data_list = [read_file(filedata, 8)]

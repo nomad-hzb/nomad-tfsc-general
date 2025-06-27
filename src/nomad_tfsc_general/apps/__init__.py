@@ -15,9 +15,7 @@ from nomad.config.models.ui import (
     RowSelection,
 )
 
-schema_name = (
-    'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
-)
+schema_name = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
 tfsc_voila_documentation_app = AppEntryPoint(
     name='voila',
     description='Find and launch your Voila Tools.',
@@ -49,18 +47,14 @@ tfsc_voila_documentation_app = AppEntryPoint(
         filters_locked={'section_defs.definition_qualified_name': schema_name},
         filter_menus=FilterMenus(
             options={
-                'custom_quantities': FilterMenu(
-                    label='Notebooks', size=FilterMenuSizeEnum.L
-                ),
+                'custom_quantities': FilterMenu(label='Notebooks', size=FilterMenuSizeEnum.L),
                 'author': FilterMenu(label='Author', size=FilterMenuSizeEnum.M),
                 'metadata': FilterMenu(label='Visibility / IDs'),
             }
         ),
         columns=[
             Column(quantity=f'data.name#{schema_name}', selected=True),
-            Column(
-                quantity='entry_type', label='Entry type', align='left', selected=True
-            ),
+            Column(quantity='entry_type', label='Entry type', align='left', selected=True),
             Column(
                 quantity='entry_create_time',
                 label='Entry time',
