@@ -122,14 +122,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
             if pd.isna(sub).all():
                 continue
             substrates.append((f'{i}_substrate', sub, map_substrate(sub, TFSC_General_Substrate)))
-
+           
         def find_substrate(d):
             for s in substrates:
                 if d.equals(s[1]):
                     return s[0]
-
+        
+        def is_row_empty(row):
+            """Check if all values in the row are NaN or empty"""
+            return pd.isna(row).all()
+        
         for i, row in df['Experiment Info'].iterrows():
-            if pd.isna(row).all():
+            if is_row_empty(row):
                 continue
             substrate_name = find_substrate(row[substrates_col]) + '.archive.json'
             archives.append(map_basic_sample(row, substrate_name, upload_id, TFSC_General_Sample))
@@ -146,14 +150,20 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     if x[col].astype('object').equals(row.astype('object'))
                 ]
                 if 'Cleaning' in col:
+                    if is_row_empty(row):
+                        continue
                     archives.append(map_cleaning(i, j, lab_ids, row, upload_id, TFSC_General_Cleaning))
 
                 if 'Laser Scribing' in col:
+                    if is_row_empty(row):
+                        continue
                     archives.append(
                         map_laser_scribing(i, j, lab_ids, row, upload_id, TFSC_General_LaserScribing)
                     )
 
                 if 'Generic Process' in col:  # move up
+                    if is_row_empty(row):
+                        continue
                     archives.append(map_generic(i, j, lab_ids, row, upload_id, TFSC_General_Process))
 
                 if pd.isna(row.get('Material name')):
