@@ -128,8 +128,12 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if d.equals(s[1]):
                     return s[0]
 
+        def is_row_empty(row):
+            """Check if all values in the row are NaN or empty"""
+            return pd.isna(row).all()
+
         for i, row in df['Experiment Info'].iterrows():
-            if pd.isna(row).all():
+            if is_row_empty(row):
                 continue
             substrate_name = find_substrate(row[substrates_col]) + '.archive.json'
             archives.append(map_basic_sample(row, substrate_name, upload_id, TFSC_General_Sample))
@@ -145,6 +149,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     for _, x in df[['Experiment Info', col]].iterrows()
                     if x[col].astype('object').equals(row.astype('object'))
                 ]
+                if is_row_empty(row):
+                    continue
+
                 if 'Cleaning' in col:
                     archives.append(map_cleaning(i, j, lab_ids, row, upload_id, TFSC_General_Cleaning))
 
