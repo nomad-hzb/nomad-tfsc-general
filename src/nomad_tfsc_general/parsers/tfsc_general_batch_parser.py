@@ -33,6 +33,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_atomic_layer_deposition,
     map_basic_sample,
     map_batch,
+    map_blade_coating,
     map_cleaning,
     map_evaporation,
     map_generic,
@@ -59,6 +60,7 @@ from nomad.parsing import MatchingParser
 from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_AtomicLayerDeposition,
     TFSC_General_Batch,
+    TFSC_General_BladeCoating,
     TFSC_General_Cleaning,
     TFSC_General_Evaporation,
     TFSC_General_Inkjet_Printing,
@@ -185,13 +187,15 @@ class TFSCGeneralExperimentParser(MatchingParser):
 
                 if 'ALD' in col:
                     archives.append(
-                        map_atomic_layer_deposition(
-                            i,
-                            j,
-                            lab_ids,
-                            row,
-                            upload_id,
+                        map_atomic_layer_deposition(i, j, lab_ids, row, upload_id,
                             TFSC_General_AtomicLayerDeposition,
+                        )
+                    )
+
+                if 'Blade Coating' in col:
+                    archives.append(
+                        map_blade_coating(i, j, lab_ids, row, upload_id,
+                            TFSC_General_BladeCoating,
                         )
                     )
 
