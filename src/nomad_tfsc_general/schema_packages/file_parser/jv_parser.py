@@ -20,18 +20,7 @@ from io import StringIO
 
 import numpy as np
 import pandas as pd
-from baseclasses.helper.utilities import convert_datetime, get_encoding
-
-file_path = {'jv_TNO': 'data_delete_after/24SB0410_BC2_1_2.dat'}
-
-
-def return_filedata(file_path: str) -> str:
-    # helper function to bring the file in the needed input format for the parser
-    with open(file_path, 'rb') as f:
-        encoding = get_encoding(f)
-    with open(file_path, encoding=encoding) as f:
-        filedata = f.read()
-    return filedata
+from baseclasses.helper.utilities import convert_datetime
 
 
 def get_jv_data_tno(filedata):
@@ -75,10 +64,6 @@ def get_jv_data_tno(filedata):
         )
 
     return jv_dict
-
-
-# filedata= return_filedata(file_path['jv_TNO'])
-# get_jv_data_tno(filedata)
 
 
 def get_jv_data(filedata):
