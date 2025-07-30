@@ -24,7 +24,7 @@ import pandas as pd
 from baseclasses.helper.utilities import convert_datetime, get_encoding
 
 file_path = {
-    'jv_TNO': 'data_delete_after/24SB0410_BC2_1_1.dat'
+    'jv_TNO': 'data_delete_after/24SB0410_BC2_1_2.dat'
 }
 
 def return_filedata(file_path: str) -> str:
@@ -77,6 +77,7 @@ def get_jv_data_tno(filedata):
         )
 
     return jv_dict
+
 
 # filedata= return_filedata(file_path['jv_TNO'])
 # get_jv_data_tno(filedata)

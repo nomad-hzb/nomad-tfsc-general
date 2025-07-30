@@ -54,7 +54,7 @@ from baseclasses.vapour_based_deposition import (
 from baseclasses.voila import VoilaNotebook
 from baseclasses.wet_chemical_deposition import (
     BladeCoating,
-    GravurePrinting,
+    #GravurePrinting,
     LP50InkjetPrinting,
     SlotDieCoating,
     SpinCoating,
@@ -280,37 +280,37 @@ class TFSC_General_BladeCoating(BladeCoating, EntryData):
 
 
 # %% ### Gravure Printing
-class TFSC_General_GravurePrinting(GravurePrinting, EntryData):
-    m_def = Section(
-        a_eln=dict(
-            hide=[
-                'lab_id',
-                'users',
-                'author',
-                'end_time',
-                'steps',
-                'instruments',
-                'results',
-            ],
-            properties=dict(
-                order=[
-                    'name',
-                    'location',
-                    'present',
-                    'datetime',
-                    'previous_process',
-                    'batch',
-                    'samples',
-                    'solution',
-                    'layer',
-                    'properties',
-                    'quenching',
-                    'annealing',
-                    'atmosphere',
-                ]
-            ),
-        ),
-    )
+# class TFSC_General_GravurePrinting(GravurePrinting, EntryData):
+#     m_def = Section(
+#         a_eln=dict(
+#             hide=[
+#                 'lab_id',
+#                 'users',
+#                 'author',
+#                 'end_time',
+#                 'steps',
+#                 'instruments',
+#                 'results',
+#             ],
+#             properties=dict(
+#                 order=[
+#                     'name',
+#                     'location',
+#                     'present',
+#                     'datetime',
+#                     'previous_process',
+#                     'batch',
+#                     'samples',
+#                     'solution',
+#                     'layer',
+#                     'properties',
+#                     'quenching',
+#                     'annealing',
+#                     'atmosphere',
+#                 ]
+#             ),
+#         ),
+#     )
 
 
 # %% ### Sputterring
