@@ -16,22 +16,20 @@
 # limitations under the License.
 #
 
-import ast
 from io import StringIO
 
 import numpy as np
 import pandas as pd
 from baseclasses.helper.utilities import convert_datetime, get_encoding
 
-file_path = {
-    'jv_TNO': 'data_delete_after/24SB0410_BC2_1_2.dat'
-}
+file_path = {'jv_TNO': 'data_delete_after/24SB0410_BC2_1_2.dat'}
+
 
 def return_filedata(file_path: str) -> str:
-#helper function to bring the file in the needed input format for the parser
-    with open(file_path, "rb") as f:
+    # helper function to bring the file in the needed input format for the parser
+    with open(file_path, 'rb') as f:
         encoding = get_encoding(f)
-    with open(file_path, 'tr', encoding=encoding) as f:
+    with open(file_path, encoding=encoding) as f:
         filedata = f.read()
     return filedata
 
@@ -45,34 +43,34 @@ def get_jv_data_tno(filedata):
         engine='python',
         encoding='unicode_escape',
         usecols=range(8),
-        skipfooter=1
+        skipfooter=1,
     )
 
     df_curves = pd.read_csv(
         StringIO(filedata),
         header=None,
         sep='\t',
-        index_col= None,        
+        index_col=None,
         engine='python',
         encoding='unicode_escape',
         usecols=range(8),
-        skipfooter=6
+        skipfooter=6,
     )
 
     df_curves = df_curves.dropna(how='all', axis=1)
 
     df.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
-    
+
     jv_dict = {}
     jv_dict['datetime'] = convert_datetime(df.iloc[-2].name, '%H:%M:%S %b %d %Y')
-    
+
     jv_dict['jv_curve'] = []
-    for column in range(0,len(df_curves.columns),2):
+    for column in range(0, len(df_curves.columns), 2):
         jv_dict['jv_curve'].append(
             {
-                'name': '_'.join(['pixel', str((column+2)//2)]),
+                'name': '_'.join(['pixel', str((column + 2) // 2)]),
                 'voltage': df_curves[column].values,
-                'current_density': df_curves[column+1].values,
+                'current_density': df_curves[column + 1].values,
             }
         )
 
@@ -81,6 +79,7 @@ def get_jv_data_tno(filedata):
 
 # filedata= return_filedata(file_path['jv_TNO'])
 # get_jv_data_tno(filedata)
+
 
 def get_jv_data(filedata):
     return get_jv_data_tno(filedata), 'TNO'

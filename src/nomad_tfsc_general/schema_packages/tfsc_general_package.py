@@ -368,7 +368,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
 
     def normalize(self, archive, logger):
         from baseclasses.helper.archive_builder.jv_archive import get_jv_archive
-        
+
         from nomad_tfsc_general.schema_packages.file_parser.jv_parser import (
             get_jv_data,
         )
@@ -386,6 +386,11 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
                 jv_dict, location = get_jv_data(f.read())
                 self.location = location
                 get_jv_archive(jv_dict, self.data_file, self)
+
+        # --- ADDED: Normalize each jv_curve to calculate derived quantities ---
+        for curve in getattr(self, 'jv_curve', []):
+            curve.normalize(archive, logger)
+        # --- END ADDED ---
 
         super().normalize(archive, logger)
 
