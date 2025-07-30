@@ -33,11 +33,9 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_atomic_layer_deposition,
     map_basic_sample,
     map_batch,
-    map_blade_coating,
     map_cleaning,
     map_evaporation,
     map_generic,
-    map_gravure_printing,
     map_inkjet_printing,
     map_laser_scribing,
     map_sdc,
@@ -196,30 +194,6 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             row,
                             upload_id,
                             TFSC_General_AtomicLayerDeposition,
-                        )
-                    )
-
-                if 'Blade Coating' in col:
-                    archives.append(
-                        map_blade_coating(
-                            i,
-                            j,
-                            lab_ids,
-                            row,
-                            upload_id,
-                            TFSC_General_BladeCoating,
-                        )
-                    )
-
-                if 'Gravure Printing' in col:
-                    archives.append(
-                        map_gravure_printing(
-                            i,
-                            j,
-                            lab_ids,
-                            row,
-                            upload_id,
-                            TFSC_General_GravurePrinting,
                         )
                     )
 
