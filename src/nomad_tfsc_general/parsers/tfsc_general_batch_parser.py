@@ -59,10 +59,8 @@ from nomad.parsing import MatchingParser
 from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_AtomicLayerDeposition,
     TFSC_General_Batch,
-    TFSC_General_BladeCoating,
     TFSC_General_Cleaning,
     TFSC_General_Evaporation,
-    TFSC_General_GravurePrinting,
     TFSC_General_Inkjet_Printing,
     TFSC_General_LaserScribing,
     TFSC_General_Process,
