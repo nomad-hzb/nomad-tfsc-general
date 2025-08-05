@@ -19,6 +19,7 @@ nav:
     - Installation and Application : plugin_setup/installation_and_application.md
 plugins:
   - search
+  - glightbox
 
 theme:
   name: material
