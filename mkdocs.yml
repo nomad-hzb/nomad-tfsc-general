@@ -1,5 +1,5 @@
 site_name: nomad-tfsc-general
-site_description: General nomad classes for thin film solar cells
+site_description: This is a NOMAD plugin extending the NOMAD base sections, developed at Helmholtz-Zentrum Berlin (HZB) for the project PERSEUS. It provides specialized schemas, tools, and workflows for the digital representation of synthesis and characterization in thin film solar cell research. 
 site_author: Michael Götte
 
 repo_url: https://github.com/nomad-hzb/nomad-tfsc-general
@@ -7,30 +7,37 @@ edit_uri: ""
 
 nav:
   - Home: index.md
-  - Tutorial: tutorial/tutorial.md
-  - How-to guides:
-      - Install this Plugin: how_to/install_this_plugin.md
-      - Use this Plugin: how_to/use_this_plugin.md
-      - Contribute to this plugin: how_to/contribute_to_this_plugin.md
-      - Contribute to the documentation: how_to/contribute_to_the_documentation.md
-  - Explanation: explanation/explanation.md
-  - Reference: reference/references.md
+  - Step by Step User Guide:
+    - Overview: step-by-step_user_guide/00-overview.md
+    - Spreadsheet Workflow: step-by-step_user_guide/01-spreadsheet_workflow.md
+    - Upload Data: step-by-step_user_guide/02-upload_data.md
+    - Upload Measurement: step-by-step_user_guide/03-upload_measurements.md
+    - Voila Analysis Tools: step-by-step_user_guide/04-voila_analysis_tools.md
+    - How to Cite: step-by-step_user_guide/05-how_to_cite.md
+    - Contact: step-by-step_user_guide/06-contact.md
+  - Plugin Setup:
+    - Installation and Application : plugin_setup/installation_and_application.md
 plugins:
   - search
+  - glightbox
+
 theme:
   name: material
   palette:
     primary: "#2A4CDF"
     accent: "#008A67"
-  font:
-    text: "Titillium Web"
+    font:
+    text: 'Titillium Web'
   logo: assets/nomad-plugin-logo.png
   favicon: assets/favicon.png
   features:
-    - navigation.instant
-  custom_dir: docs/theme
+    - navigation.path
+    - navigation.footer
+    - navigation.top
   icon:
     repo: fontawesome/brands/github
+  custom_dir: docs/theme
+
 markdown_extensions:
   - attr_list
   - md_in_html
@@ -50,7 +57,7 @@ markdown_extensions:
   - pymdownx.extra
 extra:
   generator: false
-  homepage: https://nomad-lab.eu
+  homepage: https://nomad-hzb.github.io/nomad-tfsc-general/
 use_directory_urls: false
 extra_css:
   - stylesheets/extra.css
