@@ -1,48 +1,24 @@
-# Welcome to the `nomad-tfsc-general` documentation
+# NOMAD HZB Thin Film Solar Cells Plugin
 
-General nomad classes for thin film solar cells
+## What is this Plugin?
 
-## Introduction
+The tfsc-general plugin extends the NOMAD baseclasses to provide specialized schemas, tools, and workflows for the digital representation of synthesis and characterization in thin film solar cell research, with a focus on high-throughput and combinatorial experimentation. Developed at Helmholtz-Zentrum Berlin (HZB) for the PERSEUS project, it enables standardized, interoperable, and extensible data management for solar cell fabrication and monitoring workflows, including batch processing, modular Excel data entry, and advanced measurement tracking.
 
-!!! note "Attention"
-    TODO
+## Key Features
 
-<div markdown="block" class="home-grid">
-<div markdown="block">
+- **Excel-based Data Entry:** Supports modular, user-friendly Excel templates for experiment planning and data capture.
+- **Batch and Sample Tracking:** Enables detailed tracking of batches, substrates, samples, and their relationships.
+- **Process Documentation:** Captures multi-step synthesis and processing protocols, including cleaning, coating, annealing, and more.
+- **Measurement Integration:** Links synthesis history to characterization data (e.g., JV, MPP, EQE).
+- **Interoperability:** Built on NOMAD baseclasses for compatibility with other NOMAD plugins and data standards.
 
-### Tutorial
+## Getting Started
+For users:
+- [Step-by-step user guide](step-by-step_user_guide/00-overview.md)
+- [How to Cite](step-by-step_user_guide/05-how_to_cite.md)
+- [Contact](step-by-step_user_guide/06-contact.md)
 
-TODO
+For contributors:
+- [Plugin Setup](plugin_setup/installation_and_application.md) containing information on installing and using the plugin. 
 
-- [Tutorial](tutorial/tutorial.md)
-
-</div>
-<div markdown="block">
-
-### How-to guides
-
-How-to guides provide step-by-step instructions for a wide range of tasks, with the overarching topics:
-
-- [Install this plugin](how_to/install_this_plugin.md)
-- [Use this plugin](how_to/use_this_plugin.md)
-- [Contribute to this plugin](how_to/contribute_to_this_plugin.md)
-- [Contribute to the documentation](how_to/contribute_to_the_documentation.md)
-
-</div>
-
-<div markdown="block">
-
-### Explanation
-
-The explanation [section](explanation/explanation.md) provides background knowledge on this plugin.
-
-</div>
-<div markdown="block">
-
-### Reference
-
-The reference [section](reference/references.md) includes all CLI commands and arguments, all configuration options,
-the possible schema annotations and their arguments, and a glossary of used terms.
-
-</div>
-</div>
+For more details on the underlying schemas, see the [baseclasses documentation](https://nomad-hzb.github.io/nomad-baseclasses/).

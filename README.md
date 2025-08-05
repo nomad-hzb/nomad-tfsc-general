@@ -1,3 +1,6 @@
+# Documentation
+Please refer to the official [documentation](https://nomad-hzb.github.io/nomad-tfsc-general/).
+
 # nomad-tfsc-general
 
 General nomad classes for thin film solar cells
@@ -169,3 +172,4 @@ To run the check for updates locally, follow the instructions on [`cruft` websit
 | Name | E-mail     |
 |------|------------|
 | Michael Götte | [michael.goette@helmholtz-berlin.de](mailto:michael.goette@helmholtz-berlin.de)
+| Dimitra Gkogkou | [dimitra.gkogkou@helmholtz-berlin.de](mailto:dimitra.gkogkou@helmholtz-berlin.de)
