@@ -1,5 +1,5 @@
 """
-dip coating, blade coating, sublimation, Annealing class and seq/co-evaporation are not tracked yet.
+dip coating, sublimation, Annealing class and seq/co-evaporation are not tracked yet.
 Antisolvent, vacuum and gas quenching get mapped only to spin coating, and air knife quenching
 only to slot die coating.
 """
