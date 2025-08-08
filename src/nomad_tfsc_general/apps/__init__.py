@@ -2,17 +2,20 @@ from nomad.config.models.plugins import AppEntryPoint
 from nomad.config.models.ui import (
     App,
     Column,
+    Dashboard,
     FilterMenu,
     FilterMenus,
     FilterMenuSizeEnum,
     Filters,
     Format,
+    Layout,
     ModeEnum,
+    RowActionNorth,
     RowActions,
-    RowActionURL,
     RowDetails,
     Rows,
     RowSelection,
+    WidgetTerms,
 )
 
 schema_name = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
@@ -80,16 +83,43 @@ tfsc_voila_documentation_app = AppEntryPoint(
         ],
         rows=Rows(
             actions=RowActions(
-                items=[
-                    RowActionURL(
-                        path=f'data.file_uri#{schema_name}',
-                        description='View in file browser',
-                        icon='search',
-                    ),
-                ]
+                options={
+                    'launch': RowActionNorth(
+                        tool_name='voila',
+                        filepath=f'data.notebook_file#{schema_name}',
+                    )
+                }
             ),
             details=RowDetails(),
             selection=RowSelection(),
         ),
+        dashboard=Dashboard(
+            widgets=[
+                WidgetTerms(
+                    title='Voila Notebook Tags',
+                    quantity='results.eln.tags',
+                    scale='linear',
+                    layout={
+                        'lg': Layout(h=4, minH=3, minW=3, w=6, x=0, y=0),
+                        'md': Layout(h=5, minH=3, minW=3, w=7, x=0, y=0),
+                        'sm': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                        'xl': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                        'xxl': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                    },
+                ),
+                WidgetTerms(
+                    title='Authors',
+                    quantity='authors.name',
+                    scale='linear',
+                    layout={
+                        'lg': Layout(h=4, minH=3, minW=3, w=6, x=0, y=0),
+                        'md': Layout(h=5, minH=3, minW=3, w=7, x=0, y=0),
+                        'sm': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                        'xl': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                        'xxl': Layout(h=6, minH=3, minW=3, w=6, x=0, y=0),
+                    },
+                ),
+            ]
+        ),        
     ),
 )
