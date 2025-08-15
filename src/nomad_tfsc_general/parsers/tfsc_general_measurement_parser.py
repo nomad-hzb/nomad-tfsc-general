@@ -87,13 +87,12 @@ def update_general_process_entries(entry, entry_id, archive, logger):
 
 class TFSCGeneralParser(MatchingParser):
     def parse(self, mainfile: str, archive: EntryArchive, logger):
-        # Log a hello world, just to get us started. TODO remove from an actual parser.
 
         mainfile_split = os.path.basename(mainfile).split('.')
 
         entry = TFSC_General_Measurement()
 
-        if 'jv' in os.path.basename(mainfile).lower():
+        if 'iv' in os.path.basename(mainfile).lower():
             entry = TFSC_General_JVmeasurement()
         if 'eqe' in os.path.basename(mainfile).lower():
             entry = TFSC_General_EQEmeasurement()
