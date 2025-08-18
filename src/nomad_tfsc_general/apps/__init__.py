@@ -17,8 +17,10 @@ from nomad.config.models.ui import (
     RowSelection,
     WidgetTerms,
 )
+from nomad_tfsc_general.apps.dashboard_app import perseus_dashboard_app
 
 schema_name = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
+
 tfsc_voila_documentation_app = AppEntryPoint(
     name='voila',
     description='Find and launch your Voila Tools.',
@@ -122,4 +124,9 @@ tfsc_voila_documentation_app = AppEntryPoint(
             ]
         ),        
     ),
+)
+
+dashboard_app = AppEntryPoint(
+    name='Perseus results dashboard',
+    app=perseus_dashboard_app
 )
