@@ -151,6 +151,8 @@ def check_gravure_printing(m):
     assert m.data.solution[0]['solution_details']['solvent'][0]['chemical_2']['name'] == SOLVENT
     assert m.data.solution[0]['solution_details']['solvent'][0]['chemical_volume'] == SOLVENT_VOL
     assert m.data.solution[0]['solution_details']['solvent'][0]['amount_relative'] == 1.5
+    assert m.data.solution[0]['solution_details']['additive'][0]['chemical_2']['name'] == 'starch'
+    assert m.data.solution[0]['solution_details']['additive'][0]['concentration_mass'] == 1.5 * ureg('mg/ml')
     assert m.data.solution[0]['solution_viscosity'] == 0.5 * ureg('mPa*s')
     assert m.data.solution[0]['solution_contact_angle'] == CONTACT_ANGLE
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
