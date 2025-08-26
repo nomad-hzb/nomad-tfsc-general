@@ -7,7 +7,7 @@ from nomad.config.models.ui import (
     Filters,
 )
 
-tfsc_perseus_sample_search_app = App(
+perseus_sample_search_app = App(
     # Label of the App
     label='Find PERSEUS Samples',
     # Path used in the URL, must be unique
@@ -24,7 +24,7 @@ tfsc_perseus_sample_search_app = App(
     # entire package, or just a single schema from a package.
     filters=Filters(
         include=[
-            '*#nomad_tfsc_general.schema_packages.tfsc_general_package',
+            '*#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample',
         ]
     ),
     # Controls which columns are shown in the results table
@@ -35,7 +35,7 @@ tfsc_perseus_sample_search_app = App(
             'entry_create_time',
             'authors',
             'upload_name',
-            'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package',
+            #'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package',
         ],
         options={
             'entry_type': Column(label='Entry type', align='left'),
@@ -43,9 +43,9 @@ tfsc_perseus_sample_search_app = App(
             'entry_create_time': Column(label='Entry time', align='left'),
             'authors': Column(label='Authors', align='left'),
             'upload_name': Column(label='Upload name', align='left'),
-            'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
-                label='Experiment ID', align='left'
-            ),
+            # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
+            #     label='Experiment ID', align='left'
+            # ),
         },
     ),
     # Dictionary of search filters that are always enabled for queries made
@@ -54,7 +54,7 @@ tfsc_perseus_sample_search_app = App(
     # targeted here. This example makes sure that only entries that use
     # MySchema are included.
     filters_locked={
-        'section_defs.definition_qualified_name': 'nomad_tfsc_general.schema_packages.tfsc_general_package'
+        'section_defs.definition_qualified_name': 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
     },
     # Controls the filter menus shown on the left
     filter_menus=FilterMenus(
