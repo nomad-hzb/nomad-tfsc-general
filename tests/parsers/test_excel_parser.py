@@ -260,7 +260,8 @@ def check_spin_coating_vaccumq(m):
     assert m.data.solution[0]['solution_details']['solvent'][0]['amount_relative'] == 1.5
     assert m.data.solution[0]['solution_details']['solvent'][0]['chemical_2']['name'] == SOLVENT
     assert m.data.quenching.m_def.name.endswith('VacuumQuenching')
-    assert m.data.quenching['pressure'] == 10.000000000000002 * ureg('mbar')
+    assert m.data.quenching['pressure'].to('mbar').magnitude == pytest.approx(10.0)
+    assert str(m.data.quenching['pressure'].units) == 'millibar'
     assert m.data.quenching['start_time'] == 8.0 * ureg('s')
     assert m.data.quenching['duration'] == 20.0 * ureg('s')
     assert m.data.recipe_steps[0]['time'] == 30.0 * ureg('s')
