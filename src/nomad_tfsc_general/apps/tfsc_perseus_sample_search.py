@@ -24,7 +24,7 @@ perseus_sample_search_app = App(
     # entire package, or just a single schema from a package.
     filters=Filters(
         include=[
-            '*#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample',
+            '*#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_*',
         ]
     ),
     # Controls which columns are shown in the results table
@@ -61,11 +61,11 @@ perseus_sample_search_app = App(
         options={
             'material': FilterMenu(label='Material', level=0),
             'elements': FilterMenu(label='Elements / Formula', level=1, size='xl'),
-            'eln': FilterMenu(label='Electronic Lab Notebook', level=0),
+            #'eln': FilterMenu(label='Electronic Lab Notebook', level=0),
             'custom_quantities': FilterMenu(
                 label='User Defined Quantities', level=0, size='l'
             ),
-            'author': FilterMenu(label='Author / Origin / Dataset', level=0, size='m'),
+            #'author': FilterMenu(label='Author / Origin / Dataset', level=0, size='m'),
             'metadata': FilterMenu(label='Visibility / IDs / Schema', level=0),
             'optimade': FilterMenu(label='Optimade', level=0, size='m'),
         }
@@ -77,42 +77,135 @@ perseus_sample_search_app = App(
                 'type': 'terms',
                 'showinput': True,
                 'scale': 'linear',
-                'quantity': 'authors.name',
+                'search_quantity': 'authors.name',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
                     'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 5, 'y': 0, 'x': 12},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
                 },
             },
-            {
-                'type': 'terms',
-                'showinput': True,
-                'scale': 'linear',
-                'quantity': 'results.eln.methods',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 6},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 6},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 6},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 6},
-                },
-            },
+
             {
                 'type': 'histogram',
                 'showinput': True,
                 'autorange': False,
-                'nbins': 30,
-                'scale': '1/4',
-                'quantity': 'entry_create_time',
+                'nbins' : 30,
+                'y': {'scale': '1/4'},
+                'x': {
+                    'search_quantity': 'entry_create_time',
+                    'scale':'linear'
+                        },
+                'title': 'Entry Upload Date',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
                     'xl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 3, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
+                },   
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.substrate',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                 },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 12},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'histogram',
+                'autorange': False,
+                'nbins' : 30,
+                'y': {'scale': 'linear'},
+                'x': {
+                    'search_quantity': 'data.datetime#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample',
+                        },
+                'title': 'Sample Fabrication Date',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                },   
+            },
+
+            {
+                'type': 'scatter_plot',
+                'autorange': True,
+                'size': 1000,
+                'y': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
+                    'title': 'Efficiency (%)'},
+                'x': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.open_circuit_voltage',
+                    'title': 'Voc',
+                    'unit': 'volt',
+                        },
+                'title': 'PCE vs Open Current Voltage',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                },   
+            },
+
+            {
+                'type': 'scatter_plot',
+                'autorange': True,
+                'size': 1000,
+                'y': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
+                    'title': 'Efficiency (%)'},
+                'x': {
+                    'search_quantity': 'data.active_area#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_JVmeasurement',
+                    'title': 'Active Area',
+                    'unit': '',
+                        },
+                'title': 'PCE vs Cell Active Area',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                },   
             },
         ]
     },
