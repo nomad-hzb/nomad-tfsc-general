@@ -123,12 +123,12 @@ tfsc_voila_documentation_app = AppEntryPoint(
                     },
                 ),
             ]
-        ),        
+        ),
     ),
 )
 
 tfsc_perseus_search_app = AppEntryPoint(
     name='perseus_sample_search',  # Changed from 'TFSC Perseus Sample Search' - no spaces/special chars
     description='Provides filters to find PERSEUS solar cell entries',
-    app=perseus_sample_search_app
+    app=perseus_sample_search_app,
 )

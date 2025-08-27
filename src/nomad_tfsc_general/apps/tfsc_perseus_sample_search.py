@@ -54,7 +54,9 @@ perseus_sample_search_app = App(
     # targeted here. This example makes sure that only entries that use
     # MySchema are included.
     filters_locked={
-        'section_defs.definition_qualified_name': 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
+        'section_defs.definition_qualified_name': (
+            'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
+        )
     },
     # Controls the filter menus shown on the left
     filter_menus=FilterMenus(
@@ -62,9 +64,7 @@ perseus_sample_search_app = App(
             'material': FilterMenu(label='Material', level=0),
             'elements': FilterMenu(label='Elements / Formula', level=1, size='xl'),
             #'eln': FilterMenu(label='Electronic Lab Notebook', level=0),
-            'custom_quantities': FilterMenu(
-                label='User Defined Quantities', level=0, size='l'
-            ),
+            'custom_quantities': FilterMenu(label='User Defined Quantities', level=0, size='l'),
             #'author': FilterMenu(label='Author / Origin / Dataset', level=0, size='m'),
             'metadata': FilterMenu(label='Visibility / IDs / Schema', level=0),
             'optimade': FilterMenu(label='Optimade', level=0, size='m'),
@@ -86,17 +86,13 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
                 },
             },
-
             {
                 'type': 'histogram',
                 'showinput': True,
                 'autorange': False,
-                'nbins' : 30,
+                'nbins': 30,
                 'y': {'scale': '1/4'},
-                'x': {
-                    'search_quantity': 'entry_create_time',
-                    'scale':'linear'
-                        },
+                'x': {'search_quantity': 'entry_create_time', 'scale': 'linear'},
                 'title': 'Entry Upload Date',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
@@ -104,9 +100,8 @@ perseus_sample_search_app = App(
                     'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 3, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
-                },   
+                },
             },
-
             {
                 'type': 'terms',
                 'scale': 'linear',
@@ -119,7 +114,6 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                 },
             },
-
             {
                 'type': 'terms',
                 'scale': 'linear',
@@ -132,7 +126,6 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                 },
             },
-
             {
                 'type': 'terms',
                 'scale': 'linear',
@@ -145,15 +138,17 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                 },
             },
-
             {
                 'type': 'histogram',
                 'autorange': False,
-                'nbins' : 30,
+                'nbins': 30,
                 'y': {'scale': 'linear'},
                 'x': {
-                    'search_quantity': 'data.datetime#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample',
-                        },
+                    'search_quantity': (
+                        'data.datetime#nomad_tfsc_general.schema_packages.tfsc_general_package.'
+                        'TFSC_General_Sample'
+                    ),
+                },
                 'title': 'Sample Fabrication Date',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
@@ -161,21 +156,21 @@ perseus_sample_search_app = App(
                     'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
-                },   
+                },
             },
-
             {
                 'type': 'scatter_plot',
                 'autorange': True,
                 'size': 1000,
                 'y': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
-                    'title': 'Efficiency (%)'},
+                    'title': 'Efficiency (%)',
+                },
                 'x': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.open_circuit_voltage',
                     'title': 'Voc',
                     'unit': 'volt',
-                        },
+                },
                 'title': 'PCE vs Open Current Voltage',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
@@ -183,21 +178,24 @@ perseus_sample_search_app = App(
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                },   
+                },
             },
-
             {
                 'type': 'scatter_plot',
                 'autorange': True,
                 'size': 1000,
                 'y': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
-                    'title': 'Efficiency (%)'},
+                    'title': 'Efficiency (%)',
+                },
                 'x': {
-                    'search_quantity': 'data.active_area#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_JVmeasurement',
+                    'search_quantity': (
+                        'data.active_area#nomad_tfsc_general.schema_packages.tfsc_general_package.'
+                        'TFSC_General_JVmeasurement'
+                    ),
                     'title': 'Active Area',
                     'unit': '',
-                        },
+                },
                 'title': 'PCE vs Cell Active Area',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
@@ -205,7 +203,7 @@ perseus_sample_search_app = App(
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                },   
+                },
             },
         ]
     },
