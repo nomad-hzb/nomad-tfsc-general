@@ -80,7 +80,7 @@ perseus_sample_search_app = App(
                 'search_quantity': 'authors.name',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 7, 'y': 0, 'x': 16},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 5, 'y': 0, 'x': 12},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
@@ -96,7 +96,7 @@ perseus_sample_search_app = App(
                 'title': 'Entry Upload Date',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 16, 'y': 6, 'x': 0},
                     'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 3, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
@@ -108,7 +108,7 @@ perseus_sample_search_app = App(
                 'search_quantity': 'results.properties.optoelectronic.solar_cell.substrate',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 7, 'y': 0, 'x': 23},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
@@ -120,7 +120,7 @@ perseus_sample_search_app = App(
                 'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 16},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
                     'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
@@ -132,7 +132,7 @@ perseus_sample_search_app = App(
                 'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 23},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 12},
                     'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
@@ -152,7 +152,7 @@ perseus_sample_search_app = App(
                 'title': 'Sample Fabrication Date',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 16, 'y': 0, 'x': 0},
                     'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
@@ -174,7 +174,7 @@ perseus_sample_search_app = App(
                 'title': 'PCE vs Open Current Voltage',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 11, 'x': 0},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
@@ -199,7 +199,7 @@ perseus_sample_search_app = App(
                 'title': 'PCE vs Cell Active Area',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 12, 'y': 11, 'x': 13},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
