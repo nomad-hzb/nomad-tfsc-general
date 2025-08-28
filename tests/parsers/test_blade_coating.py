@@ -68,7 +68,7 @@ def test_tfsc_batch_parser(monkeypatch):
         'sau_geso_1_1_c-1': check_sample,
         'substrate 1 cm x 1 cm soda lime glass ito': check_substrate,
         # Step-specific process checks
-        ('blade coating', 1.0): check_blade_coating
+        ('blade coating', 1.0): check_blade_coating,
     }
 
     for m in measurement_archives:
