@@ -18,7 +18,10 @@ from nomad.config.models.ui import (
     WidgetTerms,
 )
 
+from nomad_tfsc_general.apps.tfsc_perseus_sample_search import perseus_sample_search_app
+
 schema_name = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
+
 tfsc_voila_documentation_app = AppEntryPoint(
     name='voila',
     description='Find and launch your Voila Tools.',
@@ -120,6 +123,12 @@ tfsc_voila_documentation_app = AppEntryPoint(
                     },
                 ),
             ]
-        ),        
+        ),
     ),
+)
+
+tfsc_perseus_search_app = AppEntryPoint(
+    name='perseus_sample_search',  # Changed from 'TFSC Perseus Sample Search' - no spaces/special chars
+    description='Provides filters to find PERSEUS solar cell entries',
+    app=perseus_sample_search_app,
 )
