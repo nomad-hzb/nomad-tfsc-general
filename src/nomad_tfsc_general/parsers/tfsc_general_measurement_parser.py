@@ -92,7 +92,7 @@ class TFSCGeneralParser(MatchingParser):
 
         entry = TFSC_General_Measurement()
 
-        if 'iv' in os.path.basename(mainfile).lower():
+        if 'iv' or 'txt' in os.path.basename(mainfile).lower(): #leaving it provisionary is txt because that is the location 2 file format. will fix later for a more explicit solution
             entry = TFSC_General_JVmeasurement()
         if 'eqe' in os.path.basename(mainfile).lower():
             entry = TFSC_General_EQEmeasurement()
