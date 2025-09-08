@@ -31,20 +31,15 @@ def get_jv_data_location_1(filedata):
 
     #each row in the datafile represents a measurement repetition.
     #here i'm only parsing out the last repetition. 
-
-    repetition = data[-1][0]    
+  
     date = data[-1][1]                      #measurement date
     v_start = float(data[-1][2])            #v start [V] 
     v_end = float(data[-1][3])              #v end [V]
     v_delta = float(data[-1][4])            #v step [V]
-    speed = data[-1][5]
     p1_cell_area = float(data[-1][6])       #cell area pixel 1 [cm2]
-    p2_cell_area = float(data[-1][7])       #cell area pixel 2 [cm2]
-    p3_cell_area = float(data[-1][8])       #cell area pixel 3 [cm2]
-    p4_cell_area = float(data[-1][9])       #cell area pixel 4 [cm2]
 
     Jsc_rev = data[-1][10:14]               #Jsc of reverse sweeps
-    # Clean up the hysteresis$ string from Jsc_rev
+    # Clean up the 'hysteresis$' string from Jsc_rev
     Jsc_rev = [float(val.replace('hysteresis$', '')) for val in Jsc_rev]
     Jsc_fw = [float(val) for val in data[-1][14:18]]   #Jsc of forward sweeps
 
@@ -85,7 +80,7 @@ def get_jv_data_location_1(filedata):
     jv_dict = {}
     jv_dict['datetime'] = convert_datetime(date, '%Y%m%d') if date.isdigit() else date
     jv_dict['active_area'] = p1_cell_area  # Use first pixel as default
-    jv_dict['intensity'] = 100.0  # Use default 100 mW/cm² for efficiency calculation. TODO ask partners
+    jv_dict['intensity'] = 100.0  # Default 100 mW/cm² for efficiency calculation. 
     # Use reverse sweep data as primary values (similar to IRIS format)
     jv_dict['J_sc'] = [abs(x) for x in Jsc_rev]
     jv_dict['V_oc'] = Voc_rev
@@ -103,7 +98,7 @@ def get_jv_data_location_1(filedata):
     
     jv_dict['jv_curve'] = []
     # Create JV curves for each pixel - both forward and reverse sweeps
-    # Split the hysteresis data: first half is reverse (v_start -> v_end), second half is forward (v_end -> v_start)
+    # Split the hysteresis data: first half is reverse (v_start -> v_end), second half is forward (v_end -> v_start) Double check with definition of forward and reverse if it is p-i-n or n-i-p.
     sweep_half = sweep_point_count // 2
     
     for i in range(4):
