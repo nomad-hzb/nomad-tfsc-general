@@ -120,12 +120,61 @@ def get_jv_data_location_1(filedata):
     return jv_dict
 
 def get_jv_data_location_2(filedata):
-    pass
+    df_header = pd.read_csv(
+        StringIO(filedata),
+        skiprows=0,
+        nrows=25,
+        header=0,
+        sep=':|\t',
+        encoding='unicode_escape',
+        engine='python',
+    )
+
+    df_header.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
+    
+    df_curves = pd.read_csv(
+        StringIO(filedata),
+        header=0,
+        skiprows=26,
+        sep='\t',
+        encoding='unicode_escape',
+        engine='python',
+    )
+
+    df_curves = df_curves.dropna(how='all', axis=1)
+
+    jv_dict = {}
+    
+    jv_dict['datetime'] = convert_datetime(df_header['File'][0].split('_')[3], '%Y%m%d') # The date string '20250515' is in the format '%Y%m%d'
+    jv_dict['active_area'] = list(abs(df_header.iloc[0:24,9]/100)) # /100 to convert from mm² to cm² 
+    jv_dict['intensity'] = df_header.iloc[0,11]
+    jv_dict['J_sc'] = list(abs(df_header.iloc[0:24,2].astype(np.float64)))
+    jv_dict['V_oc'] = list(abs(df_header.iloc[0:24,3].astype(np.float64)))
+    jv_dict['Fill_factor'] = list(abs(df_header.iloc[0:24,7].astype(np.float64)))
+    jv_dict['Efficiency'] = list(abs(df_header.iloc[0:24,8].astype(np.float64)))
+    jv_dict['P_MPP'] = list(abs(df_header.iloc[0:24,4].astype(np.float64)))
+    jv_dict['U_MPP'] = list(df_header.iloc[0:24,5].astype(np.float64))
+    jv_dict['J_MPP'] = list(abs(df_header.iloc[0:24,6].astype(np.float64))*1000/list(abs(df_header.iloc[0:24,9]/100)))
+    
+    jv_dict['jv_curve'] = []
+
+    for i in range(24):
+        jv_dict['jv_curve'].append({
+            'name': f"{df_header['File'][i].split('_')[0]}_{df_header['File'][i].split('_')[-1]}",
+            'dark': False,
+            'voltage': np.array(df_curves.iloc[:,0]),
+            'current_density': np.array(df_curves.iloc[:,i+1]),
+            }        
+        )   
+    return jv_dict
+
 
 def get_jv_data(filedata):
     # Check if it is Location 1 IV format by looking for tab-separated numeric data structure
     lines = filedata.strip().split('\n')
     if lines and '\t' in filedata and any(len(line.split('\t')) > 40 for line in lines):
         return get_jv_data_location_1(filedata), 'Location 1 IV Format'
+    elif 'U [V]/Exposure [h]' in filedata:
+        return get_jv_data_location_2(filedata), 'Location 2 txt Format'
     else:
         return None, 'Unknown format'
