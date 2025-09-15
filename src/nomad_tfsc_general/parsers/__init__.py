@@ -22,7 +22,7 @@ class TFSCGeneralExperimentParserEntryPoint(ParserEntryPoint):
 tfsc_general_parser = TFSCGeneralParserEntryPoint(
     name='TFSCGeneralParser',
     description='Parser for TFSC General files',
-    mainfile_name_re='^(.+\.(IV|MPP)(\..{1,4})?|.+\.nk)$',
+    mainfile_name_re='^(.+\.(IV|MPP|txt)(\..{1,4})?|.+\.nk)$',
     mainfile_mime_re='(application|text|image)/.*',
 )
 
