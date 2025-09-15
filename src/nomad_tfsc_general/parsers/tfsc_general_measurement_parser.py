@@ -87,16 +87,12 @@ def update_general_process_entries(entry, entry_id, archive, logger):
 
 class TFSCGeneralParser(MatchingParser):
     def parse(self, mainfile: str, archive: EntryArchive, logger):
-
         mainfile_split = os.path.basename(mainfile).split('.')
 
         entry = TFSC_General_Measurement()
 
-        # Leaving it provisionary with txt because that is the location 2 file format. Will fix later for a more explicit solution
-        if (
-            "iv" in os.path.basename(mainfile).lower()
-            or "txt" in os.path.basename(mainfile).lower()
-        ):
+        # iv for loc 1,  txt for loc 2.
+        if 'iv' in os.path.basename(mainfile).lower() or 'txt' in os.path.basename(mainfile).lower():
             entry = TFSC_General_JVmeasurement()
         if 'eqe' in os.path.basename(mainfile).lower():
             entry = TFSC_General_EQEmeasurement()
