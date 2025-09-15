@@ -80,7 +80,7 @@ def get_jv_data_location_1(filedata):
     # Use reverse sweep data as primary values (similar to IRIS format)
     jv_dict['J_sc'] = [abs(x) for x in Jsc_rev]
     jv_dict['V_oc'] = Voc_rev
-    jv_dict['Fill_factor'] = FF_rev * 0.01
+    jv_dict['Fill_factor'] = [ff * 0.01 for ff in FF_rev]
 
     # Calculate efficiency for each pixel
     jv_dict['Efficiency'] = [
