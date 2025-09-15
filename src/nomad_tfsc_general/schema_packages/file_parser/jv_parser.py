@@ -84,7 +84,7 @@ def get_jv_data_location_1(filedata):
     # Use reverse sweep data as primary values (similar to IRIS format)
     jv_dict['J_sc'] = [abs(x) for x in Jsc_rev]
     jv_dict['V_oc'] = Voc_rev
-    jv_dict['Fill_factor'] = FF_rev
+    jv_dict['Fill_factor'] = FF_rev * 0.01
     
     # Calculate efficiency for each pixel
     jv_dict['Efficiency'] = [
@@ -154,13 +154,13 @@ def get_jv_data_location_2(filedata):
     jv_dict['Efficiency'] = list(abs(df_header.iloc[0:24,8].astype(np.float64)))
     jv_dict['P_MPP'] = list(abs(df_header.iloc[0:24,4].astype(np.float64)))
     jv_dict['U_MPP'] = list(df_header.iloc[0:24,5].astype(np.float64))
-    jv_dict['J_MPP'] = list(abs(df_header.iloc[0:24,6].astype(np.float64))*1000/list(abs(df_header.iloc[0:24,9]/100)))
+    jv_dict['J_MPP'] = list(abs(df_header.iloc[0:24,6].astype(np.float64))*1000/list(abs(df_header.iloc[0:24,9]/100))) # in mA/cm²
     
     jv_dict['jv_curve'] = []
 
     for i in range(24):
         jv_dict['jv_curve'].append({
-            'name': f"{df_header['File'][i].split('_')[0]}_{df_header['File'][i].split('_')[-1]}",
+            'name': f"{df_header['File'][i].split('_')[0]}_loc2_{df_header['File'][i].split('_')[-1]}",
             'dark': False,
             'voltage': np.array(df_curves.iloc[:,0]),
             'current_density': np.array(df_curves.iloc[:,i+1]),
