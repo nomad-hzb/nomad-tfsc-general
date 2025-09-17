@@ -125,7 +125,7 @@ def get_jv_data_location_2(filedata):
     df_header = pd.read_csv(
         StringIO(filedata),
         skiprows=0,
-        nrows=25,
+        nrows=13,
         header=0,
         sep=':|\t',
         encoding='unicode_escape',
@@ -137,7 +137,7 @@ def get_jv_data_location_2(filedata):
     df_curves = pd.read_csv(
         StringIO(filedata),
         header=0,
-        skiprows=26,
+        skiprows=14,
         sep='\t',
         encoding='unicode_escape',
         engine='python',
@@ -150,21 +150,21 @@ def get_jv_data_location_2(filedata):
     jv_dict['datetime'] = convert_datetime(
         df_header['File'][0].split('_')[3], '%Y%m%d'
     )  # The date string '20250515' is in the format '%Y%m%d'
-    jv_dict['active_area'] = list(abs(df_header.iloc[0:24, 9] / 100))  # /100 to convert from mm² to cm²
+    jv_dict['active_area'] = df_header.iloc[0,9] / 100 # /100 to convert from mm² to cm²
     jv_dict['intensity'] = df_header.iloc[0, 11]
-    jv_dict['J_sc'] = list(abs(df_header.iloc[0:24, 2].astype(np.float64)))
-    jv_dict['V_oc'] = list(abs(df_header.iloc[0:24, 3].astype(np.float64)))
-    jv_dict['Fill_factor'] = list(abs(df_header.iloc[0:24, 7].astype(np.float64)))
-    jv_dict['Efficiency'] = list(abs(df_header.iloc[0:24, 8].astype(np.float64)))
-    jv_dict['P_MPP'] = list(abs(df_header.iloc[0:24, 4].astype(np.float64)))
-    jv_dict['U_MPP'] = list(df_header.iloc[0:24, 5].astype(np.float64))
+    jv_dict['J_sc'] = list(abs(df_header.iloc[0:13, 2].astype(np.float64)))
+    jv_dict['V_oc'] = list(abs(df_header.iloc[0:13, 3].astype(np.float64)))
+    jv_dict['Fill_factor'] = list(abs(df_header.iloc[0:13, 7].astype(np.float64)))
+    jv_dict['Efficiency'] = list(abs(df_header.iloc[0:13, 8].astype(np.float64)))
+    jv_dict['P_MPP'] = list(abs(df_header.iloc[0:13, 4].astype(np.float64)))
+    jv_dict['U_MPP'] = list(df_header.iloc[0:13, 5].astype(np.float64))
     jv_dict['J_MPP'] = list(
-        abs(df_header.iloc[0:24, 6].astype(np.float64)) * 1000 / list(abs(df_header.iloc[0:24, 9] / 100))
+        abs(df_header.iloc[0:13, 6].astype(np.float64)) * 1000 / list(abs(df_header.iloc[0:13, 9] / 100))
     )  # in mA/cm²
 
     jv_dict['jv_curve'] = []
 
-    for i in range(24):
+    for i in range(12):
         jv_dict['jv_curve'].append(
             {
                 'name': f'{df_header["File"][i].split("_")[0]}_loc2_{df_header["File"][i].split("_")[-1]}',
