@@ -438,8 +438,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
     )
 
     def normalize(self, archive, logger):
-        from baseclasses.helper.archive_builder.jv_archive import get_jv_archive
-        
+        from nomad_tfsc_general.schema_packages.file_parser.jv_archive import get_jv_archive
         from nomad_tfsc_general.schema_packages.file_parser.jv_parser import (
             get_jv_data,
         )
