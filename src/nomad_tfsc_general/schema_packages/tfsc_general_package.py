@@ -414,6 +414,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
                     'name',
                     'data_file',
                     'active_area',
+                    'corrected_active_area',
                     'intensity',
                     'integration_time',
                     'settling_time',
@@ -437,14 +438,14 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
     )
 
     def normalize(self, archive, logger):
-        from baseclasses.helper.archive_builder.jv_archive import get_jv_archive
-        from nomad_hysprint.schema_packages.file_parser.jv_parser import (
+        from nomad_tfsc_general.schema_packages.file_parser.jv_archive import get_jv_archive
+        from nomad_tfsc_general.schema_packages.file_parser.jv_parser import (
             get_jv_data,
         )
 
         if not self.samples and self.data_file:
             search_id = self.data_file.split('.')[0]
-            set_sample_reference(archive, self, search_id)
+            set_sample_reference(archive, self, search_id, upload_id=archive.metadata.upload_id)
 
         if self.data_file:
             # todo detect file format

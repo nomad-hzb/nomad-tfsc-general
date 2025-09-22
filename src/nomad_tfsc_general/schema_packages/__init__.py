@@ -10,5 +10,5 @@ class TFSCGeneralPackageEntryPoint(SchemaPackageEntryPoint):
 
 tfsc_general_package = TFSCGeneralPackageEntryPoint(
     name='TFSC General',
-    description='General Thin Folm Solar Cell Package',
+    description='General Thin Film Solar Cell Package',
 )
