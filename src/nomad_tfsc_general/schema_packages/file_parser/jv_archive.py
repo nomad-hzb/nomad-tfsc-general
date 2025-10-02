@@ -24,7 +24,7 @@ from baseclasses.solar_energy.jvmeasurement import (
 from nomad.units import ureg
 
 
-def get_jv_archive(jv_dict, mainfile, jvm, append=False):
+def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
     jvm.file_name = os.path.basename(mainfile)
     if jv_dict.get('datetime'):
         jvm.datetime = jv_dict.get('datetime')
@@ -38,7 +38,14 @@ def get_jv_archive(jv_dict, mainfile, jvm, append=False):
         jvm.jv_curve = []
     light_idx = 0
     for curve_idx, curve in enumerate(jv_dict['jv_curve']):
-        if 'pixel' in curve['name'].lower():  # for location 1 of tfsc plugin
+        if jv_dict.get('location', '') == 'Hereon':
+            jv_set = SolarCellJVCurveCustom(
+                cell_name=curve['name'],
+                voltage=curve['voltage'] * ureg('V'),
+                current_density=curve['current_density'] * ureg('A/cm**2'),
+            )
+            jv_set.normalize(archive, None)
+        elif 'pixel' in curve['name'].lower():  # for location 1 of tfsc plugin
             # Extract pixel number from name to use correct index
             pixel_num = int(curve['name'].split('_')[1]) - 1  # Convert to 0-based index
             jv_set = SolarCellJVCurveCustom(
