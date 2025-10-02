@@ -150,7 +150,7 @@ def get_jv_data_location_2(filedata):
     jv_dict['datetime'] = convert_datetime(
         df_header['File'][0].split('_')[3], '%Y%m%d'
     )  # The date string '20250515' is in the format '%Y%m%d'
-    jv_dict['active_area'] = df_header.iloc[0,9] / 100 # /100 to convert from mm² to cm²
+    jv_dict['active_area'] = df_header.iloc[0, 9] / 100  # /100 to convert from mm² to cm²
     jv_dict['intensity'] = df_header.iloc[0, 11]
     jv_dict['J_sc'] = list(abs(df_header.iloc[0:13, 2].astype(np.float64)))
     jv_dict['V_oc'] = list(abs(df_header.iloc[0:13, 3].astype(np.float64)))
@@ -176,6 +176,35 @@ def get_jv_data_location_2(filedata):
     return jv_dict
 
 
+def get_jv_data_location_3(filedata):
+    df = pd.read_csv(
+        StringIO(filedata),
+        header=[0, 1],
+        sep=',',
+        encoding='unicode_escape',
+        engine='python',
+    )
+    columns = pd.DataFrame(df.columns.tolist())
+    columns.loc[columns[0].str.startswith('Unnamed:'), 0] = np.nan
+    columns[0] = columns[0].ffill()
+    df.columns = columns
+
+    jv_dict = {'location': 'Hereon'}
+
+    jv_dict['jv_curve'] = []
+
+    for col in df.columns[::2]:
+        jv_dict['jv_curve'].append(
+            {
+                'name': f'{col[0]}',
+                'dark': False,
+                'voltage': np.array(df[col]),
+                'current_density': np.array(df[(col[0], 'J (A/cm^2)')]),
+            }
+        )
+    return jv_dict
+
+
 def get_jv_data(filedata):
     # Check if it is Location 1 IV format by looking for tab-separated numeric data structure
     lines = filedata.strip().split('\n')
@@ -183,5 +212,7 @@ def get_jv_data(filedata):
         return get_jv_data_location_1(filedata), 'Location 1 IV Format'
     elif 'U [V]/Exposure [h]' in filedata:
         return get_jv_data_location_2(filedata), 'Location 2 txt Format'
+    elif 'Pixel 1' in filedata and 'J (A/cm^2)' in filedata and 'V (V)' in filedata:
+        return get_jv_data_location_3(filedata), 'Hereon csv Format'
     else:
         return None, 'Unknown format'

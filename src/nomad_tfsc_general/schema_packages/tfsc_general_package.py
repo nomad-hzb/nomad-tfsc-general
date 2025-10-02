@@ -455,7 +455,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 jv_dict, location = get_jv_data(f.read())
                 self.location = location
-                get_jv_archive(jv_dict, self.data_file, self)
+                get_jv_archive(jv_dict, self.data_file, self, archive)
 
         super().normalize(archive, logger)
 
