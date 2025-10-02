@@ -8,8 +8,6 @@ def test_jv_parser_hereon(monkeypatch):
     normalize_all(archive)
     assert archive.data
     assert 'jvm' in str(archive.data.m_def).lower()
-    print(str(archive.data.m_def).lower())
-    print(archive.data.jv_curve)
     assert round(archive.data.jv_curve[3].voltage[0].magnitude, 3) == 1.398
     assert round(archive.data.jv_curve[3].efficiency, 7) == 0.0000024
     assert round(archive.data.jv_curve[3].fill_factor, 2) == 0.25
