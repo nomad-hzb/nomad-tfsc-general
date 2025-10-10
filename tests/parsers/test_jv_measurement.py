@@ -3,7 +3,7 @@ from utils import delete_json, get_archive
 
 
 def test_jv_parser_hereon(monkeypatch):
-    file = 'testt 205 J-V Data.IV.csv'
+    file = 'testt 205 J-V Data.jv.csv'
     archive = get_archive(file, monkeypatch)
     normalize_all(archive)
     assert archive.data
