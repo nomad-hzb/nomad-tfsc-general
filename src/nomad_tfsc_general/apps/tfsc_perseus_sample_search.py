@@ -6,7 +6,7 @@ from nomad.config.models.ui import (
     FilterMenus,
     Filters,
     Pagination,
-    SearchQuantities
+    SearchQuantities,
 )
 
 schema = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
@@ -26,7 +26,6 @@ perseus_sample_search_app = App(
     # quantities in a schema package, you need to load the schema package
     # explicitly here. Note that you can use a glob syntax to load the
     # entire package, or just a single schema from a package.
-
     search_quantities=SearchQuantities(include=[f'*#{schema}']),
     filters=Filters(
         include=[
@@ -51,7 +50,7 @@ perseus_sample_search_app = App(
             'entry_create_time': Column(label='Entry time', align='left'),
             'authors': Column(label='Authors', align='left'),
             'upload_name': Column(label='Upload name', align='left'),
-            'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align ='left')
+            'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align='left'),
             # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
             #     label='Experiment ID', align='left'
             # ),
@@ -62,7 +61,6 @@ perseus_sample_search_app = App(
     # results to the wanted subset. Any available search filter can be
     # targeted here. This example makes sure that only entries that use
     # MySchema are included.
-
     # Controls the filter menus shown on the left
     filter_menus=FilterMenus(
         options={
@@ -222,11 +220,10 @@ perseus_sample_search_app = App(
                 },
                 'markers': {
                     'color': {
-                        'quantity':'results.properties.optoelectronic.solar_cell.short_circuit_current_density',
+                        'quantity': 'results.properties.optoelectronic.solar_cell.short_circuit_current_density',
                         'unit': 'mA/cm^2',
                     },
-                    },
-                
+                },
             },
             {
                 'type': 'scatter_plot',
@@ -253,7 +250,7 @@ perseus_sample_search_app = App(
                     'color': {
                         'quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
                     },
-                    },
+                },
             },
             {
                 'type': 'scatter_plot',
@@ -280,9 +277,8 @@ perseus_sample_search_app = App(
                     'color': {
                         'quantity': 'results.properties.optoelectronic.solar_cell.absorber',
                     },
-                    },
+                },
             },
-            
         ]
     },
 )
