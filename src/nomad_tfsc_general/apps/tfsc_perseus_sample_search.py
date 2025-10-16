@@ -43,7 +43,7 @@ perseus_sample_search_app = App(
             'entry_create_time',
             'authors',
             'upload_name',
-            #'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package',
+            'results.properties.optoelectronic.solar_cell.efficiency',
         ],
         options={
             'entry_type': Column(label='Entry type', align='left'),
