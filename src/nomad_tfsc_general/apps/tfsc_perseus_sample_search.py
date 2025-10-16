@@ -5,7 +5,11 @@ from nomad.config.models.ui import (
     FilterMenu,
     FilterMenus,
     Filters,
+    Pagination,
+    SearchQuantities
 )
+
+schema = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
 
 perseus_sample_search_app = App(
     # Label of the App
@@ -22,11 +26,15 @@ perseus_sample_search_app = App(
     # quantities in a schema package, you need to load the schema package
     # explicitly here. Note that you can use a glob syntax to load the
     # entire package, or just a single schema from a package.
+
+    search_quantities=SearchQuantities(include=[f'*#{schema}']),
     filters=Filters(
         include=[
-            '*#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_*',
+            f'*#{schema}',
         ]
     ),
+    filters_locked={'section_defs.definition_qualified_name': schema},
+    pagination=Pagination(order_by='results.properties.optoelectronic.solar_cell.efficiency'),
     # Controls which columns are shown in the results table
     columns=Columns(
         selected=[
@@ -43,6 +51,7 @@ perseus_sample_search_app = App(
             'entry_create_time': Column(label='Entry time', align='left'),
             'authors': Column(label='Authors', align='left'),
             'upload_name': Column(label='Upload name', align='left'),
+            'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align ='left')
             # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
             #     label='Experiment ID', align='left'
             # ),
@@ -53,11 +62,7 @@ perseus_sample_search_app = App(
     # results to the wanted subset. Any available search filter can be
     # targeted here. This example makes sure that only entries that use
     # MySchema are included.
-    filters_locked={
-        'section_defs.definition_qualified_name': (
-            'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
-        )
-    },
+
     # Controls the filter menus shown on the left
     filter_menus=FilterMenus(
         options={
@@ -117,10 +122,46 @@ perseus_sample_search_app = App(
             {
                 'type': 'terms',
                 'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.device_stack',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 23},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.electron_transport_layer',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 14},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.hole_transport_layer',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
                 'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 7},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
                     'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
@@ -132,7 +173,7 @@ perseus_sample_search_app = App(
                 'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 23},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 16},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 12},
                     'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
@@ -168,17 +209,24 @@ perseus_sample_search_app = App(
                 },
                 'x': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.open_circuit_voltage',
-                    'title': 'Voc',
+                    'title': 'Open Circuir Voltage (Voc)',
                     'unit': 'volt',
                 },
                 'title': 'PCE vs Open Current Voltage',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 11, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 16, 'x': 0},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                 },
+                'markers': {
+                    'color': {
+                        'quantity':'results.properties.optoelectronic.solar_cell.short_circuit_current_density',
+                        'unit': 'mA/cm^2',
+                    },
+                    },
+                
             },
             {
                 'type': 'scatter_plot',
@@ -189,22 +237,52 @@ perseus_sample_search_app = App(
                     'title': 'Efficiency (%)',
                 },
                 'x': {
-                    'search_quantity': (
-                        'data.active_area#nomad_tfsc_general.schema_packages.tfsc_general_package.'
-                        'TFSC_General_JVmeasurement'
-                    ),
-                    'title': 'Active Area',
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.device_area',
+                    'title': 'Device Area',
                     'unit': '',
                 },
-                'title': 'PCE vs Cell Active Area',
+                'title': 'PCE vs Device Area',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 12, 'y': 11, 'x': 13},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 12, 'y': 16, 'x': 13},
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
                 },
+                'markers': {
+                    'color': {
+                        'quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
+                    },
+                    },
             },
+            {
+                'type': 'scatter_plot',
+                'autorange': True,
+                'size': 1000,
+                'y': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
+                    'title': 'Efficiency (%)',
+                },
+                'x': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.device_area',
+                    'title': 'Device Area',
+                    'unit': '',
+                },
+                'title': 'PCE vs Device Area',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 25, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                },
+                'markers': {
+                    'color': {
+                        'quantity': 'results.properties.optoelectronic.solar_cell.absorber',
+                    },
+                    },
+            },
+            
         ]
     },
 )
