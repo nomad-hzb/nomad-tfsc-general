@@ -58,6 +58,8 @@ from nomad.metainfo import (
 )
 from nomad.parsing import MatchingParser
 
+from nomad_tfsc_general.parsers.substance_mapper import get_product_values, map_product
+
 from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_AtomicLayerDeposition,
     TFSC_General_Batch,
@@ -73,6 +75,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_SpinCoating,
     TFSC_General_Sputtering,
     TFSC_General_Substrate,
+    TFSC_General_Substance,
 )
 
 
@@ -103,6 +106,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
         upload_id = archive.metadata.upload_id
         # xls = pd.ExcelFile(mainfile)
         df = pd.read_excel(mainfile, header=[0, 1])
+        df_sheet_two = pd.read_excel(mainfile, sheet_name=1)
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
@@ -200,6 +204,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Blade Coating' in col:
+                    if 'Product ID' in row.index:
+                        product_id = row["Product ID"]
+                        product_data = get_product_values(df_sheet_two, product_id)
+                        archives.append(
+                            map_product(
+                                i,
+                                j,
+                                lab_ids,
+                                product_data,
+                                upload_id,
+                                TFSC_General_Substance
+                            ))
                     archives.append(
                         map_blade_coating(
                             i,
