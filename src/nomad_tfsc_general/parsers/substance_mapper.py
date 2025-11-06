@@ -17,7 +17,7 @@ def map_product(i,j,lab_ids,data,upload_id, product_class):
         shipping_date = get_datetime(data, 'Shipping Date'),
         opening_date = get_datetime(data, 'Opening Date'),
         supplier = get_value(data, 'Supplier', None, False),
-        description = get_value(data, 'Product Description', None, False),
+        product_description = get_value(data, 'Product Description', None, False),
     )
     product_name = get_value(data, 'Product Name', None, False)
     return (f'{i}_{j}_supplier_product_{product_name}', archive)

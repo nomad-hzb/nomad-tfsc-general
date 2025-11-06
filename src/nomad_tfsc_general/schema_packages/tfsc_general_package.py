@@ -119,15 +119,11 @@ class TFSC_General_Batch(Batch, EntryData):
     )
 
 class TFSC_General_Component(EntryData, Component):
-    m_def = Section(a_eln=dict(hide=['lab_id']))
-    # m_def = Section(
-    #     a_eln = dict(
-    #         hide=['canonical_smile', 'inchi', 'inchi_key', 'iupac_name', 'monoisotopic_mass', 'smile', 'pub_chem_cid', 'pub_chem_link'],
-    #         properties=dict(
-    #             order=['name','load_data','molar_mass', 'molecular_formula', 'molecular_mass','cas_number'],
-    #         )
-    #     )
-    # )
+    m_def = Section(
+         a_eln = dict(
+             hide=['mass', 'mass_fraction'],
+         )
+     )
     product_id = Quantity(type=str, a_eln=dict(component='StringEditQuantity'), descriction = 'Unique Product ID within the current database')
 
     product_number = Quantity(type=str, a_eln=dict(component='StringEditQuantity'), description = 'Product Number, as defined by materials sent by the suppliers')
