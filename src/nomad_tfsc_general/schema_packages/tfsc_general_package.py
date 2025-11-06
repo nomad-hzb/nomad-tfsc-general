@@ -118,10 +118,10 @@ class TFSC_General_Batch(Batch, EntryData):
         )
     )
 
-class TFSC_General_Component(EntryData, Component):
+class TFSC_General_Product(EntryData):
     m_def = Section(
          a_eln = dict(
-             hide=['mass', 'mass_fraction'],
+             hide=[],
          )
      )
     product_id = Quantity(type=str, a_eln=dict(component='StringEditQuantity'), descriction = 'Unique Product ID within the current database')
@@ -154,6 +154,10 @@ class TFSC_General_Component(EntryData, Component):
         type=str,
         description='Any information of the product that cannot be captured in other fields.',
         a_eln=dict(component='RichTextEditQuantity'),
+    )
+
+    product_name = SubSection(
+        section_def = PubChemPureSubstanceSectionCustom
     )
 
     def normalize(self, archive, logger):
