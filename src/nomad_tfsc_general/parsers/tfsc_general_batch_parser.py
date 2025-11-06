@@ -75,7 +75,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_SpinCoating,
     TFSC_General_Sputtering,
     TFSC_General_Substrate,
-    TFSC_General_Substance,
+    TFSC_General_Component,
 )
 
 
@@ -214,7 +214,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                                 lab_ids,
                                 product_data,
                                 upload_id,
-                                TFSC_General_Substance
+                                TFSC_General_Component
                             ))
                     archives.append(
                         map_blade_coating(

@@ -63,6 +63,7 @@ from baseclasses.wet_chemical_deposition import (
 )
 from nomad.datamodel.data import EntryData
 from nomad.metainfo import Datetime, Quantity, SchemaPackage, Section, SubSection
+from nomad.datamodel.metainfo.basesections import Component
 
 m_package = SchemaPackage()
 
@@ -117,15 +118,16 @@ class TFSC_General_Batch(Batch, EntryData):
         )
     )
 
-class TFSC_General_Substance(PubChemPureSubstanceSectionCustom):
-    m_def = Section(
-        a_eln = dict(
-            hide=['canonical_smile', 'inchi', 'inchi_key', 'iupac_name', 'monoisotopic_mass', 'smile', 'pub_chem_cid', 'pub_chem_link'],
-            properties=dict(
-                order=['name','load_data','molar_mass', 'molecular_formula', 'molecular_mass','cas_number'],
-            )
-        )
-    )
+class TFSC_General_Component(EntryData, Component):
+    m_def = Section(a_eln=dict(hide=['lab_id']))
+    # m_def = Section(
+    #     a_eln = dict(
+    #         hide=['canonical_smile', 'inchi', 'inchi_key', 'iupac_name', 'monoisotopic_mass', 'smile', 'pub_chem_cid', 'pub_chem_link'],
+    #         properties=dict(
+    #             order=['name','load_data','molar_mass', 'molecular_formula', 'molecular_mass','cas_number'],
+    #         )
+    #     )
+    # )
     product_id = Quantity(type=str, a_eln=dict(component='StringEditQuantity'), descriction = 'Unique Product ID within the current database')
 
     product_number = Quantity(type=str, a_eln=dict(component='StringEditQuantity'), description = 'Product Number, as defined by materials sent by the suppliers')
@@ -157,6 +159,13 @@ class TFSC_General_Substance(PubChemPureSubstanceSectionCustom):
         description='Any information of the product that cannot be captured in other fields.',
         a_eln=dict(component='RichTextEditQuantity'),
     )
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)
+
+        self.method = 'Product'
+
+
 
 # %% ####################### Cleaning
 class TFSC_General_Cleaning(Cleaning, EntryData):

@@ -4,14 +4,11 @@ def get_product_values(df_sheet_two, product_id):
     for i, row in df_sheet_two.iterrows():
         if row["Product ID"] == product_id:
             return row
-        else:
-            print("some error")
 
-
-def map_product(i,j,lab_ids,data,upload_id, substance_class):
-    archive =substance_class(
+def map_product(i,j,lab_ids,data,upload_id, product_class):
+    archive =product_class(
         name='Product/Material'
-        + get_value(data, 'Product Name', None),
+        + get_value(data, 'Product Name', None, False),
         product_id = get_value(data, 'Product ID', None, False),
         product_number = get_value(data, 'Product Number', None, False),
         lot_number = get_value(data, 'Lot Number', None, False),
