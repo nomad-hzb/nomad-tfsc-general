@@ -77,6 +77,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Substrate,
 )
 
+from nomad_tfsc_general.parsers.product_mapper import get_product_values
 
 class RawTFSCGeneralExperiment(EntryData):
     processed_archive = Quantity(type=Entity, shape=['*'])
@@ -105,6 +106,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
         upload_id = archive.metadata.upload_id
         # xls = pd.ExcelFile(mainfile)
         df = pd.read_excel(mainfile, header=[0, 1])
+        df_sheet_two = pd.read_excel(mainfile, sheet_name=1)
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
@@ -202,6 +204,15 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Blade Coating' in col:
+                    for scol in row.index:
+                        if 'chemical ID' in scol:
+                            product_data = get_product_values(df_sheet_two, row[scol])
+                            if product_data is not None:
+                                # Update row with product_data values
+                                for key, value in product_data.items():
+                                    if key not in row.index:  # Only add if key doesn't exist
+                                        row[key] = value                       
+
                     archives.append(
                         map_blade_coating(
                             i,
