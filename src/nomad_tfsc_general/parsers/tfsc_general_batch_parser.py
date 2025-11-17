@@ -106,7 +106,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
         upload_id = archive.metadata.upload_id
         # xls = pd.ExcelFile(mainfile)
         df = pd.read_excel(mainfile, header=[0, 1])
-        df_sheet_two = pd.read_excel(mainfile, sheet_name=1)
+        df_sheet_two = pd.read_excel(mainfile, sheet_name=1, header=0)
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
@@ -204,21 +204,34 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Blade Coating' in col:
-                    for scol in row.index:
-                        if 'chemical ID' in scol:
-                            product_data = get_product_values(df_sheet_two, row[scol])
+                    row_copy = row.copy()
+                    
+                    # Filter columns that contain 'chemical ID' directly
+                    chemical_id_cols = [scol for scol in row.index if 'chemical ID' in scol]
+                    
+                    for scol in chemical_id_cols:
+                        chemical_id_value = row[scol]
+                        if pd.notna(chemical_id_value):  # Only process if chemical ID has a value
+                            product_data = get_product_values(df_sheet_two, chemical_id_value)
                             if product_data is not None:
-                                # Update row with product_data values
+                                # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
+                                prefix = scol.replace(' chemical ID', '').strip()
+                                
+                                # Add product data with prefix to avoid conflicts
                                 for key, value in product_data.items():
-                                    if key not in row.index:  # Only add if key doesn't exist
-                                        row[key] = value                       
+                                    if pd.notna(value):  # Only add non-NaN values
+                                        # Skip the Chemical ID column itself to avoid duplication
+                                        if key != 'Chemical ID':
+                                            # Prefix the key with the chemical name
+                                            prefixed_key = f"{prefix} {key}"
+                                            row_copy[prefixed_key] = value
 
                     archives.append(
                         map_blade_coating(
                             i,
                             j,
                             lab_ids,
-                            row,
+                            row_copy,
                             upload_id,
                             TFSC_General_BladeCoating,
                         )
