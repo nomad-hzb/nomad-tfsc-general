@@ -40,6 +40,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_gravure_printing,
     map_inkjet_printing,
     map_laser_scribing,
+    map_screen_printing,
     map_sdc,
     map_spin_coating,
     map_sputtering,
@@ -69,6 +70,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_LaserScribing,
     TFSC_General_Process,
     TFSC_General_Sample,
+    TFSC_General_ScreenPrinting,
     TFSC_General_SlotDieCoating,
     TFSC_General_SpinCoating,
     TFSC_General_Sputtering,
@@ -220,6 +222,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             row,
                             upload_id,
                             TFSC_General_GravurePrinting,
+                        )
+                    )
+                
+                if 'Screen Printing' in col:
+                    archives.append(
+                        map_screen_printing(
+                            i,
+                            j,
+                            lab_ids,
+                            row,
+                            upload_id,
+                            TFSC_General_ScreenPrinting,
                         )
                     )
 
