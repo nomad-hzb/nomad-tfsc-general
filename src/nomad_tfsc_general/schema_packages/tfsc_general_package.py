@@ -31,6 +31,7 @@ from baseclasses.helper.utilities import (
 )
 from baseclasses.material_processes_misc import (
     Cleaning,
+    CoronaCleaning,
     LaserScribing,
     PlasmaCleaning,
     SolutionCleaning,
@@ -56,6 +57,7 @@ from baseclasses.wet_chemical_deposition import (
     BladeCoating,
     GravurePrinting,
     LP50InkjetPrinting,
+    ScreenPrinting,
     SlotDieCoating,
     SpinCoating,
     WetChemicalDeposition,
@@ -141,7 +143,8 @@ class TFSC_General_Cleaning(Cleaning, EntryData):
     cleaning_uv = SubSection(section_def=UVCleaning, repeats=True)
 
     cleaning_plasma = SubSection(section_def=PlasmaCleaning, repeats=True)
-
+    
+    cleaning_corona = SubSection(section_def=CoronaCleaning, repeats=True)
 
 # %% ### Printing
 
@@ -208,7 +211,39 @@ class TFSC_General_SpinCoating(SpinCoating, EntryData):
         ),
     )
 
+# %% ### Screen Printing
 
+class TFSC_General_ScreenPrinting(ScreenPrinting, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=[
+                'lab_id',
+                'users',
+                'author',
+                'end_time',
+                'steps',
+                'instruments',
+                'results',
+            ],
+            properties=dict(
+                order=[
+                    'name',
+                    'location',
+                    'present',
+                    'datetime',
+                    'previous_process',
+                    'batch',
+                    'samples',
+                    'solution',
+                    'layer',
+                    'properties',
+                    'quenching',
+                    'annealing',
+                    'atmosphere',
+                ]
+            ),
+        ),
+    )
 # %% ### Slot Die Coating
 
 
