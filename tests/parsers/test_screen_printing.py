@@ -194,7 +194,7 @@ def check_screen_printing(m):
     assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
     assert m.data.description == NOTES
     assert m.data.location == TOOL_NAME
-    
+
     # Screen printing specific properties
     assert m.data.properties['screen_mesh']['mesh_material'] == MESH_MATERIAL
     assert m.data.properties['screen_mesh']['mesh_count'] == MESH_COUNT
@@ -213,7 +213,6 @@ def check_screen_printing(m):
     assert m.data.properties['sp_pressure'] == PRINTING_PRESSURE
     assert m.data.properties['snap_off'] == SNAP_OFF_DISTANCE
     assert m.data.properties['sp_method'] == PRINTING_METHOD
-    
 
     # IR Annealing check
     assert m.data.annealing['time'] == ANNEALING_TIME

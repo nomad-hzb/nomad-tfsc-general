@@ -59,6 +59,7 @@ from nomad.metainfo import (
 )
 from nomad.parsing import MatchingParser
 
+from nomad_tfsc_general.parsers.product_mapper import get_product_values
 from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_AtomicLayerDeposition,
     TFSC_General_Batch,
@@ -77,25 +78,23 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Substrate,
 )
 
-from nomad_tfsc_general.parsers.product_mapper import get_product_values
-
 
 def enrich_row_with_product_data(row, df_sheet_two):
     """
     Enrich a data row with product information based on chemical IDs.
-    
+
     Args:
         row: pandas Series containing experimental data
         df_sheet_two: pandas DataFrame containing product information
-        
+
     Returns:
         pandas Series with enriched product data
     """
     row_copy = row.copy()
-    
+
     # Filter columns that contain 'chemical ID' directly
     chemical_id_cols = [scol for scol in row.index if 'chemical ID' in scol]
-    
+
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
         if pd.notna(chemical_id_value):  # Only process if chemical ID has a value
@@ -103,16 +102,16 @@ def enrich_row_with_product_data(row, df_sheet_two):
             if product_data is not None:
                 # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
                 prefix = scol.replace(' chemical ID', '').strip()
-                
+
                 # Add product data with prefix to avoid conflicts
                 for key, value in product_data.items():
                     if pd.notna(value):  # Only add non-NaN values
                         # Skip the Chemical ID column itself to avoid duplication
                         if key != 'Chemical ID':
                             # Prefix the key with the chemical name
-                            prefixed_key = f"{prefix} {key}"
+                            prefixed_key = f'{prefix} {key}'
                             row_copy[prefixed_key] = value
-    
+
     return row_copy
 
 
@@ -214,7 +213,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Evaporation' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_evaporation(i, j, lab_ids, enriched_row, upload_id, TFSC_General_Evaporation)
                     )
@@ -222,7 +221,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Spin Coating' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_spin_coating(i, j, lab_ids, enriched_row, upload_id, TFSC_General_SpinCoating)
                     )
@@ -230,7 +229,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Slot Die Coating' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_sdc(i, j, lab_ids, enriched_row, upload_id, TFSC_General_SlotDieCoating)
                     )
@@ -241,7 +240,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Inkjet Printing' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_inkjet_printing(
                             i, j, lab_ids, enriched_row, upload_id, TFSC_General_Inkjet_Printing
@@ -263,7 +262,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Blade Coating' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_blade_coating(
                             i,
@@ -278,7 +277,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Gravure Printing' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_gravure_printing(
                             i,
@@ -289,11 +288,11 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             TFSC_General_GravurePrinting,
                         )
                     )
-                
+
                 if 'Screen Printing' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_screen_printing(
                             i,

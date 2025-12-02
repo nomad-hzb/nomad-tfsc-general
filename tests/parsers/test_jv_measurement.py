@@ -15,6 +15,7 @@ def test_jv_parser_hereon(monkeypatch):
     assert len(archive.data.jv_curve[3].voltage) == 19
     delete_json()
 
+
 def test_jv_parser_loc_1(monkeypatch):
     file = 'PERS_1_1_C-2.jv.IV'
     archive = get_archive(file, monkeypatch)
@@ -34,6 +35,7 @@ def test_jv_parser_loc_1(monkeypatch):
     assert round(archive.data.jv_curve[3].potential_at_maximum_power_point.magnitude, 5) == 1.08677
     assert len(archive.data.jv_curve[3].voltage) == 66
     delete_json()
+
 
 def test_jv_parser_loc_2(monkeypatch):
     file = 'PERS_1_1_C-1.jv.txt'
