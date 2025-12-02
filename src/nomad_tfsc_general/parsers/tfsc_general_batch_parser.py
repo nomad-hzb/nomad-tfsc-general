@@ -85,11 +85,15 @@ def enrich_row_with_product_data(row, df_sheet_two):
 
     Args:
         row: pandas Series containing experimental data
-        df_sheet_two: pandas DataFrame containing product information
+        df_sheet_two: pandas DataFrame containing product information or None
 
     Returns:
-        pandas Series with enriched product data
+        pandas Series with enriched product data (or original if no product sheet)
     """
+    # If no product data sheet is available, return the original row
+    if df_sheet_two is None:
+        return row.copy()
+    
     row_copy = row.copy()
 
     # Filter columns that contain 'chemical ID' directly
@@ -142,7 +146,14 @@ class TFSCGeneralExperimentParser(MatchingParser):
         upload_id = archive.metadata.upload_id
         # xls = pd.ExcelFile(mainfile)
         df = pd.read_excel(mainfile, header=[0, 1])
-        df_sheet_two = pd.read_excel(mainfile, sheet_name=1, header=0)
+        
+        # Try to read the second sheet for product data, handle case where it doesn't exist
+        try:
+            df_sheet_two = pd.read_excel(mainfile, sheet_name=1, header=0)
+        except (IndexError, ValueError):
+            # No second sheet available, set to None
+            df_sheet_two = None
+            logger.info("No second sheet found - product data enrichment will be skipped")
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
