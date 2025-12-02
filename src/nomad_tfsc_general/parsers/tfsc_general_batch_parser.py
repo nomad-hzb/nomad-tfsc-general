@@ -90,7 +90,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
     Returns:
         pandas Series with enriched product data (or original if no product sheet)
     """
-    # If no product data sheet is available, return the original row
+    # Guard clause: If no product data sheet is available, return the original row
     if df_sheet_two is None:
         return row.copy()
     
@@ -101,20 +101,33 @@ def enrich_row_with_product_data(row, df_sheet_two):
 
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
-        if pd.notna(chemical_id_value):  # Only process if chemical ID has a value
-            product_data = get_product_values(df_sheet_two, chemical_id_value)
-            if product_data is not None:
-                # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
-                prefix = scol.replace(' chemical ID', '').strip()
+        
+        # Guard clause: Skip if chemical ID has no value
+        if pd.isna(chemical_id_value):
+            continue
+            
+        product_data = get_product_values(df_sheet_two, chemical_id_value)
+        
+        # Guard clause: Skip if no product data found
+        if product_data is None:
+            continue
+            
+        # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
+        prefix = scol.replace(' chemical ID', '').strip()
 
-                # Add product data with prefix to avoid conflicts
-                for key, value in product_data.items():
-                    if pd.notna(value):  # Only add non-NaN values
-                        # Skip the Chemical ID column itself to avoid duplication
-                        if key != 'Chemical ID':
-                            # Prefix the key with the chemical name
-                            prefixed_key = f'{prefix} {key}'
-                            row_copy[prefixed_key] = value
+        # Add product data with prefix to avoid conflicts
+        for key, value in product_data.items():
+            # Guard clause: Skip NaN values
+            if pd.isna(value):
+                continue
+                
+            # Guard clause: Skip the Chemical ID column itself to avoid duplication
+            if key == 'Chemical ID':
+                continue
+                
+            # Prefix the key with the chemical name
+            prefixed_key = f'{prefix} {key}'
+            row_copy[prefixed_key] = value
 
     return row_copy
 
