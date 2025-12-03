@@ -221,8 +221,7 @@ perseus_sample_search_app = App(
                 'markers': {
                     'color': {
                         'quantity': (
-                            'results.properties.optoelectronic.solar_cell.'
-                            'short_circuit_current_density'
+                            'results.properties.optoelectronic.solar_cell.short_circuit_current_density'
                         ),
                         'unit': 'mA/cm^2',
                     },

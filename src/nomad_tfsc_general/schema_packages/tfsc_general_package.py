@@ -143,8 +143,9 @@ class TFSC_General_Cleaning(Cleaning, EntryData):
     cleaning_uv = SubSection(section_def=UVCleaning, repeats=True)
 
     cleaning_plasma = SubSection(section_def=PlasmaCleaning, repeats=True)
-    
+
     cleaning_corona = SubSection(section_def=CoronaCleaning, repeats=True)
+
 
 # %% ### Printing
 
@@ -211,7 +212,9 @@ class TFSC_General_SpinCoating(SpinCoating, EntryData):
         ),
     )
 
+
 # %% ### Screen Printing
+
 
 class TFSC_General_ScreenPrinting(ScreenPrinting, EntryData):
     m_def = Section(
@@ -244,6 +247,8 @@ class TFSC_General_ScreenPrinting(ScreenPrinting, EntryData):
             ),
         ),
     )
+
+
 # %% ### Slot Die Coating
 
 
