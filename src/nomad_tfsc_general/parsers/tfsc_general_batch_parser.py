@@ -96,13 +96,13 @@ def enrich_row_with_product_data(row, df_sheet_two):
     
     row_copy = row.copy()
 
-    # Filter columns that contain 'chemical ID' directly
-    chemical_id_cols = [scol for scol in row.index if 'chemical ID' in scol]
+    # Filter columns that contain 'Chemical ID' directly
+    chemical_id_cols = [scol for scol in row.index if 'Chemical ID' in scol]
 
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
         
-        # Guard clause: Skip if chemical ID has no value
+        # Guard clause: Skip if Chemical ID has no value
         if pd.isna(chemical_id_value):
             continue
             
@@ -112,8 +112,8 @@ def enrich_row_with_product_data(row, df_sheet_two):
         if product_data is None:
             continue
             
-        # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
-        prefix = scol.replace(' chemical ID', '').strip()
+        # Extract prefix (e.g., "Solvent 1" from "Solvent 1 Chemical ID")
+        prefix = scol.replace(' Chemical ID', '').strip()
 
         # Add product data with prefix to avoid conflicts
         for key, value in product_data.items():
