@@ -259,6 +259,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Sputtering' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+                    
                     archives.append(map_sputtering(i, j, lab_ids, row, upload_id, TFSC_General_Sputtering))
 
                 if 'Inkjet Printing' in col:
@@ -272,6 +275,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'ALD' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+                    
                     archives.append(
                         map_atomic_layer_deposition(
                             i,
