@@ -97,7 +97,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
     row_copy = row.copy()
 
     # Filter columns that contain 'Chemical ID' directly
-    chemical_id_cols = [scol for scol in row.index if 'Chemical ID' in scol]
+    chemical_id_cols = [scol for scol in row.index if 'chemical ID' in scol]
 
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
@@ -113,7 +113,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
             continue
             
         # Extract prefix (e.g., "Solvent 1" from "Solvent 1 Chemical ID")
-        prefix = scol.replace(' Chemical ID', '').strip()
+        prefix = scol.replace(' chemical ID', '').strip()
 
         # Add product data with prefix to avoid conflicts
         for key, value in product_data.items():
@@ -122,7 +122,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
                 continue
                 
             # Guard clause: Skip the Chemical ID column itself to avoid duplication
-            if key == 'Chemical ID':
+            if key == 'chemical ID':
                 continue
                 
             # Prefix the key with the chemical name
