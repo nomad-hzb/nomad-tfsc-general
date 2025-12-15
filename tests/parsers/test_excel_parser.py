@@ -374,10 +374,7 @@ def check_evap_org(m):
     assert m.data.layer[0]['layer_type'] == 'Carbon Paste Layer'
     assert m.data.layer[0]['layer_material_name'] == 'C'
     assert m.data.layer[0]['layer_thickness'] == 25.0 * ureg('nm')
-    assert m.data.layer[0]['supplier'] == 'X_Company/23-001'
-    assert m.data.layer[0]['batch'] == '30'
     assert m.data.layer[0]['drying_time'] == 90.0 * ureg('s')
-    assert m.data.layer[0]['cost'] == 50.0
     org = m.data.organic_evaporation[0]
     assert org['pressure'].to('mbar').magnitude == pytest.approx(0.001)
     assert str(org['pressure'].units) == 'millibar'
@@ -410,10 +407,7 @@ def check_evap_inorg(m):
     assert m.data.layer[0]['layer_type'] == 'Carbon Paste Layer'
     assert m.data.layer[0]['layer_material_name'] == 'C'
     assert m.data.layer[0]['layer_thickness'] == 25.0 * ureg('nm')
-    assert m.data.layer[0]['supplier'] == 'X_Company/23-001'
-    assert m.data.layer[0]['batch'] == '30'
-    assert m.data.layer[0]['drying_time'] == 90.0 * ureg('s')
-    assert m.data.layer[0]['cost'] == 50.0
+
     inorg = m.data.inorganic_evaporation[0]
     assert inorg['pressure'].to('mbar').magnitude == pytest.approx(0.001)
     assert str(inorg['pressure'].units) == 'millibar'

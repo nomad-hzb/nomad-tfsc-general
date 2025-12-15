@@ -96,13 +96,13 @@ def enrich_row_with_product_data(row, df_sheet_two):
     
     row_copy = row.copy()
 
-    # Filter columns that contain 'chemical ID' directly
+    # Filter columns that contain 'Chemical ID' directly
     chemical_id_cols = [scol for scol in row.index if 'chemical ID' in scol]
 
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
         
-        # Guard clause: Skip if chemical ID has no value
+        # Guard clause: Skip if Chemical ID has no value
         if pd.isna(chemical_id_value):
             continue
             
@@ -112,7 +112,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
         if product_data is None:
             continue
             
-        # Extract prefix (e.g., "Solvent 1" from "Solvent 1 chemical ID")
+        # Extract prefix (e.g., "Solvent 1" from "Solvent 1 Chemical ID")
         prefix = scol.replace(' chemical ID', '').strip()
 
         # Add product data with prefix to avoid conflicts
@@ -122,7 +122,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
                 continue
                 
             # Guard clause: Skip the Chemical ID column itself to avoid duplication
-            if key == 'Chemical ID':
+            if key == 'chemical ID':
                 continue
                 
             # Prefix the key with the chemical name
@@ -259,6 +259,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Sputtering' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+                    
                     archives.append(map_sputtering(i, j, lab_ids, row, upload_id, TFSC_General_Sputtering))
 
                 if 'Inkjet Printing' in col:
@@ -272,6 +275,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'ALD' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+                    
                     archives.append(
                         map_atomic_layer_deposition(
                             i,
