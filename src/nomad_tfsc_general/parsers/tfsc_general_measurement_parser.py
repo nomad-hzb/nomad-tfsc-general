@@ -91,7 +91,7 @@ class TFSCGeneralParser(MatchingParser):
 
         entry = TFSC_General_Measurement()
 
-        if 'jv' in os.path.basename(mainfile).lower():
+        if 'jv' or 'iv' in os.path.basename(mainfile).lower():
             entry = TFSC_General_JVmeasurement()
         if 'eqe' in os.path.basename(mainfile).lower():
             entry = TFSC_General_EQEmeasurement()
