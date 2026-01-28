@@ -87,9 +87,9 @@ perseus_layer_search_app = App(
                 'type': 'terms',
                 'scale': 'linear',
                 'search_quantity': (
-                    'data.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sample'
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
                 ),
-                'title': 'Sample Names',
+                'title': 'SpinCoating',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
                     'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
