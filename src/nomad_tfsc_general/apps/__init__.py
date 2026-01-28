@@ -19,6 +19,7 @@ from nomad.config.models.ui import (
 )
 
 from nomad_tfsc_general.apps.tfsc_perseus_sample_search import perseus_sample_search_app
+from nomad_tfsc_general.apps.tfsc_perseus_layer_search import perseus_layer_search_app
 
 schema_name = 'nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_VoilaNotebook'
 
@@ -128,7 +129,13 @@ tfsc_voila_documentation_app = AppEntryPoint(
 )
 
 tfsc_perseus_search_app = AppEntryPoint(
-    name='perseus_sample_search',  # Changed from 'TFSC Perseus Sample Search' - no spaces/special chars
+    name='perseus_sample_search',  
     description='Provides filters to find PERSEUS solar cell entries',
     app=perseus_sample_search_app,
+)
+
+tfsc_perseus_layer_search_app = AppEntryPoint(
+    name = 'perseus_layer_search',
+    description = 'Search PERSEUS sample entries based on layer',
+    app= perseus_layer_search_app,
 )

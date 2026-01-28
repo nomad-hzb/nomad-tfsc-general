@@ -126,7 +126,7 @@ tfsc_general_package_entry_point = "nomad_tfsc_general.schema_packages:tfsc_gene
 tfsc_voila_documentation_app_entry_point = "nomad_tfsc_general.apps:tfsc_voila_documentation_app"
 
 tfsc_perseus_search_app_entry_point = "nomad_tfsc_general.apps:tfsc_perseus_search_app"
-
+tfsc_perseus_layer_search_app_entry_point = "nomad_tfsc_general.apps:tfsc_perseus_layer_search_app"
 
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues
