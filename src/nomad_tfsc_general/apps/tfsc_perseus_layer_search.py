@@ -83,11 +83,28 @@ perseus_layer_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 5, 'x': 0},
                 },
             },
+
             {
                 'type': 'terms',
                 'scale': 'linear',
                 'search_quantity': (
                     'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
+                ),
+                'title': 'SpinCoating',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 5, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 5, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 10, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
                 ),
                 'title': 'SpinCoating',
                 'layout': {
