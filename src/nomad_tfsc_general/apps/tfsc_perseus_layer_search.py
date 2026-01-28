@@ -90,7 +90,7 @@ perseus_layer_search_app = App(
                 'search_quantity': (
                     'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
                 ),
-                'title': 'SpinCoating',
+                'title': 'Spin Coating Materials',
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
                     'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
@@ -106,13 +106,269 @@ perseus_layer_search_app = App(
                 'search_quantity': (
                     'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
                 ),
-                'title': 'SpinCoating',
+                'title': 'SpinCoating Samples',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 0, 'x': 16},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 5, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 5, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 10, 'x': 0},
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 10, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 10, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 15, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_AtomicLayerDeposition'
+                ),
+                'title': 'AtomicLayerDeposition Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 15, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 15, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 20, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_AtomicLayerDeposition'
+                ),
+                'title': 'AtomicLayerDeposition Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 5, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 20, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 20, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 25, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_BladeCoating'
+                ),
+                'title': 'BladeCoating Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 25, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 25, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 30, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_BladeCoating'
+                ),
+                'title': 'BladeCoating Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 30, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 30, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 35, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Evaporation'
+                ),
+                'title': 'Evaporation Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 10, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 35, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 35, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 40, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Evaporation'
+                ),
+                'title': 'Evaporation Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 40, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 40, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 45, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_GravurePrinting'
+                ),
+                'title': 'GravurePrinting Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 45, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 45, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 50, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_GravurePrinting'
+                ),
+                'title': 'GravurePrinting Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 15, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 50, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 50, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 55, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Inkjet_Printing'
+                ),
+                'title': 'Inkjet Printing Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 55, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 55, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 60, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Inkjet_Printing'
+                ),
+                'title': 'Inkjet Printing Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 60, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 60, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 65, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_ScreenPrinting'
+                ),
+                'title': 'ScreenPrinting Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 20, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 65, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 65, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 70, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_ScreenPrinting'
+                ),
+                'title': 'ScreenPrinting Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 70, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 70, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 75, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SlotDieCoating'
+                ),
+                'title': 'SlotDieCoating Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 75, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 75, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 80, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SlotDieCoating'
+                ),
+                'title': 'SlotDieCoating Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 25, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 80, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 80, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 85, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sputtering'
+                ),
+                'title': 'Sputtering Materials',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 30, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 30, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 85, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 85, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 90, 'x': 0},
+                },
+            },
+
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': (
+                    'data.samples.name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sputtering'
+                ),
+                'title': 'Sputtering Samples',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 30, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 8, 'y': 30, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 90, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 90, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 95, 'x': 0},
                 },
             },
         ]
