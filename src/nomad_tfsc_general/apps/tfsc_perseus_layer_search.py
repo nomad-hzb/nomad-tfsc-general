@@ -1,10 +1,12 @@
 from nomad.config.models.ui import (
     App,
+    Axis,
     Column,
     Columns,
-    FilterMenu,
-    FilterMenus,
     Filters,
+    Menu,
+    MenuItemHistogram,
+    MenuItemTerms,
     Pagination,
 )
 
@@ -43,7 +45,6 @@ perseus_layer_search_app = App(
         ]
     ),
 
-
     # Controls which columns are shown in the results table
     pagination=Pagination(order_by='results.properties.optoelectronic.solar_cell.efficiency'),
     # Controls which columns are shown in the results table
@@ -80,45 +81,99 @@ perseus_layer_search_app = App(
         },
     ),
 
-    # Enhanced filter menus for better navigation
-    filter_menus=FilterMenus(
-        options={
-            'material': FilterMenu(label='Layer Materials', level=0, size='xl'),
-            'solarcell': FilterMenu(label='Solar Cell Performance', level=0, size='l'),
-            'fabrication': FilterMenu(label='Fabrication Process', level=0, size='l'),
-            'eln': FilterMenu(label='Electronic Lab Notebook', level=0),
-            'custom_quantities': FilterMenu(label='User Defined Quantities', level=0, size='l'),
-            'author': FilterMenu(label='Author / Origin / Dataset', level=0, size='m'),
-            'metadata': FilterMenu(label='Visibility / IDs / Schema', level=0),
-        }
+    # Enhanced menu with histogram examples for TFSC processes
+    menu=Menu(
+        title='TFSC Layer Search Filters',
+        items=[
+            # Solar Cell Performance Histograms
+            MenuItemHistogram(
+                x=Axis(
+                    quantity='results.properties.optoelectronic.solar_cell.open_circuit_voltage',
+                    title='Open Circuit Voltage (V)'
+                ),
+                title='Voc Distribution',
+                nbins=25
+            ),
+            MenuItemHistogram(
+                x=Axis(
+                    quantity='results.properties.optoelectronic.solar_cell.short_circuit_current_density',
+                    title='Short Circuit Current Density (mA/cm²)'
+                ),
+                title='Jsc Distribution',
+                nbins=25
+            ),
+
+            # Material Terms Filters
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating',
+                title='Spin Coating Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_GravurePrinting',
+                title='Gravure Printing Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SlotDieCoating',
+                title='Slot Die Coating Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_BladeCoating',
+                title='Blade Coating Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_ScreenPrinting',
+                title='Screen Printing Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_AtomicLayerDeposition',
+                title='ALD Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Evaporation',
+                title='Evaporation Materials',
+                show_input=True
+            ),
+            MenuItemTerms(
+                quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sputtering',
+                title='Sputtering Materials',
+                show_input=True
+            ),
+        ]
     ),
 
     dashboard= {
         'widgets': [
-            # Row 1: Performance overview - Solar cell key metrics
             {
-                'type': 'scatterplot',
+                'type': 'scatter_plot',
                 'autorange': True,
                 'size': 1000,
-                'markers': {
-                    'color': {
-                        'quantity': 'entry_type',
-                    }
+                'y': {
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
+                    'title': 'Efficiency (%)',
                 },
                 'x': {
-                    'quantity': 'results.properties.optoelectronic.solar_cell.open_circuit_voltage',
-                    'title': 'Open Circuit Voltage (V)'
+                    'search_quantity': 'results.properties.optoelectronic.solar_cell.device_area',
+                    'title': 'Device Area',
+                    'unit': 'mm^2',
                 },
-                'y': {
-                    'quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
-                    'title': 'Efficiency (%)'
-                },
+                'title': 'PCE vs Device Area (by Fabrication)',
                 'layout': {
                     'xxl': {'minH': 6, 'minW': 6, 'h': 8, 'w': 12, 'y': 0, 'x': 0},
                     'xl': {'minH': 6, 'minW': 6, 'h': 8, 'w': 12, 'y': 0, 'x': 0},
                     'lg': {'minH': 6, 'minW': 6, 'h': 8, 'w': 12, 'y': 0, 'x': 0},
                     'md': {'minH': 6, 'minW': 6, 'h': 8, 'w': 12, 'y': 0, 'x': 0},
                     'sm': {'minH': 6, 'minW': 6, 'h': 8, 'w': 12, 'y': 0, 'x': 0},
+                },
+                'markers': {
+                    'color': {
+                        'quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
+                    },
                 },
             },
 
@@ -187,176 +242,6 @@ perseus_layer_search_app = App(
                     'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 12, 'x': 6},
                     'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 12, 'x': 6},
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 12, 'y': 22, 'x': 0},
-                },
-            },
-
-            # Row 3: Layer material comparison for spin coating
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
-                ),
-                'title': 'Spin Coating Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 18, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 18, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 28, 'x': 0},
-                },
-            },
-
-            # Row 3: Evaporation materials
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Evaporation'
-                ),
-                'title': 'Evaporation Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 6},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 6},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 18, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 18, 'x': 6},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 33, 'x': 0},
-                },
-            },
-
-            # Row 3: Sputtering materials
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sputtering'
-                ),
-                'title': 'Sputtering Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 12},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 14, 'x': 12},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 23, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 23, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 38, 'x': 0},
-                },
-            },
-
-            # Row 4: Sample correlation analysis
-            {
-                'type': 'scatterplot',
-                'autorange': True,
-                'size': 800,
-                'markers': {
-                    'color': {
-                        'search_quantity': (
-                            'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating'
-                        ),
-                    }
-                },
-                'x': {
-                    'quantity': 'results.properties.optoelectronic.solar_cell.short_circuit_current_density',
-                    'title': 'Short Circuit Current Density (mA/cm²)'
-                },
-                'y': {
-                    'quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
-                    'title': 'Efficiency (%)'
-                },
-                'layout': {
-                    'xxl': {'minH': 6, 'minW': 6, 'h': 6, 'w': 9, 'y': 19, 'x': 0},
-                    'xl': {'minH': 6, 'minW': 6, 'h': 6, 'w': 9, 'y': 19, 'x': 0},
-                    'lg': {'minH': 6, 'minW': 6, 'h': 6, 'w': 6, 'y': 23, 'x': 6},
-                    'md': {'minH': 6, 'minW': 6, 'h': 6, 'w': 6, 'y': 23, 'x': 6},
-                    'sm': {'minH': 6, 'minW': 6, 'h': 6, 'w': 12, 'y': 43, 'x': 0},
-                },
-            },
-
-            # Row 4: Process statistics - Gravure and Slot Die materials
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_GravurePrinting'
-                ),
-                'title': 'Gravure Printing Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 19, 'x': 9},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 19, 'x': 9},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 28, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 28, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 12, 'y': 49, 'x': 0},
-                },
-            },
-
-            # Row 5: Additional process techniques overview
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SlotDieCoating'
-                ),
-                'title': 'Slot Die Coating Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 29, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 29, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 55, 'x': 0},
-                },
-            },
-
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_AtomicLayerDeposition'
-                ),
-                'title': 'ALD Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 6},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 6},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 29, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 29, 'x': 6},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 55, 'x': 6},
-                },
-            },
-
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_BladeCoating'
-                ),
-                'title': 'Blade Coating Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 6},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 6},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 33, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 33, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 55, 'x': 6},
-                },
-            },
-
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': (
-                    'data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_ScreenPrinting'
-                ),
-                'title': 'Screen Printing Materials',
-                'showinput': True,
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 12},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 25, 'x': 12},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 33, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 33, 'x': 6},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 59, 'x': 0},
                 },
             },
         ]
