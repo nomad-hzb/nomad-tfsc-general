@@ -76,17 +76,18 @@ perseus_sample_search_app = App(
     # Controls the default dashboard shown in the search interface
     dashboard={
         'widgets': [
+            # Row 1: Author and Entry Upload Date histograms
             {
                 'type': 'terms',
                 'showinput': True,
                 'scale': 'linear',
                 'search_quantity': 'authors.name',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 7, 'y': 0, 'x': 16},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 5, 'y': 0, 'x': 12},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 0, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 0, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 0, 'x': 0},
                 },
             },
             {
@@ -98,83 +99,11 @@ perseus_sample_search_app = App(
                 'x': {'search_quantity': 'entry_create_time', 'scale': 'linear'},
                 'title': 'Entry Upload Date',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 12},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 16, 'y': 6, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 3, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 6, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.substrate',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 7, 'y': 0, 'x': 23},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.device_stack',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 23},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.electron_transport_layer',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 14},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.hole_transport_layer',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 11, 'x': 7},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 6},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                },
-            },
-            {
-                'type': 'terms',
-                'scale': 'linear',
-                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
-                'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 7, 'y': 6, 'x': 16},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 6, 'y': 6, 'x': 12},
-                    'md': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 9, 'w': 6, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 8},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 8},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 0, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 4, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 4, 'x': 0},
                 },
             },
             {
@@ -190,13 +119,91 @@ perseus_sample_search_app = App(
                 },
                 'title': 'Sample Fabrication Date',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 16, 'y': 0, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 3, 'w': 12, 'y': 0, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 3, 'w': 8, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 16},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 8, 'y': 0, 'x': 16},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 4, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 8, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 8, 'x': 0},
                 },
             },
+            
+            # Row 2: Material properties terms widgets
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.substrate',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 8, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 12, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 12, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.device_stack',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 6},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 6},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 8, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 12, 'x': 6},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 17, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.electron_transport_layer',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 12},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 12},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 13, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 17, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 22, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.hole_transport_layer',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 18},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 4, 'x': 18},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 13, 'x': 6},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 6, 'y': 17, 'x': 6},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 27, 'x': 0},
+                },
+            },
+            
+            # Row 3: Absorber-related terms widgets
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 9, 'x': 0},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 9, 'x': 0},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 18, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 22, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 32, 'x': 0},
+                },
+            },
+            {
+                'type': 'terms',
+                'scale': 'linear',
+                'search_quantity': 'results.properties.optoelectronic.solar_cell.absorber_fabrication',
+                'layout': {
+                    'xxl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 9, 'x': 12},
+                    'xl': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 9, 'x': 12},
+                    'lg': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 23, 'x': 0},
+                    'md': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 27, 'x': 0},
+                    'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 37, 'x': 0},
+                },
+            },
+            
+            # Row 4: Performance scatter plots
             {
                 'type': 'scatter_plot',
                 'autorange': True,
@@ -207,16 +214,16 @@ perseus_sample_search_app = App(
                 },
                 'x': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.open_circuit_voltage',
-                    'title': 'Open Circuir Voltage (Voc)',
+                    'title': 'Open Circuit Voltage (Voc)',
                     'unit': 'volt',
                 },
-                'title': 'PCE vs Open Current Voltage',
+                'title': 'PCE vs Open Circuit Voltage',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 16, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 14, 'x': 0},
+                    'xl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 14, 'x': 0},
+                    'lg': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 28, 'x': 0},
+                    'md': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 32, 'x': 0},
+                    'sm': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 42, 'x': 0},
                 },
                 'markers': {
                     'color': {
@@ -238,15 +245,15 @@ perseus_sample_search_app = App(
                 'x': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.device_area',
                     'title': 'Device Area',
-                    'unit': '',
+                    'unit': 'mm^2',
                 },
-                'title': 'PCE vs Device Area',
+                'title': 'PCE vs Device Area (by Fabrication)',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 12, 'y': 16, 'x': 13},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 14, 'x': 12},
+                    'xl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 14, 'x': 12},
+                    'lg': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 36, 'x': 0},
+                    'md': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 40, 'x': 0},
+                    'sm': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 50, 'x': 0},
                 },
                 'markers': {
                     'color': {
@@ -265,15 +272,15 @@ perseus_sample_search_app = App(
                 'x': {
                     'search_quantity': 'results.properties.optoelectronic.solar_cell.device_area',
                     'title': 'Device Area',
-                    'unit': '',
+                    'unit': 'mm^2',
                 },
-                'title': 'PCE vs Device Area',
+                'title': 'PCE vs Device Area (by Absorber)',
                 'layout': {
-                    'xxl': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'xl': {'minH': 3, 'minW': 3, 'h': 9, 'w': 13, 'y': 25, 'x': 0},
-                    'lg': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 12, 'x': 0},
-                    'md': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
-                    'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 9, 'y': 0, 'x': 0},
+                    'xxl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 24, 'y': 22, 'x': 0},
+                    'xl': {'minH': 4, 'minW': 4, 'h': 8, 'w': 24, 'y': 22, 'x': 0},
+                    'lg': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 44, 'x': 0},
+                    'md': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 48, 'x': 0},
+                    'sm': {'minH': 4, 'minW': 4, 'h': 8, 'w': 12, 'y': 58, 'x': 0},
                 },
                 'markers': {
                     'color': {
