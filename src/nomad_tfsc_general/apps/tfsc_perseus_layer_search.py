@@ -41,7 +41,7 @@ perseus_layer_search_app = App(
     # entire package, or just a single schema from a package.
     filters=Filters(
         include=[
-            '*#nomad_tfsc_general.schema_packages.tfsc_general_package',
+            '*#nomad_tfsc_general.schema_packages.tfsc_general_package.*',
         ]
     ),
     # Controls which columns are shown in the results table
