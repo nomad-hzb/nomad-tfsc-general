@@ -93,7 +93,7 @@ def enrich_row_with_product_data(row, df_sheet_two):
     # Guard clause: If no product data sheet is available, return the original row
     if df_sheet_two is None:
         return row.copy()
-    
+
     row_copy = row.copy()
 
     # Filter columns that contain 'Chemical ID' directly
@@ -101,17 +101,17 @@ def enrich_row_with_product_data(row, df_sheet_two):
 
     for scol in chemical_id_cols:
         chemical_id_value = row[scol]
-        
+
         # Guard clause: Skip if Chemical ID has no value
         if pd.isna(chemical_id_value):
             continue
-            
+
         product_data = get_product_values(df_sheet_two, chemical_id_value)
-        
+
         # Guard clause: Skip if no product data found
         if product_data is None:
             continue
-            
+
         # Extract prefix (e.g., "Solvent 1" from "Solvent 1 Chemical ID")
         prefix = scol.replace(' chemical ID', '').strip()
 
@@ -120,11 +120,11 @@ def enrich_row_with_product_data(row, df_sheet_two):
             # Guard clause: Skip NaN values
             if pd.isna(value):
                 continue
-                
+
             # Guard clause: Skip the Chemical ID column itself to avoid duplication
             if key == 'chemical ID':
                 continue
-                
+
             # Prefix the key with the chemical name
             prefixed_key = f'{prefix} {key}'
             row_copy[prefixed_key] = value
@@ -159,14 +159,14 @@ class TFSCGeneralExperimentParser(MatchingParser):
         upload_id = archive.metadata.upload_id
         # xls = pd.ExcelFile(mainfile)
         df = pd.read_excel(mainfile, header=[0, 1])
-        
+
         # Try to read the second sheet for product data, handle case where it doesn't exist
         try:
             df_sheet_two = pd.read_excel(mainfile, sheet_name=1, header=0)
         except (IndexError, ValueError):
             # No second sheet available, set to None
             df_sheet_two = None
-            logger.info("No second sheet found - product data enrichment will be skipped")
+            logger.info('No second sheet found - product data enrichment will be skipped')
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
         batch_id = '_'.join(sample_ids[0].split('_')[:-1])
@@ -261,7 +261,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Sputtering' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(map_sputtering(i, j, lab_ids, row, upload_id, TFSC_General_Sputtering))
 
                 if 'Inkjet Printing' in col:
@@ -277,7 +277,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'ALD' in col:
                     # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_atomic_layer_deposition(
                             i,

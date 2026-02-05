@@ -20,7 +20,7 @@ perseus_layer_search_app = App(
     # Brief description used in the app menu
     description='Advanced search for layer fabrication processes with comprehensive filters.',
     # Longer description that can also use markdown
-    readme='''
+    readme="""
     ## PERSEUS Layer Search
     
     This application provides advanced search capabilities for thin-film solar cell 
@@ -34,7 +34,7 @@ perseus_layer_search_app = App(
     The search includes multiple deposition techniques: SpinCoating, AtomicLayerDeposition, 
     BladeCoating, Evaporation, GravurePrinting, InkjetPrinting, ScreenPrinting, 
     SlotDieCoating, and Sputtering.
-    ''',
+    """,
     # Controls the available search filters. If you want to filter by
     # quantities in a schema package, you need to load the schema package
     # explicitly here. Note that you can use a glob syntax to load the
@@ -44,7 +44,6 @@ perseus_layer_search_app = App(
             '*#nomad_tfsc_general.schema_packages.tfsc_general_package',
         ]
     ),
-
     # Controls which columns are shown in the results table
     pagination=Pagination(order_by='results.properties.optoelectronic.solar_cell.efficiency'),
     # Controls which columns are shown in the results table
@@ -80,7 +79,6 @@ perseus_layer_search_app = App(
             ),
         },
     ),
-
     # Enhanced menu with histogram examples for TFSC processes
     menu=Menu(
         title='TFSC Layer Search Filters',
@@ -89,65 +87,63 @@ perseus_layer_search_app = App(
             MenuItemHistogram(
                 x=Axis(
                     quantity='results.properties.optoelectronic.solar_cell.open_circuit_voltage',
-                    title='Open Circuit Voltage (V)'
+                    title='Open Circuit Voltage (V)',
                 ),
                 title='Voc Distribution',
-                nbins=25
+                nbins=25,
             ),
             MenuItemHistogram(
                 x=Axis(
                     quantity='results.properties.optoelectronic.solar_cell.short_circuit_current_density',
-                    title='Short Circuit Current Density (mA/cm²)'
+                    title='Short Circuit Current Density (mA/cm²)',
                 ),
                 title='Jsc Distribution',
-                nbins=25
+                nbins=25,
             ),
-
             # Material Terms Filters
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SpinCoating',
                 title='Spin Coating Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_GravurePrinting',
                 title='Gravure Printing Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_SlotDieCoating',
                 title='Slot Die Coating Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_BladeCoating',
                 title='Blade Coating Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_ScreenPrinting',
                 title='Screen Printing Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_AtomicLayerDeposition',
                 title='ALD Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Evaporation',
                 title='Evaporation Materials',
-                show_input=True
+                show_input=True,
             ),
             MenuItemTerms(
                 quantity='data.layer.layer_material_name#nomad_tfsc_general.schema_packages.tfsc_general_package.TFSC_General_Sputtering',
                 title='Sputtering Materials',
-                show_input=True
+                show_input=True,
             ),
-        ]
+        ],
     ),
-
-    dashboard= {
+    dashboard={
         'widgets': [
             {
                 'type': 'scatter_plot',
@@ -176,7 +172,6 @@ perseus_layer_search_app = App(
                     },
                 },
             },
-
             # Row 1: Efficiency histogram
             {
                 'type': 'histogram',
@@ -184,7 +179,7 @@ perseus_layer_search_app = App(
                 'nbins': 30,
                 'x': {
                     'quantity': 'results.properties.optoelectronic.solar_cell.efficiency',
-                    'title': 'Efficiency (%)'
+                    'title': 'Efficiency (%)',
                 },
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 0, 'x': 12},
@@ -194,7 +189,6 @@ perseus_layer_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 8, 'x': 0},
                 },
             },
-
             # Row 1: Fill factor histogram
             {
                 'type': 'histogram',
@@ -202,7 +196,7 @@ perseus_layer_search_app = App(
                 'nbins': 30,
                 'x': {
                     'quantity': 'results.properties.optoelectronic.solar_cell.fill_factor',
-                    'title': 'Fill Factor'
+                    'title': 'Fill Factor',
                 },
                 'layout': {
                     'xxl': {'minH': 3, 'minW': 3, 'h': 4, 'w': 6, 'y': 4, 'x': 12},
@@ -212,7 +206,6 @@ perseus_layer_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 12, 'x': 0},
                 },
             },
-
             # Row 2: Process overview
             {
                 'type': 'terms',
@@ -228,7 +221,6 @@ perseus_layer_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 6, 'w': 12, 'y': 16, 'x': 0},
                 },
             },
-
             # Row 2: Author statistics
             {
                 'type': 'terms',
@@ -245,6 +237,5 @@ perseus_layer_search_app = App(
                 },
             },
         ]
-    }
-            
+    },
 )
