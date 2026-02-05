@@ -126,7 +126,6 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 4, 'w': 12, 'y': 8, 'x': 0},
                 },
             },
-            
             # Row 2: Material properties terms widgets
             {
                 'type': 'terms',
@@ -176,7 +175,6 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 27, 'x': 0},
                 },
             },
-            
             # Row 3: Absorber-related terms widgets
             {
                 'type': 'terms',
@@ -202,7 +200,6 @@ perseus_sample_search_app = App(
                     'sm': {'minH': 3, 'minW': 3, 'h': 5, 'w': 12, 'y': 37, 'x': 0},
                 },
             },
-            
             # Row 4: Performance scatter plots
             {
                 'type': 'scatter_plot',
