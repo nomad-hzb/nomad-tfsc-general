@@ -155,7 +155,7 @@ def check_blade_coating(m):
     assert m.data.solution[0]['solution_contact_angle'] == CONTACT_ANGLE
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.description == NOTES
     assert m.data.location == TOOL_NAME
     assert m.data.properties['blade_speed'] == 1 * ureg('mm/s')

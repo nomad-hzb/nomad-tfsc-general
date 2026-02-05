@@ -213,7 +213,7 @@ def check_spin_coating_antisolvent(m):
     assert m.data.location == TOOL_NAME
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -246,7 +246,7 @@ def check_spin_coating_vaccumq(m):
     assert m.data.location == TOOL_NAME
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -275,7 +275,7 @@ def check_spin_coating_gasq(m):
     assert m.data.location == TOOL_NAME
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -309,7 +309,7 @@ def check_slot_die(m):
     assert m.data.location == TOOL_NAME
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -335,7 +335,7 @@ def check_inkjet(m):
     assert m.data.location == TOOL_NAME
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -370,7 +370,7 @@ def check_evap_org(m):
     assert m.data.co_evaporation is False
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == 'Carbon Paste Layer'
     assert m.data.layer[0]['layer_material_name'] == 'C'
     assert m.data.layer[0]['layer_thickness'] == 25.0 * ureg('nm')
@@ -403,7 +403,7 @@ def check_evap_inorg(m):
     assert m.data.co_evaporation is False
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == 'Carbon Paste Layer'
     assert m.data.layer[0]['layer_material_name'] == 'C'
     assert m.data.layer[0]['layer_thickness'] == 25.0 * ureg('nm')
@@ -433,7 +433,7 @@ def check_sputter(m):
     assert m.data.positon_in_experimental_plan == 11.0
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
@@ -457,7 +457,7 @@ def check_ald(m):
     assert m.data.positon_in_experimental_plan == 12.0
     assert m.data.atmosphere['temperature'] == ROOM_TEMP
     assert m.data.atmosphere['relative_humidity'] == ROOM_HUM
-    assert m.data.atmosphere['oxygen_level_ppm'] == O2_LEVEL
+    assert m.data.atmosphere['start_oxygen_level_ppm'] == O2_LEVEL
     assert m.data.layer[0]['layer_type'] == LAYER_TYPE
     assert m.data.layer[0]['layer_material_name'] == MATERIAL_NAME
     assert m.data.layer[0]['layer_thickness'] == LAYER_THICKNESS
