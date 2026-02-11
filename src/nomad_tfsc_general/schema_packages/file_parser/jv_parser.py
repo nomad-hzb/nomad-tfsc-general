@@ -148,7 +148,7 @@ def get_jv_data_location_2(filedata):
     jv_dict = {}
 
     jv_dict['datetime'] = convert_datetime(
-        df_header['File'][0].split('_')[-4], '%Y%m%d'
+        df_header['File'][0].split('_')[-3], '%Y%m%d'
     )  # The date string '20250515' is in the format '%Y%m%d'
     jv_dict['active_area'] = df_header.iloc[0, 9] / 100  # /100 to convert from mm² to cm²
     jv_dict['intensity'] = df_header.iloc[0, 11]
