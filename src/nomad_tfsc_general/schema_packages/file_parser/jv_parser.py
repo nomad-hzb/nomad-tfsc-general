@@ -174,7 +174,9 @@ def get_jv_data_location_2(filedata):
     for i in range(12):
         jv_dict['jv_curve'].append(
             {
-                'name': f'{extract_name_prefix(df_header["File"][i])}_loc2_{df_header["File"][i].split("_")[-1]}',
+                'name': (
+                    f'{extract_name_prefix(df_header["File"][i])}_loc2_{df_header["File"][i].split("_")[-1]}'
+                ),
                 'dark': False,
                 'voltage': np.array(df_curves.iloc[:, 0]),
                 'current_density': np.array(df_curves.iloc[:, i + 1]),
