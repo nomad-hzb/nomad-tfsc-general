@@ -31,7 +31,7 @@ def get_jv_data_location_1(filedata):
     # each row in the datafile represents a measurement repetition.
     # here i'm only parsing out the last repetition.
 
-    date = data[-1][1]  # measurement date
+    date = data[-1][1]  # measurement date, the time is the last pixel measurement time
     v_start = float(data[-1][2])  # v start [V]
     v_end = float(data[-1][3])  # v end [V]
     v_delta = float(data[-1][4])  # v step [V]
@@ -74,7 +74,7 @@ def get_jv_data_location_1(filedata):
         voltage.append(voltage_range)
 
     jv_dict = {}
-    jv_dict['datetime'] = convert_datetime(date, '%Y%m%d') if date.isdigit() else date
+    jv_dict['datetime'] = convert_datetime(date, '%H:%M:%S %b %d %Y')
     jv_dict['active_area'] = p1_cell_area  # Use first pixel as default
     jv_dict['intensity'] = 100.0  # Default 100 mW/cm² for efficiency calculation.
     # Use reverse sweep data as primary values (similar to IRIS format)
@@ -134,6 +134,10 @@ def get_jv_data_location_2(filedata):
 
     df_header.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
 
+    # measurement date, the time is the first pixel measurement time
+    date = df_header['File'][0].split('_')[-3]
+    time = df_header['File'][0].split('_')[-2]
+
     df_curves = pd.read_csv(
         StringIO(filedata),
         header=0,
@@ -147,9 +151,7 @@ def get_jv_data_location_2(filedata):
 
     jv_dict = {}
 
-    jv_dict['datetime'] = convert_datetime(
-        df_header['File'][0].split('_')[3], '%Y%m%d'
-    )  # The date string '20250515' is in the format '%Y%m%d'
+    jv_dict['datetime'] = convert_datetime(f'{date} {time}', '%Y%m%d %H%M')
     jv_dict['active_area'] = df_header.iloc[0, 9] / 100  # /100 to convert from mm² to cm²
     jv_dict['intensity'] = df_header.iloc[0, 11]
     jv_dict['J_sc'] = list(abs(df_header.iloc[0:13, 2].astype(np.float64)))
@@ -164,10 +166,17 @@ def get_jv_data_location_2(filedata):
 
     jv_dict['jv_curve'] = []
 
+    def extract_name_prefix(name):
+        parts = name.split('_')
+        # Keep everything except the last 5 parts (indices -1 to -5)
+        return '_'.join(parts[:-5])
+
     for i in range(12):
         jv_dict['jv_curve'].append(
             {
-                'name': f'{df_header["File"][i].split("_")[0]}_loc2_{df_header["File"][i].split("_")[-1]}',
+                'name': (
+                    f'{extract_name_prefix(df_header["File"][i])}_loc2_{df_header["File"][i].split("_")[-1]}'
+                ),
                 'dark': False,
                 'voltage': np.array(df_curves.iloc[:, 0]),
                 'current_density': np.array(df_curves.iloc[:, i + 1]),
