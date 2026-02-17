@@ -133,7 +133,7 @@ def get_jv_data_location_2(filedata):
     )
 
     df_header.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
-    
+
     # measurement date, the time is the first pixel measurement time
     date = df_header['File'][0].split('_')[-3]
     time = df_header['File'][0].split('_')[-2]
@@ -165,7 +165,7 @@ def get_jv_data_location_2(filedata):
     )  # in mA/cm²
 
     jv_dict['jv_curve'] = []
-    
+
     def extract_name_prefix(name):
         parts = name.split('_')
         # Keep everything except the last 5 parts (indices -1 to -5)
