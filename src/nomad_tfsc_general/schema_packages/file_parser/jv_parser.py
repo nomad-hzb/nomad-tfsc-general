@@ -165,11 +165,16 @@ def get_jv_data_location_2(filedata):
     )  # in mA/cm²
 
     jv_dict['jv_curve'] = []
+    
+    def extract_name_prefix(name):
+        parts = name.split('_')
+        # Keep everything except the last 5 parts (indices -1 to -5)
+        return '_'.join(parts[:-5])
 
     for i in range(12):
         jv_dict['jv_curve'].append(
             {
-                'name': f'{df_header["File"][i].split("_")[0]}_loc2_{df_header["File"][i].split("_")[-1]}',
+                'name': f'{extract_name_prefix(df_header["File"][i])}_loc2_{df_header["File"][i].split("_")[-1]}',
                 'dark': False,
                 'voltage': np.array(df_curves.iloc[:, 0]),
                 'current_density': np.array(df_curves.iloc[:, i + 1]),
