@@ -34,12 +34,33 @@ def find_step_size(df_curve):
             return dV
     return ValueError("No non-zero voltage step found in the first 5 rows")
 
-def get_mppt_data_location_1(filedata, filename=None):
+def read_mppt_data_location_1(filedata, filename=None):
     date = filedata.split('\t')[0].split('\n')[0].split(' ')[-2]
     time = filedata.split('\t')[0].split('\n')[0].split(' ')[-1]
-    convert_datetime(f'{date} {time}', '%d-%m-%Y %H:%M:%S')
+    
+    df_curve = pd.read_csv(
+        StringIO(filedata),
+          sep='\t',
+          header=None,
+          skiprows=1,
+          names=['Time (s)', 'Current density (mA/cm2)', 'Voltage (V)', 'Power (mW/cm2)'])
+     
+    # changing column order for consistency and for find_step_size function 
+    df_curve= df_curve[['Time (s)', 'Voltage (V)', 'Current density (mA/cm2)',  'Power (mW/cm2)']]
 
-def get_mppt_data_location_2(filedata, filename=None):            
+    mppt_dict = {}
+
+    mppt_dict['datetime'] = convert_datetime(f'{date} {time}', '%d-%m-%Y %H:%M:%S')
+    mppt_dict['total_time'] = get_value(df_curve.iloc[-1, 0])
+    mppt_dict['step_size'] = find_step_size(df_curve)
+    mppt_dict['time_data'] = np.array(df_curve['Time (s)'], dtype=np.float64)
+    mppt_dict['voltage_data'] = np.array(df_curve['Voltage (V)'], dtype=np.float64)
+    mppt_dict['current_density_data'] = np.array(df_curve['Current density (mA/cm2)'], dtype=np.float64)
+    mppt_dict['power_data'] = np.array(df_curve['Power (mW/cm2)'], dtype=np.float64)
+    
+    return mppt_dict
+
+def read_mppt_data_location_2(filedata, filename=None):            
     df_header = pd.read_csv(
         StringIO(filedata),
         nrows=1, 
@@ -47,11 +68,9 @@ def get_mppt_data_location_2(filedata, filename=None):
         encoding='unicode_escape', 
         engine='python',
         )
-    
-    
+        
     df_curve = pd.read_csv(
         StringIO(filedata),
-        header=10,
         sep='\t',
         encoding='unicode_escape',
         engine='python',
@@ -59,8 +78,8 @@ def get_mppt_data_location_2(filedata, filename=None):
     
     df_curve = df_curve.dropna(how='any', axis=0)
 
-    
     mppt_dict = {}
+
     if filename:
         date = filename.split('_')[-2]
         time = filename.split('_')[-1].split('.')[0]
@@ -71,10 +90,14 @@ def get_mppt_data_location_2(filedata, filename=None):
     mppt_dict['time_data'] = np.array(df_curve['Time (s)'], dtype=np.float64)
     mppt_dict['voltage_data'] = np.array(df_curve['Voltage (V)'], dtype=np.float64)
     mppt_dict['current_density_data'] = np.array(df_curve['Current density (mA/cm2)'], dtype=np.float64)
-    mppt_dict['power_data'] = np.array(df_curve['power'], dtype=np.float64)
+    mppt_dict['power_data'] = np.array(df_curve['Power (mW/cm2)'], dtype=np.float64)
 
     return mppt_dict
 
-def get_mppt_data(filedata):
-    #selection logic for the two data types
-    pass
+def read_mppt_data(filedata, filename):
+        if 'MPP' in filename.split('.')[-1]:
+            read_mppt_data_location_1(filedata, filename)
+        elif filedata.strip().split('\t')[0] == 'Time (s)':
+            read_mppt_data_location_2(filedata, filename)
+        else:
+            raise TypeError('mppt file not recognized')
