@@ -544,6 +544,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 data = read_mppt_file(f.read(), f.name)
 
+            self.datetime = data['datetime']
             self.time = data['time_data']
             self.voltage = data['voltage_data']
             self.current_density = data['current_density_data']
