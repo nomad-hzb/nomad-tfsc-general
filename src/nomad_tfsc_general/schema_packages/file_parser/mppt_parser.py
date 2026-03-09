@@ -94,10 +94,10 @@ def read_mppt_data_location_2(filedata, filename=None):
 
     return mppt_dict
 
-def read_mppt_data(filedata, filename):
+def read_mppt_file(filedata, filename):
         if 'MPP' in filename.split('.')[-1]:
-            read_mppt_data_location_1(filedata, filename)
+            return read_mppt_data_location_1(filedata, filename)
         elif filedata.strip().split('\t')[0] == 'Time (s)':
-            read_mppt_data_location_2(filedata, filename)
+            return read_mppt_data_location_2(filedata, filename)
         else:
             raise TypeError('mppt file not recognized')
