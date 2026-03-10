@@ -542,7 +542,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
                 encoding = get_encoding(f)
 
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
-                data = read_mppt_file(f.read(), f.name)
+                data = read_mppt_file(f.read(), self.data_file)
 
             self.datetime = data['datetime']
             self.time = data['time_data']
