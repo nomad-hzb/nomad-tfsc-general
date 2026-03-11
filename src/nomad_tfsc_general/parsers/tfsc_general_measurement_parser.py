@@ -91,12 +91,16 @@ class TFSCGeneralParser(MatchingParser):
 
         entry = TFSC_General_Measurement()
 
-        if 'jv' in os.path.basename(mainfile).lower() or 'iv' in os.path.basename(mainfile).lower():
+        filename_lower = os.path.basename(mainfile).lower()
+        
+        # Check for .jv or .iv as extension (e.g., file.jv.txt, file.IV, file.iv.csv)
+        if '.jv.' in filename_lower or filename_lower.endswith('.jv') or '.iv.' in filename_lower or filename_lower.endswith('.iv'):
             entry = TFSC_General_JVmeasurement()
-        if 'eqe' in os.path.basename(mainfile).lower():
+        if '.eqe.' in filename_lower or filename_lower.endswith('.eqe'):
             entry = TFSC_General_EQEmeasurement()
-        if 'mpp' in os.path.basename(mainfile).lower():
+        if '.mpp.' in filename_lower or filename_lower.endswith('.mpp'):
             entry = TFSC_General_SimpleMPPTracking()
+            
         archive.metadata.entry_name = os.path.basename(mainfile)
 
         search_id = mainfile_split[0]
