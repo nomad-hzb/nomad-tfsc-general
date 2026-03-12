@@ -529,7 +529,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
     )
 
     def normalize(self, archive, logger):
-        from nomad_hysprint.schema_packages.file_parser.mppt_simple import (
+        from nomad_tfsc_general.schema_packages.file_parser.mppt_parser import (
             read_mppt_file,
         )
 
@@ -542,8 +542,9 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
                 encoding = get_encoding(f)
 
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
-                data = read_mppt_file(f.read())
+                data = read_mppt_file(f.read(), self.data_file)
 
+            self.datetime = data['datetime']
             self.time = data['time_data']
             self.voltage = data['voltage_data']
             self.current_density = data['current_density_data']
