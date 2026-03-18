@@ -40,6 +40,10 @@ def read_mppt_data_location_1(filedata, filename=None):
     date = filedata.split('\t')[0].split('\n')[0].split(' ')[-2]
     time = filedata.split('\t')[0].split('\n')[0].split(' ')[-1]
 
+    # Normalize date format: convert "1-10-2026" to "01-10-2026"
+    date_parts = date.split('-')
+    date = '-'.join(part.zfill(2) if i < 2 else part for i, part in enumerate(date_parts))
+
     df_curve = pd.read_csv(
         StringIO(filedata),
         sep='\t',
