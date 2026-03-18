@@ -32,6 +32,10 @@ def get_jv_data_location_1(filedata):
     # here i'm only parsing out the last repetition.
 
     date = data[-1][1]  # measurement date, the time is the last pixel measurement time
+    time, month, day, year = date.split()
+    month = {"maa": "mar", "mei": "may", "okt": "oct"}.get(month, month)
+    fixed_date = time+" "+month+" "+day+" "+year
+
     v_start = float(data[-1][2])  # v start [V]
     v_end = float(data[-1][3])  # v end [V]
     v_delta = float(data[-1][4])  # v step [V]
@@ -74,7 +78,7 @@ def get_jv_data_location_1(filedata):
         voltage.append(voltage_range)
 
     jv_dict = {}
-    jv_dict['datetime'] = convert_datetime(date, '%H:%M:%S %b %d %Y')
+    jv_dict['datetime'] = convert_datetime(fixed_date, '%H:%M:%S %b %d %Y')
     jv_dict['active_area'] = p1_cell_area  # Use first pixel as default
     jv_dict['intensity'] = 100.0  # Default 100 mW/cm² for efficiency calculation.
     # Use reverse sweep data as primary values (similar to IRIS format)
