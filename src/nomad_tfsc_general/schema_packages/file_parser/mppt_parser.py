@@ -29,11 +29,11 @@ def get_value(val):
 
 
 def find_step_size(df_curve):
-    for i in range(5):
+    for i in range(7):
         dV = abs(df_curve.iloc[i, 1] - df_curve.iloc[i + 1, 1])
         if dV != 0:
             return dV
-    return ValueError('No non-zero voltage step found in the first 5 rows')
+    return ValueError('No non-zero voltage step found in the first 7 rows')
 
 
 def read_mppt_data_location_1(filedata, filename=None):
