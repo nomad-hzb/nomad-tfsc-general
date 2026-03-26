@@ -128,6 +128,8 @@ tfsc_voila_documentation_app_entry_point = "nomad_tfsc_general.apps:tfsc_voila_d
 tfsc_perseus_search_app_entry_point = "nomad_tfsc_general.apps:tfsc_perseus_search_app"
 tfsc_perseus_layer_search_app_entry_point = "nomad_tfsc_general.apps:tfsc_perseus_layer_search_app"
 
+upload_qc = "nomad_tfsc_general.apis:upload_qc"
+
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues
 skip = [".github/*"]
