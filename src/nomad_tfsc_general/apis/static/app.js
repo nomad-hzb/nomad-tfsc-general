@@ -26,10 +26,14 @@ let keycloak = null;
 
 // The root path of THIS FastAPI app (same origin, no CORS needed).
 // Derived from the current page URL so it works regardless of deployment path.
+// We strip any trailing slash first, then strip the last path segment only if
+// it looks like a file (contains a dot), so both /uploadqc and /uploadqc/
+// correctly resolve to /nomad-oasis/uploadqc.
 const API_BASE = (() => {
-  const path = window.location.pathname; // e.g. /nomad-oasis/uploadqc/
-  // Strip trailing slash + any file part so we always have the dir
-  return path.replace(/\/[^/]*$/, '') || '/';
+  const path = window.location.pathname.replace(/\/$/, ''); // strip trailing slash
+  // If the last segment has no dot it's a directory/app root – keep as-is
+  const last = path.split('/').pop();
+  return last && !last.includes('.') ? path : path.replace(/\/[^/]*$/, '') || '/';
 })();
 
 // ── Startup ──────────────────────────────────────────────────────────────────

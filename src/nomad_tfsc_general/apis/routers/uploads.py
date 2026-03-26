@@ -7,16 +7,23 @@ present in the Authorization header.  The token is forwarded to the NOMAD
 API so that only data the user is allowed to see is returned.
 """
 
+import logging
+
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
 from nomad.config import config
 
 from nomad_tfsc_general.apis.routers.auth import require_auth
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix='/uploads', tags=['uploads'])
 
 # Base URL of the local NOMAD API (same host, internal call)
-_NOMAD_API = f'{config.services.api_base_path}/v1'
+# api_base_path is only a path segment (e.g. '/nomad-oasis'), so we use
+# api_url() which builds the full http://host:port/base/api/v1 URL.
+# Note: api_url(ssl, api=...) – 'ssl' is the first positional arg, so use keyword.
+_NOMAD_API = config.services.api_url(ssl=False, api='api/v1')
 
 
 def _nomad_headers(token: str) -> dict:
@@ -30,6 +37,7 @@ async def uploads_summary(token: str = Depends(require_auth)):
     Queries the NOMAD /uploads endpoint and aggregates basic statistics.
     """
     url = f'{_NOMAD_API}/uploads'
+    logger.info('Querying NOMAD uploads at: %s', url)
     async with httpx.AsyncClient() as client:
         try:
             resp = await client.get(
@@ -42,7 +50,7 @@ async def uploads_summary(token: str = Depends(require_auth)):
         except httpx.HTTPStatusError as exc:
             raise HTTPException(
                 status_code=exc.response.status_code,
-                detail=f'NOMAD API error: {exc.response.text}',
+                detail=f'NOMAD API error at {url}: {exc.response.text}',
             ) from exc
         except httpx.RequestError as exc:
             raise HTTPException(
