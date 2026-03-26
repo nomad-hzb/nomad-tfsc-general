@@ -10,3 +10,12 @@ app = FastAPI(
 @app.get('/')
 async def root():
     return {"message": "Hello World"}
+
+@app.get('/auth/config')
+async def auth_config():
+    """Return Keycloak config so the frontend can initialize authentication."""
+    return {
+        'keycloak_url': config.keycloak.public_server_url,
+        'keycloak_realm': config.keycloak.realm_name,
+        'keycloak_client_id': config.keycloak.client_id,
+    }
