@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Quality Check – NOMAD</title>
+  <link rel="stylesheet" href="static/style.css" />
+  <!--
+    Keycloak JS adapter is loaded from the same Keycloak server that NOMAD
+    uses, so the version is always compatible.  The URL is injected at
+    runtime from the /auth/config endpoint.
+  -->
+  <script>
+    // Placeholder — will be replaced with the real script tag after
+    // /auth/config is fetched (see app.js initAuth).
+  </script>
+</head>
+<body>
+
+  <!-- ── Login screen ─────────────────────────────────────────────────── -->
+  <div id="login-screen" class="screen hidden">
+    <div class="login-card">
+      <img src="https://nomad-lab.eu/img/nomad-logo.png"
+           alt="NOMAD logo" class="logo" />
+      <h1>Upload Quality Check</h1>
+      <p class="subtitle">Sign in with your NOMAD account to continue.</p>
+      <button id="btn-login" class="btn btn-primary">Sign in</button>
+    </div>
+  </div>
+
+  <!-- ── Main app ──────────────────────────────────────────────────────── -->
+  <div id="app-screen" class="screen hidden">
+
+    <header class="topbar">
+      <span class="topbar-title">Upload Quality Check</span>
+      <div class="topbar-user">
+        <span id="user-name"></span>
+        <button id="btn-logout" class="btn btn-secondary btn-sm">Sign out</button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- Summary cards -->
+      <section class="cards" id="summary-cards">
+        <div class="card">
+          <div class="card-label">Total uploads</div>
+          <div class="card-value" id="stat-total">–</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Published</div>
+          <div class="card-value" id="stat-published">–</div>
+        </div>
+        <div class="card">
+          <div class="card-label">With errors</div>
+          <div class="card-value error" id="stat-errors">–</div>
+        </div>
+      </section>
+
+      <!-- Uploads table -->
+      <section class="table-section">
+        <div class="table-header">
+          <h2>Recent uploads</h2>
+          <button id="btn-refresh" class="btn btn-secondary btn-sm">↻ Refresh</button>
+        </div>
+        <div id="table-container">
+          <p class="placeholder">Loading…</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── Error banner ──────────────────────────────────────────────────── -->
+  <div id="error-banner" class="hidden"></div>
+
+  <script src="static/app.js"></script>
+</body>
+</html>
