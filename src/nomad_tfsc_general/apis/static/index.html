@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <!-- ── Main app ──────────────────────────────────────────────────────── -->
+  <!-- ── Main app (upload list) ────────────────────────────────────────── -->
   <div id="app-screen" class="screen hidden">
 
     <header class="topbar">
@@ -67,6 +67,62 @@
           <p class="placeholder">Loading…</p>
         </div>
       </section>
+
+    </main>
+  </div>
+
+  <!-- ── Upload detail screen ──────────────────────────────────────────── -->
+  <div id="detail-screen" class="screen hidden">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="btn-back" class="btn btn-secondary btn-sm">← Back</button>
+        <span class="topbar-title" id="detail-title">Upload detail</span>
+      </div>
+      <div class="topbar-user">
+        <span id="detail-user-name"></span>
+        <button id="detail-btn-logout" class="btn btn-secondary btn-sm">Sign out</button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- Upload meta cards -->
+      <section class="cards" id="detail-cards">
+        <div class="card">
+          <div class="card-label">Total entries</div>
+          <div class="card-value" id="detail-total">–</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Published</div>
+          <div class="card-value" id="detail-published">–</div>
+        </div>
+        <div class="card">
+          <div class="card-label">With errors</div>
+          <div class="card-value error" id="detail-errors">–</div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tab-types">Entry types</button>
+        <button class="tab-btn" data-tab="tab-processes">Processes → Samples</button>
+        <button class="tab-btn" data-tab="tab-measurements">Samples → Measurements</button>
+        <button class="tab-btn" data-tab="tab-errors">Errors</button>
+      </div>
+
+      <div id="tab-types" class="tab-panel">
+        <div id="types-container"><p class="placeholder">Loading…</p></div>
+      </div>
+      <div id="tab-processes" class="tab-panel hidden">
+        <div id="processes-container"><p class="placeholder">Loading…</p></div>
+      </div>
+      <div id="tab-measurements" class="tab-panel hidden">
+        <div id="measurements-container"><p class="placeholder">Loading…</p></div>
+      </div>
+      <div id="tab-errors" class="tab-panel hidden">
+        <div id="errors-container"><p class="placeholder">Loading…</p></div>
+      </div>
 
     </main>
   </div>

@@ -190,3 +190,98 @@ code {
 /* ── Misc ─────────────────────────────────────────────────────────────────── */
 .placeholder { padding: 1.5rem; color: var(--muted); text-align: center; }
 .error       { color: var(--danger); font-weight: 600; }
+.muted       { color: var(--muted); font-size: .85em; }
+.section-title { font-size: .95rem; font-weight: 600; margin-bottom: .5rem; color: var(--text); }
+
+/* ── Topbar left (back button + title) ───────────────────────────────────── */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: .25rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: .55rem 1.1rem;
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color .15s, border-color .15s;
+  border-radius: 0;
+}
+
+.tab-btn:hover  { color: var(--primary); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.tab-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* ── Chips & tags ────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-block;
+  background: #e8eaf6;
+  color: #283593;
+  border-radius: 12px;
+  padding: .15em .65em;
+  font-size: .8rem;
+  margin: .1em .15em;
+}
+
+.tag {
+  display: inline-block;
+  background: #f0f2f8;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .1em .5em;
+  font-size: .8rem;
+  white-space: nowrap;
+}
+
+/* ── Bar chart in type counts tab ────────────────────────────────────────── */
+.bar-wrap {
+  background: #f0f2f8;
+  border-radius: 4px;
+  height: 10px;
+  min-width: 80px;
+  overflow: hidden;
+}
+
+.bar {
+  background: var(--primary);
+  height: 100%;
+  border-radius: 4px;
+  transition: width .3s ease;
+}
+
+/* ── Upload link ─────────────────────────────────────────────────────────── */
+.upload-link { color: var(--primary); text-decoration: none; }
+.upload-link:hover code { background: #dce1f5; }
+
+/* ── Plain list (unknown entries) ────────────────────────────────────────── */
+.plain-list {
+  list-style: none;
+  padding: .75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
