@@ -169,8 +169,20 @@ class TFSCGeneralExperimentParser(MatchingParser):
             logger.info('No second sheet found - product data enrichment will be skipped')
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
-        batch_id = '_'.join(sample_ids[0].split('_')[:-1])
-        archives = [map_batch(sample_ids, batch_id, upload_id, TFSC_General_Batch)]
+        # batch_id is everything up to the subbatch number, e.g. PERS_TNO_SK from PERS_TNO_SK_1_C-1
+        batch_ids = ['_'.join(sample.split('_')[:-2]) for sample in sample_ids]
+        subbatch_ids = ['_'.join(sample.split('_')[:-1]) for sample in sample_ids]
+
+        # Group sample_ids by their batch_id and create one batch archive per unique batch
+        from collections import defaultdict
+        batch_to_samples = defaultdict(list)
+        for sample_id, batch_id in zip(sample_ids, batch_ids):
+            batch_to_samples[batch_id].append(sample_id)
+
+        archives = [
+            map_batch(samples, batch_id, upload_id, TFSC_General_Batch)
+            for batch_id, samples in batch_to_samples.items()
+        ]
         substrates = []
         substrates_col = [
             'Date',
