@@ -44,6 +44,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_sdc,
     map_spin_coating,
     map_sputtering,
+    map_subbatch,
     map_substrate,
 )
 from baseclasses.helper.utilities import create_archive
@@ -75,6 +76,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_SlotDieCoating,
     TFSC_General_SpinCoating,
     TFSC_General_Sputtering,
+    TFSC_General_SubBatch,
     TFSC_General_Substrate,
 )
 
@@ -176,12 +178,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
         # Group sample_ids by their batch_id and create one batch archive per unique batch
         from collections import defaultdict
         batch_to_samples = defaultdict(list)
-        for sample_id, batch_id in zip(sample_ids, batch_ids):
+        subbatch_to_samples = defaultdict(list)
+        for sample_id, subbatch_id, batch_id in zip(sample_ids, subbatch_ids, batch_ids):
             batch_to_samples[batch_id].append(sample_id)
+            subbatch_to_samples[subbatch_id].append(sample_id)
 
         archives = [
             map_batch(samples, batch_id, upload_id, TFSC_General_Batch)
             for batch_id, samples in batch_to_samples.items()
+        ]
+        archives += [
+            map_subbatch(samples, subbatch_id, upload_id, TFSC_General_SubBatch)
+            for subbatch_id, samples in subbatch_to_samples.items()
         ]
         substrates = []
         substrates_col = [
