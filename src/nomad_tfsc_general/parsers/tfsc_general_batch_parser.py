@@ -171,7 +171,8 @@ class TFSCGeneralExperimentParser(MatchingParser):
             logger.info('No second sheet found - product data enrichment will be skipped')
 
         sample_ids = df['Experiment Info']['Nomad ID'].dropna().to_list()
-        # batch_id is everything up to the subbatch number, e.g. PERS_TNO_SK from PERS_TNO_SK_1_C-1
+        # batch_id: PERS_PROJECT_BATCH, subbatch_id: PERS_PROJECT_BATCH_SUBBATCH
+        # sample_id PERS_PROJECT_BATCH_SUBBATCH_C-SAMPLE
         batch_ids = ['_'.join(sample.split('_')[:-2]) for sample in sample_ids]
         subbatch_ids = ['_'.join(sample.split('_')[:-1]) for sample in sample_ids]
 
