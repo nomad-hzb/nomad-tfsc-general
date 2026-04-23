@@ -119,6 +119,15 @@ class TFSC_General_Batch(Batch, EntryData):
     )
 
 
+class TFSC_General_SubBatch(Batch, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=['users', 'samples'],
+            properties=dict(order=['name', 'export_batch_ids', 'csv_export_file']),
+        )
+    )
+
+
 # %% ####################### Cleaning
 class TFSC_General_Cleaning(Cleaning, EntryData):
     m_def = Section(

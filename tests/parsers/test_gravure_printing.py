@@ -24,7 +24,7 @@ def test_normalize_all(parsed_archive, monkeypatch):
 
 
 # Constants for test assertions
-N_PROCESSED_ARCHIVES = 4
+N_PROCESSED_ARCHIVES = 5
 SOLVENT_CLEAN = 'Hellmanex'
 MATERIAL_NAME = 'Cs0.05(MA0.17FA0.83)0.95Pb(I0.83Br0.17)3'
 LAYER_TYPE = 'Absorber'
@@ -63,8 +63,9 @@ def test_tfsc_batch_parser(monkeypatch):
     measurement_archives.sort(key=lambda x: x.metadata.mainfile)
 
     PROCESS_CHECKS = {
-        # Exact name matches for batch, sample, substrate (lowercased)
-        'sau_geso_1_1': check_batch,
+        # Exact name matches for batch, subbatch, sample, substrate (lowercased)
+        'sau_geso_1': check_batch,
+        'sau_geso_1_1': check_subbatch,
         'sau_geso_1_1_c-1': check_sample,
         'substrate 1 cm x 1 cm soda lime glass ito': check_substrate,
         # Step-specific process checks
@@ -119,6 +120,13 @@ def check_sample(m):
 
 
 def check_batch(m):
+    assert m.data.name == 'SAU_GeSo_1'
+    assert m.data.lab_id == 'SAU_GeSo_1'
+    assert len(m.data.entities) == 1
+    assert m.data.entities[0].lab_id == 'SAU_GeSo_1_1_C-1'
+
+
+def check_subbatch(m):
     assert m.data.name == 'SAU_GeSo_1_1'
     assert m.data.lab_id == 'SAU_GeSo_1_1'
     assert len(m.data.entities) == 1
