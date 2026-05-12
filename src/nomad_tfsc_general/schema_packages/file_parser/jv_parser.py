@@ -126,26 +126,38 @@ def get_jv_data_location_1(filedata):
 
 
 def get_jv_data_location_2(filedata):
+    lines = filedata.splitlines()
+    curve_header_idx = next(
+        (idx for idx, line in enumerate(lines) if line.startswith('U [V]/Exposure [h]')),
+        None,
+    )
+    if curve_header_idx is None:
+        return None
+
+    header_text = '\n'.join(lines[:curve_header_idx]).strip()
+    curves_text = '\n'.join(lines[curve_header_idx:]).strip()
+
     df_header = pd.read_csv(
-        StringIO(filedata),
-        skiprows=0,
-        nrows=13,
+        StringIO(header_text),
         header=0,
-        sep=':|\t',
+        sep='\t',
         encoding='unicode_escape',
         engine='python',
     )
 
-    df_header.replace([np.inf, -np.inf, np.nan], 0, inplace=True)
+    df_header = df_header[
+        df_header['File'].notna() & (df_header['File'].astype(str).str.strip() != '')
+    ].reset_index(drop=True)
+    if df_header.empty:
+        return None
 
     # measurement date, the time is the first pixel measurement time
     date = df_header['File'][0].split('_')[-3]
     time = df_header['File'][0].split('_')[-2]
 
     df_curves = pd.read_csv(
-        StringIO(filedata),
+        StringIO(curves_text),
         header=0,
-        skiprows=14,
         sep='\t',
         encoding='unicode_escape',
         engine='python',
@@ -155,35 +167,48 @@ def get_jv_data_location_2(filedata):
 
     jv_dict = {}
 
+    def numeric_series(column_name):
+        return pd.to_numeric(df_header[column_name], errors='raise')
+
     jv_dict['datetime'] = convert_datetime(f'{date} {time}', '%Y%m%d %H%M')
-    jv_dict['active_area'] = df_header.iloc[0, 9] / 100  # /100 to convert from mm² to cm²
-    jv_dict['intensity'] = df_header.iloc[0, 11]
-    jv_dict['J_sc'] = list(abs(df_header.iloc[0:13, 2].astype(np.float64)))
-    jv_dict['V_oc'] = list(abs(df_header.iloc[0:13, 3].astype(np.float64)))
-    jv_dict['Fill_factor'] = list(abs(df_header.iloc[0:13, 7].astype(np.float64)))
-    jv_dict['Efficiency'] = list(abs(df_header.iloc[0:13, 8].astype(np.float64)))
-    jv_dict['P_MPP'] = list(abs(df_header.iloc[0:13, 4].astype(np.float64)))
-    jv_dict['U_MPP'] = list(df_header.iloc[0:13, 5].astype(np.float64))
-    jv_dict['J_MPP'] = list(
-        abs(df_header.iloc[0:13, 6].astype(np.float64)) * 1000 / list(abs(df_header.iloc[0:13, 9] / 100))
-    )  # in mA/cm²
+    area_mm2 = numeric_series('Solar Cell Area [mm2]')
+    intensity = numeric_series('Solar sim. intensity [mW/cm2]')
+    impp = numeric_series('Impp [A]').abs()
+
+    jv_dict['active_area'] = area_mm2.iloc[0] / 100 if len(area_mm2) > 0 else 0
+    jv_dict['intensity'] = intensity.iloc[0] if len(intensity) > 0 else 0
+    jv_dict['J_sc'] = list(numeric_series('JSC [mA/cm2]').abs())
+    jv_dict['V_oc'] = list(numeric_series('Voc [V]').abs())
+    jv_dict['Fill_factor'] = list(numeric_series('FF').abs())
+    jv_dict['Efficiency'] = list(numeric_series('PCE [%]').abs())
+    jv_dict['P_MPP'] = list(numeric_series('Pmpp [mW]').abs())
+    jv_dict['U_MPP'] = list(numeric_series('Vmpp [V]'))
+
+    area_cm2 = (area_mm2 / 100).replace(0, np.nan)
+    jv_dict['J_MPP'] = list((impp * 1000 / area_cm2).fillna(0.0))  # in mA/cm²
 
     jv_dict['jv_curve'] = []
 
     def extract_name_prefix(name):
         parts = name.split('_')
         # Keep everything except the last 5 parts (indices -1 to -5)
-        return '_'.join(parts[:-5])
+        return '_'.join(parts[:-5]) if len(parts) > 5 else name
 
-    for i in range(12):
+    n_curves = min(len(df_header), max(df_curves.shape[1] - 1, 0))
+
+    for i in range(n_curves):
+        voltage = pd.to_numeric(df_curves.iloc[:, 0], errors='coerce')
+        current_density = pd.to_numeric(df_curves.iloc[:, i + 1], errors='coerce')
+        valid_mask = ~(voltage.isna() | current_density.isna())
+
         jv_dict['jv_curve'].append(
             {
                 'name': (
                     f'{extract_name_prefix(df_header["File"][i])}_loc2_{df_header["File"][i].split("_")[-1]}'
                 ),
                 'dark': False,
-                'voltage': np.array(df_curves.iloc[:, 0]),
-                'current_density': np.array(df_curves.iloc[:, i + 1]),
+                'voltage': np.array(voltage[valid_mask]),
+                'current_density': np.array(current_density[valid_mask]),
             }
         )
     return jv_dict
