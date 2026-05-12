@@ -168,7 +168,7 @@ def get_jv_data_location_2(filedata):
     jv_dict = {}
 
     def numeric_series(column_name):
-        return pd.to_numeric(df_header[column_name], errors='coerce').fillna(0.0)
+        return pd.to_numeric(df_header[column_name], errors='raise')
 
     jv_dict['datetime'] = convert_datetime(f'{date} {time}', '%Y%m%d %H%M')
     area_mm2 = numeric_series('Solar Cell Area [mm2]')
