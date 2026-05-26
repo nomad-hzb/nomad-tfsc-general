@@ -39,6 +39,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_generic,
     map_gravure_printing,
     map_inkjet_printing,
+    map_lamination,
     map_laser_scribing,
     map_screen_printing,
     map_sdc,
@@ -69,6 +70,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Evaporation,
     TFSC_General_GravurePrinting,
     TFSC_General_Inkjet_Printing,
+    TFSC_General_Lamination,
     TFSC_General_LaserScribing,
     TFSC_General_Process,
     TFSC_General_Sample,
@@ -252,6 +254,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
                 if 'Generic Process' in col:  # move up
                     archives.append(map_generic(i, j, lab_ids, row, upload_id, TFSC_General_Process))
 
+                if 'Lamination' in col:
+                    archives.append(
+                        map_lamination(
+                            i,
+                            j,
+                            lab_ids,
+                            row,
+                            upload_id,
+                            TFSC_General_Lamination,
+                        )
+                    )
+
                 if pd.isna(row.get('Material name')):
                     continue
 
@@ -354,6 +368,8 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             TFSC_General_ScreenPrinting,
                         )
                     )
+
+
 
         refs = []
         for subs in substrates:
