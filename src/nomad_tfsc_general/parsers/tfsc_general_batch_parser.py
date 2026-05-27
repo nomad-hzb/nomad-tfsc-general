@@ -180,6 +180,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
 
         # Group sample_ids by their batch_id and create one batch archive per unique batch
         from collections import defaultdict
+
         batch_to_samples = defaultdict(list)
         subbatch_to_samples = defaultdict(list)
         for sample_id, subbatch_id, batch_id in zip(sample_ids, subbatch_ids, batch_ids):
@@ -368,8 +369,6 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             TFSC_General_ScreenPrinting,
                         )
                     )
-
-
 
         refs = []
         for subs in substrates:

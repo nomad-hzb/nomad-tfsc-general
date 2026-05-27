@@ -33,8 +33,8 @@ def get_jv_data_location_1(filedata):
 
     date = data[-1][1]  # measurement date, the time is the last pixel measurement time
     time, month, day, year = date.split()
-    month = {"maa": "mar", "mei": "may", "okt": "oct"}.get(month, month)
-    fixed_date = time+" "+month+" "+day+" "+year
+    month = {'maa': 'mar', 'mei': 'may', 'okt': 'oct'}.get(month, month)
+    fixed_date = time + ' ' + month + ' ' + day + ' ' + year
 
     v_start = float(data[-1][2])  # v start [V]
     v_end = float(data[-1][3])  # v end [V]
