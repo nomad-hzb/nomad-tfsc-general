@@ -32,6 +32,7 @@ from baseclasses.helper.utilities import (
 from baseclasses.material_processes_misc import (
     Cleaning,
     CoronaCleaning,
+    Lamination,
     LaserScribing,
     PlasmaCleaning,
     SolutionCleaning,
@@ -437,7 +438,14 @@ class TFSC_General_LaserScribing(LaserScribing, EntryData):
     )
 
 
-# %% ## Properties
+# %% ## Lamination
+class TFSC_General_Lamination(Lamination, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
+            properties=dict(order=['name', 'location', 'present', 'datetime', 'batch', 'samples']),
+        )
+    )
 
 
 # %%####################################### Measurements
