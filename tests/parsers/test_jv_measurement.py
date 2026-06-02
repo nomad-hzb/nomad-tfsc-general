@@ -57,6 +57,7 @@ def test_jv_parser_loc_2(monkeypatch):
     assert len(archive.data.jv_curve[3].voltage) == 141
     delete_json()
 
+
 def test_jv_parser_loc_2_format_2(monkeypatch):
     file = 'PERS_1_1_C-3.jv.txt'
     archive = get_archive(file, monkeypatch)

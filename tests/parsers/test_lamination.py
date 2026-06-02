@@ -52,10 +52,7 @@ def test_lamination_parser(monkeypatch):
             continue
         measurement_archives.append(parse(os.path.join('tests', 'data', fname))[0])
 
-    lam_archives = [
-        m for m in measurement_archives
-        if getattr(m.data, 'name', '').lower() == 'lamination'
-    ]
+    lam_archives = [m for m in measurement_archives if getattr(m.data, 'name', '').lower() == 'lamination']
     assert len(lam_archives) == 1
     m = lam_archives[0]
 
@@ -75,5 +72,3 @@ def test_lamination_parser(monkeypatch):
     assert m.data.settings['stamp_area'] == STAMP_AREA
 
     delete_json()
-
-
