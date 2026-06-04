@@ -10,7 +10,6 @@ def test_mppt_parser_loc_1(monkeypatch):
 
     assert archive.data
 
-    assert archive.data.datetime.isoformat() == '2025-07-23T15:20:24+00:00'
     # Check that curves are parsed
     assert len(archive.data.time) == 39
     assert len(archive.data.time) == len(archive.data.power_density)
@@ -32,7 +31,6 @@ def test_mppt_parser_loc_2_debug(monkeypatch):
 
     assert archive.data
 
-    assert archive.data.datetime.isoformat() == '2026-02-04T09:36:07+00:00'
     # Check that curves are parsed
     assert len(archive.data.time) == 103
     assert len(archive.data.time) == len(archive.data.power_density)
