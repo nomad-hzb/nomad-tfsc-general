@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from nomad.client import normalize_all, parse, normalize
+from nomad.client import normalize_all, parse
 from nomad.units import ureg
 from utils import delete_json, get_archive
 
@@ -22,6 +22,7 @@ def test_normalize_all(parsed_archive, monkeypatch):
     normalize_all(parsed_archive)
     delete_json()
 
+
 def test_module(monkeypatch):
     file = 'module_test.xlsx'
 
@@ -31,7 +32,7 @@ def test_module(monkeypatch):
 
     # collect all archives
     measurement_archives = []
-    for fname in os.listdir(os.path.join('tests','data')):
+    for fname in os.listdir(os.path.join('tests', 'data')):
         if 'archive.json' not in fname:
             continue
         measurement_archives.append(parse(os.path.join('tests', 'data', fname))[0])
@@ -39,7 +40,9 @@ def test_module(monkeypatch):
         normalize_all(m)
 
     # find substrate archives
-    sub_archives = [s for s in measurement_archives if getattr(s.data,'substrate_dimension','') == "1 cm x 1 cm"]
+    sub_archives = [
+        s for s in measurement_archives if getattr(s.data, 'substrate_dimension', '') == '1 cm x 1 cm'
+    ]
     assert len(sub_archives) == 1
     normalize_all(sub_archives[0])
     print(sub_archives[0])
@@ -51,9 +54,10 @@ def test_module(monkeypatch):
     # find sample archives where module info is
     mod_archives = [m for m in measurement_archives if hasattr(m.data, 'module_configuration')]
     assert len(mod_archives) == 1
-    normalize_all(mod_archives[0])
     print(mod_archives[0])
     m = mod_archives[0]
-    assert m.data.module_configuration.is_module 
+    m.data.substrate = s.data
+    normalize_all(m)
+    assert m.data.module_configuration.is_module
     assert m.data.module_configuration.pixel_connection == 'parallel'
     assert m.data.module_configuration.module_active_area == 5.4 * ureg('cm**2')
