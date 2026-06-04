@@ -45,7 +45,6 @@ def test_module(monkeypatch):
     ]
     assert len(sub_archives) == 1
     normalize_all(sub_archives[0])
-    print(sub_archives[0])
     s = sub_archives[0]
     assert s.data.active_area == 0.9 * ureg('cm**2')
     assert s.data.dead_area == 0.1 * ureg('cm**2')
@@ -54,11 +53,12 @@ def test_module(monkeypatch):
     # find sample archives where module info is
     mod_archives = [m for m in measurement_archives if hasattr(m.data, 'module_configuration')]
     assert len(mod_archives) == 1
-    print(mod_archives[0])
     m = mod_archives[0]
     m.data.substrate = s.data
     normalize_all(m)
     assert m.data.module_configuration.is_module
     assert m.data.module_configuration.pixel_connection == 'parallel'
     assert m.data.module_configuration.module_active_area == 5.4 * ureg('cm**2')
+    assert round(m.data.module_configuration.module_dead_area, 1) == 0.6  * ureg('cm**2')
+    assert m.data.module_configuration.module_aperture_area == 6  * ureg('cm**2')
     delete_json()
