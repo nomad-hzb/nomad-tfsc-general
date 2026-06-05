@@ -59,6 +59,6 @@ def test_module(monkeypatch):
     assert m.data.module_configuration.is_module
     assert m.data.module_configuration.pixel_connection == 'parallel'
     assert m.data.module_configuration.module_active_area == 5.4 * ureg('cm**2')
-    assert round(m.data.module_configuration.module_dead_area, 1) == 0.6  * ureg('cm**2')
-    assert m.data.module_configuration.module_aperture_area == 6  * ureg('cm**2')
+    assert round(m.data.module_configuration.module_dead_area, 1) == 0.6 * ureg('cm**2')
+    assert m.data.module_configuration.module_aperture_area == 6 * ureg('cm**2')
     delete_json()
