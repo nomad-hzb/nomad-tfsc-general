@@ -515,7 +515,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
                 encoding = get_encoding(f)
 
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
-                jv_dict, location = get_jv_data(f.read())
+                jv_dict, location = get_jv_data(f.read(), self.data_file)
                 self.location = location
                 get_jv_archive(jv_dict, self.data_file, self, archive)
 
