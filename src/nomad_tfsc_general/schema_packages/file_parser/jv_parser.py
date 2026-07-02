@@ -290,9 +290,7 @@ def get_jv_data_location_2_outdoor(filedata, filename=None):
             jv_pos = basename.lower().find('.jv')
             stem = basename[:jv_pos] if jv_pos != -1 else os.path.splitext(basename)[0]
             parts = stem.split('_')
-            date_idx = next(
-                (i for i, p in enumerate(parts) if len(p) == 8 and p.isdigit()), None
-            )
+            date_idx = next((i for i, p in enumerate(parts) if len(p) == 8 and p.isdigit()), None)
             if date_idx is not None and date_idx + 1 < len(parts):
                 jv_dict['datetime'] = convert_datetime(
                     f'{parts[date_idx]} {parts[date_idx + 1]}', '%Y%m%d %H%M%S'
