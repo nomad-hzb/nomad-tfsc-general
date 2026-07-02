@@ -58,6 +58,29 @@ def test_jv_parser_loc_2(monkeypatch):
     delete_json()
 
 
+def test_jv_parser_loc_2_outdoor(monkeypatch):
+    file = 'PERS_test_1_1_C-1_Ch16_20260427_110314_outdoor2026_Mar25_Rp-94-H_reverse.jv.txt'
+    archive = get_archive(file, monkeypatch)
+    normalize_all(archive)
+    assert archive.data
+    assert 'jvm' in str(archive.data.m_def).lower()
+    assert archive.data.location == 'Location 2 Outdoor txt Format'
+    assert archive.data.active_area.magnitude == 16.0
+    assert archive.data.intensity.magnitude == 102.973668
+    assert archive.data.datetime.isoformat() == '2026-04-27T11:03:14+00:00'
+    assert len(archive.data.jv_curve) == 1
+    assert round(archive.data.jv_curve[0].open_circuit_voltage.magnitude, 5) == 16.48961
+    assert round(archive.data.jv_curve[0].short_circuit_current_density.magnitude, 6) == 0.495937
+    assert round(archive.data.jv_curve[0].fill_factor, 6) == 0.181331
+    assert archive.data.jv_curve[0].efficiency == 1.440065
+    assert round(archive.data.jv_curve[0].potential_at_maximum_power_point.magnitude, 1) == 9.7
+    assert round(archive.data.jv_curve[0].current_density_at_maximun_power_point.magnitude, 6) == 0.152875
+    assert round(archive.data.jv_curve[0].voltage[0].magnitude, 1) == 17.0
+    assert round(archive.data.jv_curve[0].current_density[0].magnitude, 6) == 0.024375
+    assert len(archive.data.jv_curve[0].voltage) == 174
+    delete_json()
+
+
 def test_jv_parser_loc_2_format_2(monkeypatch):
     file = 'PERS_1_1_C-3.jv.txt'
     archive = get_archive(file, monkeypatch)
