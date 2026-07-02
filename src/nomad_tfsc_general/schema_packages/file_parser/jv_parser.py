@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+import os
 from io import StringIO
 
 import numpy as np
@@ -243,13 +244,100 @@ def get_jv_data_location_3(filedata):
     return jv_dict
 
 
-def get_jv_data(filedata):
+def get_jv_data_location_2_outdoor(filedata, filename=None):
+    """Parse outdoor JV measurement files: single sweep per file, pyranometer intensity."""
+    lines = filedata.splitlines()
+
+    curve_header_idx = next(
+        (idx for idx, line in enumerate(lines) if line.startswith('Voltage (V)')),
+        None,
+    )
+    if curve_header_idx is None:
+        return None
+
+    # Parse key-value header pairs (format: "Key:\tValue\t...")
+    header = {}
+    for line in lines[:curve_header_idx]:
+        if ':' in line:
+            parts = line.split('\t')
+            key = parts[0].rstrip(':').strip()
+            value = parts[1].strip() if len(parts) > 1 else ''
+            if value:
+                header[key] = value
+
+    data_text = '\n'.join(lines[curve_header_idx:])
+    df_data = pd.read_csv(
+        StringIO(data_text),
+        sep='\t',
+        encoding='unicode_escape',
+        engine='python',
+    )
+    df_data = df_data.dropna(how='all', axis=1)
+
+    jv_dict = {'location': 'Location 2 Outdoor'}
+
+    def get_float(key, default=0.0):
+        try:
+            return float(header.get(key, default))
+        except (ValueError, TypeError):
+            return default
+
+    # Extract datetime from filename by scanning for YYYYMMDD anywhere in the stem.
+    # Works with both NOMAD-id.restofname.jv.txt and plain restofname.jv.txt formats.
+    if filename:
+        try:
+            basename = os.path.basename(filename)
+            jv_pos = basename.lower().find('.jv')
+            stem = basename[:jv_pos] if jv_pos != -1 else os.path.splitext(basename)[0]
+            parts = stem.split('_')
+            date_idx = next((i for i, p in enumerate(parts) if len(p) == 8 and p.isdigit()), None)
+            if date_idx is not None and date_idx + 1 < len(parts):
+                jv_dict['datetime'] = convert_datetime(
+                    f'{parts[date_idx]} {parts[date_idx + 1]}', '%Y%m%d %H%M%S'
+                )
+        except (IndexError, ValueError):
+            pass
+
+    area_mm2 = get_float('Solar Cell Area [mm2]')
+    area_cm2 = area_mm2 / 100.0 if area_mm2 else 0.0
+    impp_a = abs(get_float('Impp [A]'))
+
+    jv_dict['active_area'] = area_cm2
+    jv_dict['intensity'] = get_float('Solar sim. intensity [mW/cm2]')
+    jv_dict['J_sc'] = [abs(get_float('JSC [mA/cm2]'))]
+    jv_dict['V_oc'] = [abs(get_float('Voc [V]'))]
+    jv_dict['Fill_factor'] = [abs(get_float('FF'))]
+    jv_dict['Efficiency'] = [abs(get_float('PCE [%]'))]
+    jv_dict['P_MPP'] = [abs(get_float('Pmpp [mW]'))]
+    jv_dict['U_MPP'] = [get_float('Vmpp [V]')]
+    jv_dict['J_MPP'] = [(impp_a * 1000 / area_cm2) if area_cm2 else 0.0]
+
+    curve_name = os.path.splitext(os.path.basename(filename))[0] if filename else 'outdoor_sweep'
+
+    voltage = pd.to_numeric(df_data['Voltage (V)'], errors='coerce')
+    current_density = pd.to_numeric(df_data['Current density (mA/cm2)'], errors='coerce')
+    valid_mask = ~(voltage.isna() | current_density.isna())
+
+    jv_dict['jv_curve'] = [
+        {
+            'name': curve_name,
+            'dark': False,
+            'voltage': np.array(voltage[valid_mask]),
+            'current_density': np.array(current_density[valid_mask]),
+        }
+    ]
+    return jv_dict
+
+
+def get_jv_data(filedata, filename=None):
     # Check if it is Location 1 IV format by looking for tab-separated numeric data structure
     lines = filedata.strip().split('\n')
     if lines and '\t' in filedata and any(len(line.split('\t')) > 40 for line in lines):
         return get_jv_data_location_1(filedata), 'Location 1 IV Format'
     elif 'U [V]/Exposure [h]' in filedata:
         return get_jv_data_location_2(filedata), 'Location 2 txt Format'
+    elif 'Voltage (V)\t' in filedata and 'ISC[A]:' in filedata:
+        return get_jv_data_location_2_outdoor(filedata, filename), 'Location 2 Outdoor txt Format'
     elif 'Pixel 1' in filedata and 'J (A/cm^2)' in filedata and 'V (V)' in filedata:
         return get_jv_data_location_3(filedata), 'Hereon csv Format'
     else:
