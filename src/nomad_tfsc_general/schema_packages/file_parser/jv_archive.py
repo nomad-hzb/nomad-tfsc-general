@@ -75,5 +75,19 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
                 current_density_at_maximun_power_point=round(jv_dict['J_MPP'][curve_idx], 8)
                 * ureg('mA/cm^2'),
             )
+        elif jv_dict.get('location') == 'Location 2 Outdoor':
+            jv_set = SolarCellJVCurveCustom(
+                cell_name=curve['name'],
+                voltage=curve['voltage'],
+                current_density=curve['current_density'],
+                light_intensity=jv_dict['intensity'],
+                open_circuit_voltage=round(jv_dict['V_oc'][curve_idx], 8) * ureg('V'),
+                short_circuit_current_density=round(jv_dict['J_sc'][curve_idx], 8) * ureg('mA/cm^2'),
+                fill_factor=round(jv_dict['Fill_factor'][curve_idx], 8),
+                efficiency=round(jv_dict['Efficiency'][curve_idx], 8) if 'Efficiency' in jv_dict else None,
+                potential_at_maximum_power_point=round(jv_dict['U_MPP'][curve_idx], 8) * ureg('V'),
+                current_density_at_maximun_power_point=round(jv_dict['J_MPP'][curve_idx], 8)
+                * ureg('mA/cm^2'),
+            )
         light_idx += 1
         jvm.jv_curve.append(jv_set)
