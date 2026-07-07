@@ -35,6 +35,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_batch,
     map_blade_coating,
     map_cleaning,
+    map_encapsulation,
     map_evaporation,
     map_generic,
     map_gravure_printing,
@@ -44,6 +45,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_screen_printing,
     map_sdc,
     map_spin_coating,
+    map_spiral_bar_coating,
     map_sputtering,
     map_subbatch,
     map_substrate,
@@ -67,6 +69,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Batch,
     TFSC_General_BladeCoating,
     TFSC_General_Cleaning,
+    TFSC_General_Encapsulation,
     TFSC_General_Evaporation,
     TFSC_General_GravurePrinting,
     TFSC_General_Inkjet_Printing,
@@ -77,6 +80,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_ScreenPrinting,
     TFSC_General_SlotDieCoating,
     TFSC_General_SpinCoating,
+    TFSC_General_SpiralBarCoating,
     TFSC_General_Sputtering,
     TFSC_General_SubBatch,
     TFSC_General_Substrate,
@@ -272,6 +276,18 @@ class TFSCGeneralExperimentParser(MatchingParser):
                         )
                     )
 
+                if 'Encapsulation' in col:
+                    archives.append(
+                        map_encapsulation(
+                            i,
+                            j,
+                            lab_ids,
+                            row,
+                            upload_id,
+                            TFSC_General_Encapsulation,
+                        )
+                    )
+
                 if pd.isna(row.get('Material name')):
                     continue
 
@@ -342,6 +358,21 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             enriched_row,
                             upload_id,
                             TFSC_General_BladeCoating,
+                        )
+                    )
+
+                if 'Spiral Bar Coating' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+
+                    archives.append(
+                        map_spiral_bar_coating(
+                            i,
+                            j,
+                            lab_ids,
+                            enriched_row,
+                            upload_id,
+                            TFSC_General_SpiralBarCoating,
                         )
                     )
 

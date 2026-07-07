@@ -24,6 +24,7 @@ from baseclasses import (
     Batch,
     LayerDeposition,
 )
+from baseclasses.encapsulation import Encapsulation
 from baseclasses.helper.add_solar_cell import add_band_gap
 from baseclasses.helper.utilities import (
     get_encoding,
@@ -61,6 +62,7 @@ from baseclasses.wet_chemical_deposition import (
     ScreenPrinting,
     SlotDieCoating,
     SpinCoating,
+    SpiralBarCoating,
     WetChemicalDeposition,
 )
 from nomad.datamodel.data import EntryData
@@ -334,6 +336,39 @@ class TFSC_General_BladeCoating(BladeCoating, EntryData):
     )
 
 
+# %% ### Spiral Bar Coating
+class TFSC_General_SpiralBarCoating(SpiralBarCoating, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=[
+                'lab_id',
+                'users',
+                'author',
+                'end_time',
+                'steps',
+                'instruments',
+                'results',
+            ],
+            properties=dict(
+                order=[
+                    'name',
+                    'location',
+                    'present',
+                    'datetime',
+                    'batch',
+                    'samples',
+                    'solution',
+                    'layer',
+                    'properties',
+                    'quenching',
+                    'annealing',
+                    'atmosphere',
+                ]
+            ),
+        ),
+    )
+
+
 # %% ### Gravure Printing
 class TFSC_General_GravurePrinting(GravurePrinting, EntryData):
     m_def = Section(
@@ -450,6 +485,32 @@ class TFSC_General_Lamination(Lamination, EntryData):
             hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
             properties=dict(order=['name', 'location', 'present', 'datetime', 'batch', 'samples']),
         )
+    )
+
+
+# %% ## Encapsulation
+class TFSC_General_Encapsulation(Encapsulation, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
+            properties=dict(
+                order=[
+                    'name',
+                    'location',
+                    'present',
+                    'datetime',
+                    'batch',
+                    'samples',
+                    'processing_type',
+                    'sides_encapsulated',
+                    'adhesive_application',
+                    'barrier_lamination',
+                    'curing',
+                    'rewind',
+                    'layer',
+                ]
+            ),
+        ),
     )
 
 
