@@ -275,9 +275,9 @@ class TFSCGeneralExperimentParser(MatchingParser):
                     )
 
                 if 'Encapsulation' in col:
-                # Use the generalized function to enrich row with product data
+                    # Use the generalized function to enrich row with product data
                     enriched_row = enrich_row_with_product_data(row, df_sheet_two)
-                    
+
                     archives.append(
                         map_encapsulation(
                             i,
