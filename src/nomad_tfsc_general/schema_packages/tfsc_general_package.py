@@ -24,7 +24,6 @@ from baseclasses import (
     Batch,
     LayerDeposition,
 )
-from baseclasses.encapsulation import Encapsulation
 from baseclasses.helper.add_solar_cell import add_band_gap
 from baseclasses.helper.utilities import (
     get_encoding,
@@ -33,6 +32,7 @@ from baseclasses.helper.utilities import (
 from baseclasses.material_processes_misc import (
     Cleaning,
     CoronaCleaning,
+    Encapsulation,
     Lamination,
     LaserScribing,
     PlasmaCleaning,
