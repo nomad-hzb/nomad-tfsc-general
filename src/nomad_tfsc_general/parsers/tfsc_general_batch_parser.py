@@ -35,6 +35,7 @@ from baseclasses.helper.solar_cell_batch_mapping import (
     map_batch,
     map_blade_coating,
     map_cleaning,
+    map_encapsulation,
     map_evaporation,
     map_generic,
     map_gravure_printing,
@@ -67,6 +68,7 @@ from nomad_tfsc_general.schema_packages.tfsc_general_package import (
     TFSC_General_Batch,
     TFSC_General_BladeCoating,
     TFSC_General_Cleaning,
+    TFSC_General_Encapsulation,
     TFSC_General_Evaporation,
     TFSC_General_GravurePrinting,
     TFSC_General_Inkjet_Printing,
@@ -269,6 +271,21 @@ class TFSCGeneralExperimentParser(MatchingParser):
                             row,
                             upload_id,
                             TFSC_General_Lamination,
+                        )
+                    )
+
+                if 'Encapsulation' in col:
+                    # Use the generalized function to enrich row with product data
+                    enriched_row = enrich_row_with_product_data(row, df_sheet_two)
+
+                    archives.append(
+                        map_encapsulation(
+                            i,
+                            j,
+                            lab_ids,
+                            enriched_row,
+                            upload_id,
+                            TFSC_General_Encapsulation,
                         )
                     )
 

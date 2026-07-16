@@ -32,6 +32,7 @@ from baseclasses.helper.utilities import (
 from baseclasses.material_processes_misc import (
     Cleaning,
     CoronaCleaning,
+    Encapsulation,
     Lamination,
     LaserScribing,
     PlasmaCleaning,
@@ -450,6 +451,31 @@ class TFSC_General_Lamination(Lamination, EntryData):
             hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
             properties=dict(order=['name', 'location', 'present', 'datetime', 'batch', 'samples']),
         )
+    )
+
+
+# %% ## Encapsulation
+class TFSC_General_Encapsulation(Encapsulation, EntryData):
+    m_def = Section(
+        a_eln=dict(
+            hide=['lab_id', 'users', 'end_time', 'steps', 'instruments', 'results'],
+            properties=dict(
+                order=[
+                    'name',
+                    'location',
+                    'present',
+                    'datetime',
+                    'batch',
+                    'samples',
+                    'encapsulation_method',
+                    'sides_encapsulated',
+                    'adhesive_application',
+                    'barrier_lamination',
+                    'curing',
+                    'layer',
+                ]
+            ),
+        ),
     )
 
 
