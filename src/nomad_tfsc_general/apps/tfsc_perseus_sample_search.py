@@ -2,9 +2,15 @@ from nomad.config.models.ui import (
     App,
     Column,
     Columns,
-    FilterMenu,
-    FilterMenus,
     Filters,
+    Menu,
+    MenuItemCustomQuantities,
+    MenuItemDefinitions,
+    MenuItemHistogram,
+    MenuItemOptimade,
+    MenuItemPeriodicTable,
+    MenuItemTerms,
+    MenuItemVisibility,
     Pagination,
     SearchQuantities,
 )
@@ -42,6 +48,7 @@ perseus_sample_search_app = App(
             'entry_create_time',
             'authors',
             'upload_name',
+            f'data.batch_id#{schema}',
             'results.properties.optoelectronic.solar_cell.efficiency',
         ],
         options={
@@ -50,28 +57,91 @@ perseus_sample_search_app = App(
             'entry_create_time': Column(label='Entry time', align='left'),
             'authors': Column(label='Authors', align='left'),
             'upload_name': Column(label='Upload name', align='left'),
+            f'data.batch_id#{schema}': Column(label='Batch', align='left'),
             'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align='left'),
             # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
             #     label='Experiment ID', align='left'
             # ),
         },
     ),
-    # Dictionary of search filters that are always enabled for queries made
-    # within this app. This is especially important to narrow down the
-    # results to the wanted subset. Any available search filter can be
-    # targeted here. This example makes sure that only entries that use
-    # MySchema are included.
-    # Controls the filter menus shown on the left
-    filter_menus=FilterMenus(
-        options={
-            'material': FilterMenu(label='Material', level=0),
-            'elements': FilterMenu(label='Elements / Formula', level=1, size='xl'),
-            #'eln': FilterMenu(label='Electronic Lab Notebook', level=0),
-            'custom_quantities': FilterMenu(label='User Defined Quantities', level=0, size='l'),
-            #'author': FilterMenu(label='Author / Origin / Dataset', level=0, size='m'),
-            'metadata': FilterMenu(label='Visibility / IDs / Schema', level=0),
-            'optimade': FilterMenu(label='Optimade', level=0, size='m'),
-        }
+    # Left-hand sidebar menu. Controls which filters are shown on the left.
+    # Note: this replaces the older, now-deprecated `filter_menus` config -
+    # the two cannot be combined, since NOMAD auto-converts any `filter_menus`
+    # into `menu` and would otherwise silently discard our custom "Batch" item
+    # below. The Material/Elements/User Defined Quantities/Visibility/Optimade
+    # menus reproduce exactly what the old `filter_menus` config produced.
+    menu=Menu(
+        title='Filters',
+        size='sm',
+        items=[
+            # Searchable/scrollable list of batch names (data.batch_id), so
+            # users can filter samples down to a single batch.
+            Menu(
+                title='Batch',
+                items=[
+                    MenuItemTerms(
+                        search_quantity=f'data.batch_id#{schema}',
+                        show_input=True,
+                    ),
+                ],
+            ),
+            Menu(title='Material', indentation=0, size='md'),
+            Menu(
+                title='Elements / Formula',
+                indentation=1,
+                size='xxl',
+                items=[
+                    MenuItemPeriodicTable(search_quantity='results.material.elements'),
+                    MenuItemTerms(
+                        search_quantity='results.material.chemical_formula_hill',
+                        width=6,
+                        options=0,
+                    ),
+                    MenuItemTerms(
+                        search_quantity='results.material.chemical_formula_iupac',
+                        width=6,
+                        options=0,
+                    ),
+                    MenuItemTerms(
+                        search_quantity='results.material.chemical_formula_reduced',
+                        width=6,
+                        options=0,
+                    ),
+                    MenuItemTerms(
+                        search_quantity='results.material.chemical_formula_anonymous',
+                        width=6,
+                        options=0,
+                    ),
+                    MenuItemHistogram(x='results.material.n_elements'),
+                ],
+            ),
+            Menu(
+                title='User Defined Quantities',
+                indentation=0,
+                size='xl',
+                items=[MenuItemCustomQuantities()],
+            ),
+            Menu(
+                title='Visibility / IDs / Schema',
+                indentation=0,
+                size='md',
+                items=[
+                    MenuItemVisibility(),
+                    MenuItemTerms(search_quantity='entry_id', options=0),
+                    MenuItemTerms(search_quantity='upload_id', options=0),
+                    MenuItemTerms(search_quantity='upload_name', options=0),
+                    MenuItemTerms(search_quantity='results.material.material_id', options=0),
+                    MenuItemTerms(search_quantity='datasets.dataset_id', options=0),
+                    MenuItemDefinitions(),
+                ],
+            ),
+            Menu(
+                title='Optimade',
+                indentation=0,
+                size='lg',
+                items=[MenuItemOptimade()],
+            ),
+        ],
     ),
     # Controls the default dashboard shown in the search interface
     dashboard={
