@@ -49,6 +49,7 @@ perseus_sample_search_app = App(
             'authors',
             'upload_name',
             f'data.batch_id#{schema}',
+            f'data.subbatch_id#{schema}',
             'results.properties.optoelectronic.solar_cell.efficiency',
         ],
         options={
@@ -58,6 +59,7 @@ perseus_sample_search_app = App(
             'authors': Column(label='Authors', align='left'),
             'upload_name': Column(label='Upload name', align='left'),
             f'data.batch_id#{schema}': Column(label='Batch', align='left'),
+            f'data.subbatch_id#{schema}': Column(label='Subbatch', align='left'),
             'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align='left'),
             # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
             #     label='Experiment ID', align='left'
@@ -74,14 +76,27 @@ perseus_sample_search_app = App(
         title='Filters',
         size='sm',
         items=[
-            # Searchable/scrollable list of batch names (data.batch_id), so
-            # users can filter samples down to a single batch.
+            # Searchable/scrollable lists of batch and subbatch names
+            # (data.batch_id / data.subbatch_id), so users can filter samples
+            # down to a single batch or subbatch.
             Menu(
                 title='Batch',
                 items=[
                     MenuItemTerms(
                         search_quantity=f'data.batch_id#{schema}',
                         show_input=True,
+                        # Fetch many options up front so the list doesn't
+                        # require repeated "show more" clicks. There's no
+                        # "unlimited" setting, so this is a generously high
+                        # cap rather than a true "all" - raise further if you
+                        # have more distinct batches than this.
+                        options=200,
+                    ),
+                    MenuItemTerms(
+                        search_quantity=f'data.subbatch_id#{schema}',
+                        title='Subbatch',
+                        show_input=True,
+                        options=200,
                     ),
                 ],
             ),
