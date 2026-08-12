@@ -79,9 +79,8 @@ perseus_sample_search_app = App(
         title='Filters',
         size='sm',
         items=[
-            # Searchable/scrollable lists of batch and subbatch names
-            # (data.batch_id / data.subbatch_id), so users can filter samples
-            # down to a single batch or subbatch.
+            # Searchable/scrollable list of batch names (data.batch_id), so
+            # users can filter samples down to a single batch.
             Menu(
                 title='Batch',
                 items=[
@@ -96,6 +95,14 @@ perseus_sample_search_app = App(
                         # have more distinct batches than this.
                         options=200,
                     ),
+                ],
+            ),
+            # Searchable/scrollable list of subbatch names (data.subbatch_id),
+            # kept as its own top-level menu (rather than nested under Batch)
+            # so it doesn't get lost further down the filter panel.
+            Menu(
+                title='Subbatch',
+                items=[
                     MenuItemTerms(
                         search_quantity=f'data.subbatch_id#{schema}',
                         title='Subbatch',
@@ -104,27 +111,25 @@ perseus_sample_search_app = App(
                     ),
                 ],
             ),
-            # Searchable/scrollable lists of material suppliers (data.suppliers)
-            # and supplier/material pairs (data.supplier_materials), aggregated
-            # from product_info.supplier across every process entry (layers,
-            # solutions, solvents, additives, encapsulation, ...) that produced
-            # this sample - so users can pick a supplier (optionally narrowed to
-            # a specific material) and see which samples used it, together with
-            # their PCE (see the results table). Note: the two filters are not
-            # correlated - NOMAD doesn't yet support nested search for custom
-            # schema quantities - so use "Supplier / material" for a specific
-            # pairing (e.g. "Sigma-Aldrich — MAPbI3 (layer)").
+            # Searchable/scrollable list of material suppliers and
+            # supplier/material pairs, aggregated from product_info.supplier
+            # across every process entry (layers, solutions, solvents,
+            # additives, encapsulation, ...) that produced this sample - so
+            # users can pick a supplier (or a specific "Supplier — material"
+            # pairing, e.g. "Sigma-Aldrich — MAPbI3 (layer)") and see which
+            # samples used it, together with their PCE (see the results
+            # table). This targets results.eln.tags rather than a custom
+            # data.* field: repeating quantities defined on a plugin's own
+            # schema are not search-able in NOMAD (only scalar custom-schema
+            # quantities are auto-indexed), whereas results.eln.tags is a
+            # core, list-shaped quantity NOMAD does index for search, so
+            # TFSC_General_Sample.normalize() copies suppliers/pairs there.
             Menu(
                 title='Suppliers',
                 items=[
                     MenuItemTerms(
-                        search_quantity=f'data.suppliers#{schema}',
-                        show_input=True,
-                        options=200,
-                    ),
-                    MenuItemTerms(
-                        search_quantity=f'data.supplier_materials#{schema}',
-                        title='Supplier / material',
+                        search_quantity='results.eln.tags',
+                        title='Suppliers',
                         show_input=True,
                         options=200,
                     ),

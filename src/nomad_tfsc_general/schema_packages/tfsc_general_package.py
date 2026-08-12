@@ -65,8 +65,8 @@ from baseclasses.wet_chemical_deposition import (
     WetChemicalDeposition,
 )
 from nomad.datamodel.data import EntryData
+from nomad.datamodel.results import ELN
 from nomad.metainfo import Quantity, SchemaPackage, Section, SubSection
-from nomad.metainfo.elasticsearch_extension import Elasticsearch
 
 m_package = SchemaPackage()
 
@@ -260,12 +260,14 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         in the processes that produced this sample. Derived by scanning every process
         entry referencing this sample for `product_info.supplier`, since that
         information can live at varying depths depending on the process type.
+
+        Note: repeating quantities defined on a plugin's own schema are not
+        search-able in NOMAD (only scalar custom-schema quantities are auto-indexed;
+        see `collect_supplier_info`/`normalize` below) - this field is kept for
+        display on the entry itself, while the same values are additionally copied
+        into `results.eln.tags`, which is what the "Suppliers" app filter actually
+        targets.
         """,
-        # NOMAD's automatic search-quantity resolution for custom schemas only
-        # covers scalar (shape=[]) fields - repeating quantities need an
-        # explicit annotation to be searchable at all, otherwise the search API
-        # rejects the field with a "not a doc quantity" error.
-        a_elasticsearch=Elasticsearch(),
     )
 
     supplier_materials = Quantity(
@@ -276,9 +278,8 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         alongside `suppliers`. NOMAD does not yet support nested/correlated search
         for custom-schema quantities, so this packs the supplier and the material it
         applies to into a single searchable string rather than two separately
-        filterable fields.
+        filterable fields. See the note on `suppliers` regarding `results.eln.tags`.
         """,
-        a_elasticsearch=Elasticsearch(),
     )
 
     def normalize(self, archive, logger):
@@ -294,6 +295,18 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
             self.subbatch_id = '_'.join(parts[:-1])
 
         self.suppliers, self.supplier_materials = collect_supplier_info(archive, logger)
+
+        if self.suppliers or self.supplier_materials:
+            # results.eln.tags is a core, list-shaped quantity that NOMAD does
+            # index for search (unlike repeating quantities on a plugin's own
+            # schema, see the note on `suppliers`), so that's what the
+            # "Suppliers" app filter actually targets.
+            if archive.results.eln is None:
+                archive.results.eln = ELN()
+            tags = set(archive.results.eln.tags or [])
+            tags.update(self.suppliers)
+            tags.update(self.supplier_materials)
+            archive.results.eln.tags = sorted(tags)
 
 
 class TFSC_General_Batch(Batch, EntryData):
