@@ -66,6 +66,7 @@ from baseclasses.wet_chemical_deposition import (
 )
 from nomad.datamodel.data import EntryData
 from nomad.metainfo import Quantity, SchemaPackage, Section, SubSection
+from nomad.metainfo.elasticsearch_extension import Elasticsearch
 
 m_package = SchemaPackage()
 
@@ -260,6 +261,11 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         entry referencing this sample for `product_info.supplier`, since that
         information can live at varying depths depending on the process type.
         """,
+        # NOMAD's automatic search-quantity resolution for custom schemas only
+        # covers scalar (shape=[]) fields - repeating quantities need an
+        # explicit annotation to be searchable at all, otherwise the search API
+        # rejects the field with a "not a doc quantity" error.
+        a_elasticsearch=Elasticsearch(),
     )
 
     supplier_materials = Quantity(
@@ -272,6 +278,7 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         applies to into a single searchable string rather than two separately
         filterable fields.
         """,
+        a_elasticsearch=Elasticsearch(),
     )
 
     def normalize(self, archive, logger):
