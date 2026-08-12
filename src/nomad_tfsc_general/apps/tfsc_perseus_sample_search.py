@@ -87,6 +87,7 @@ perseus_sample_search_app = App(
                 items=[
                     MenuItemTerms(
                         search_quantity=f'data.batch_id#{schema}',
+                        title='Batch',
                         show_input=True,
                         # Fetch many options up front so the list doesn't
                         # require repeated "show more" clicks. There's no
