@@ -111,10 +111,31 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['datetime', 'name', 'substrate', 'architecture']),
+            properties=dict(order=['datetime', 'name', 'substrate', 'architecture', 'batch_id']),
         ),
         label_quantity='sample_id',
     )
+
+    batch_id = Quantity(
+        type=str,
+        description="""
+        Batch identifier, derived from the sample ID (Nomad ID). Samples created via
+        the PERSEUS/TFSC batch parser follow the naming convention
+        `PERS_PROJECT_BATCH_SUBBATCH_SAMPLE`, so the batch id is the sample id with
+        the last two underscore-separated segments (subbatch and sample) removed.
+        """,
+        a_eln=dict(component='StringEditQuantity'),
+    )
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)
+
+        if not self.batch_id:
+            lab_id = self.lab_id or self.name
+            if lab_id:
+                parts = lab_id.split('_')
+                if len(parts) > 2:
+                    self.batch_id = '_'.join(parts[:-2])
 
 
 class TFSC_General_Batch(Batch, EntryData):
