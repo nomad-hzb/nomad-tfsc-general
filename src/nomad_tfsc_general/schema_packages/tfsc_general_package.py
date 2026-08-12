@@ -111,7 +111,9 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=['users', 'components', 'elemental_composition'],
-            properties=dict(order=['datetime', 'name', 'substrate', 'architecture', 'batch_id']),
+            properties=dict(
+                order=['datetime', 'name', 'substrate', 'architecture', 'batch_id', 'subbatch_id']
+            ),
         ),
         label_quantity='sample_id',
     )
@@ -127,15 +129,28 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         a_eln=dict(component='StringEditQuantity'),
     )
 
+    subbatch_id = Quantity(
+        type=str,
+        description="""
+        Subbatch identifier, derived from the sample ID (Nomad ID). Samples created via
+        the PERSEUS/TFSC batch parser follow the naming convention
+        `PERS_PROJECT_BATCH_SUBBATCH_SAMPLE`, so the subbatch id is the sample id with
+        the last underscore-separated segment (sample) removed.
+        """,
+        a_eln=dict(component='StringEditQuantity'),
+    )
+
     def normalize(self, archive, logger):
         super().normalize(archive, logger)
 
-        if not self.batch_id:
-            lab_id = self.lab_id or self.name
-            if lab_id:
-                parts = lab_id.split('_')
-                if len(parts) > 2:
-                    self.batch_id = '_'.join(parts[:-2])
+        lab_id = self.lab_id or self.name
+        parts = lab_id.split('_') if lab_id else []
+
+        if not self.batch_id and len(parts) > 2:
+            self.batch_id = '_'.join(parts[:-2])
+
+        if not self.subbatch_id and len(parts) > 1:
+            self.subbatch_id = '_'.join(parts[:-1])
 
 
 class TFSC_General_Batch(Batch, EntryData):
