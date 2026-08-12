@@ -50,6 +50,7 @@ perseus_sample_search_app = App(
             'upload_name',
             f'data.batch_id#{schema}',
             f'data.subbatch_id#{schema}',
+            f'data.suppliers#{schema}',
             'results.properties.optoelectronic.solar_cell.efficiency',
         ],
         options={
@@ -60,6 +61,8 @@ perseus_sample_search_app = App(
             'upload_name': Column(label='Upload name', align='left'),
             f'data.batch_id#{schema}': Column(label='Batch', align='left'),
             f'data.subbatch_id#{schema}': Column(label='Subbatch', align='left'),
+            f'data.suppliers#{schema}': Column(label='Suppliers', align='left'),
+            f'data.supplier_materials#{schema}': Column(label='Supplier / material', align='left'),
             'results.properties.optoelectronic.solar_cell.efficiency': Column(label='PCE', align='left'),
             # 'data.lab_id#nomad_tfsc_general.schema_packages.tfsc_general_package': Column(
             #     label='Experiment ID', align='left'
@@ -95,6 +98,32 @@ perseus_sample_search_app = App(
                     MenuItemTerms(
                         search_quantity=f'data.subbatch_id#{schema}',
                         title='Subbatch',
+                        show_input=True,
+                        options=200,
+                    ),
+                ],
+            ),
+            # Searchable/scrollable lists of material suppliers (data.suppliers)
+            # and supplier/material pairs (data.supplier_materials), aggregated
+            # from product_info.supplier across every process entry (layers,
+            # solutions, solvents, additives, encapsulation, ...) that produced
+            # this sample - so users can pick a supplier (optionally narrowed to
+            # a specific material) and see which samples used it, together with
+            # their PCE (see the results table). Note: the two filters are not
+            # correlated - NOMAD doesn't yet support nested search for custom
+            # schema quantities - so use "Supplier / material" for a specific
+            # pairing (e.g. "Sigma-Aldrich — MAPbI3 (layer)").
+            Menu(
+                title='Suppliers',
+                items=[
+                    MenuItemTerms(
+                        search_quantity=f'data.suppliers#{schema}',
+                        show_input=True,
+                        options=200,
+                    ),
+                    MenuItemTerms(
+                        search_quantity=f'data.supplier_materials#{schema}',
+                        title='Supplier / material',
                         show_input=True,
                         options=200,
                     ),
