@@ -107,6 +107,117 @@ class TFSC_General_Substrate(Substrate, EntryData):
     )
 
 
+# Maps the dict key a product_info-bearing section is nested under to a short,
+# human-readable context label, used to disambiguate e.g. a solvent vs. an
+# additive from the same supplier. Sections not under any of these keys (i.e.
+# any future/unrecognized product_info location) simply get no suffix.
+_SUPPLIER_CONTEXT_LABELS = {
+    'layer': 'layer',
+    'solvent': 'solvent',
+    'solute': 'solute',
+    'additive': 'additive',
+    'barrier_lamination': 'barrier lamination',
+    'adhesive_application': 'adhesive layer',
+}
+
+
+def _find_supplier_materials(data, suppliers, supplier_materials, context=None, material=None):
+    """Recursively walk a raw (dict/list) archive data structure collecting
+    ProductInfo.supplier values, together with the material each one applies
+    to. product_info subsections can live at varying depths depending on the
+    process type (directly under a layer, under a solution's
+    solvent/solute/additive chemicals, under encapsulation's barrier
+    lamination or adhesive layer, ...), so rather than hard-coding every
+    possible path this scans for any 'product_info' key, and separately uses
+    `_SUPPLIER_CONTEXT_LABELS` to add a readable context suffix when the
+    location is a recognized one.
+
+    The material name usually sits one or two levels above product_info
+    itself (e.g. a solvent's `name` is a sibling of `chemical_2`, which is
+    where `chemical_2.product_info` actually lives), so the nearest material
+    name found while descending is carried down and used as a fallback.
+    """
+    if isinstance(data, dict):
+        material = (
+            data.get('layer_material_name')
+            or data.get('layer_material')
+            or data.get('name')
+            or data.get('barrier_foil')
+            or material
+        )
+        product_info = data.get('product_info')
+        if isinstance(product_info, dict):
+            supplier = product_info.get('supplier')
+            if supplier:
+                suppliers.add(supplier)
+                label = f'{supplier} — {material}' if material else supplier
+                if context:
+                    label = f'{label} ({context})'
+                supplier_materials.add(label)
+        for key, value in data.items():
+            _find_supplier_materials(
+                value,
+                suppliers,
+                supplier_materials,
+                _SUPPLIER_CONTEXT_LABELS.get(key, context),
+                material,
+            )
+    elif isinstance(data, list):
+        for item in data:
+            _find_supplier_materials(item, suppliers, supplier_materials, context, material)
+
+
+def collect_supplier_info(archive, logger):
+    """Find suppliers of materials used by the processes that produced this
+    sample, along with which material each supplier applies to. Process
+    entries (SpinCoating, Encapsulation, ...) are separate top-level entries
+    that reference this sample (directly, or copied from their batch), so
+    they are found via a reverse search on `entry_references.target_entry_id`,
+    the same mechanism baseclasses' `collectSampleData` uses to pull in
+    JV/EQE data.
+
+    Returns a `(suppliers, supplier_materials)` tuple of sorted lists.
+    """
+    import inspect
+
+    import baseclasses
+    from nomad import files
+    from nomad.app.v1.models import MetadataPagination
+    from nomad.search import search
+
+    query = {'entry_references.target_entry_id': archive.metadata.entry_id}
+    pagination = MetadataPagination()
+    pagination.page_size = 100
+    search_result = search(
+        owner='all',
+        query=query,
+        pagination=pagination,
+        user_id=archive.metadata.main_author.user_id,
+    )
+
+    suppliers = set()
+    supplier_materials = set()
+    for res in search_result.data:
+        try:
+            with files.UploadFiles.get(upload_id=res['upload_id']).read_archive(
+                entry_id=res['entry_id']
+            ) as arch:
+                entry_id = res['entry_id']
+                entry_data = arch[entry_id]['data']
+                module = entry_data['m_def'].split('.')[0]
+                eval(f"exec('import {module}')")
+                if baseclasses.BaseProcess in inspect.getmro(eval(entry_data['m_def'])):
+                    _find_supplier_materials(entry_data, suppliers, supplier_materials)
+        except Exception:
+            if logger:
+                logger.warning(
+                    'Error collecting supplier info from referencing entry.',
+                    exc_info=True,
+                )
+
+    return sorted(suppliers), sorted(supplier_materials)
+
+
 class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
@@ -140,6 +251,29 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
         a_eln=dict(component='StringEditQuantity'),
     )
 
+    suppliers = Quantity(
+        type=str,
+        shape=['*'],
+        description="""
+        Suppliers of materials (additives, solvents, layers, encapsulation, ...) used
+        in the processes that produced this sample. Derived by scanning every process
+        entry referencing this sample for `product_info.supplier`, since that
+        information can live at varying depths depending on the process type.
+        """,
+    )
+
+    supplier_materials = Quantity(
+        type=str,
+        shape=['*'],
+        description="""
+        Supplier/material pairs, e.g. "Sigma-Aldrich — MAPbI3 (layer)", derived
+        alongside `suppliers`. NOMAD does not yet support nested/correlated search
+        for custom-schema quantities, so this packs the supplier and the material it
+        applies to into a single searchable string rather than two separately
+        filterable fields.
+        """,
+    )
+
     def normalize(self, archive, logger):
         super().normalize(archive, logger)
 
@@ -151,6 +285,8 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
 
         if not self.subbatch_id and len(parts) > 1:
             self.subbatch_id = '_'.join(parts[:-1])
+
+        self.suppliers, self.supplier_materials = collect_supplier_info(archive, logger)
 
 
 class TFSC_General_Batch(Batch, EntryData):
