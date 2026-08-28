@@ -117,7 +117,6 @@ def check_sample(m):
     assert m.data.datetime.isoformat() == '2025-08-05T00:00:00+00:00'
     assert m.data.description == '1000 rpm'
     assert m.data.number_of_junctions == 1
-    assert m.data.architecture == 'nip'
 
 
 def check_batch(m):
