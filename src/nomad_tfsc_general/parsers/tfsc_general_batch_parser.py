@@ -215,6 +215,7 @@ class TFSCGeneralExperimentParser(MatchingParser):
             'Transmission [%]',
             'Sheet Resistance [Ohms/square]',
             'TCO thickness [nm]',
+            'Architecture',
         ]
         substrates_col = [s for s in substrates_col if s in df['Experiment Info'].columns]
         for i, sub in df['Experiment Info'][substrates_col].drop_duplicates().iterrows():
