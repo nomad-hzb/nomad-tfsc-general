@@ -222,7 +222,7 @@ def collect_supplier_info(archive, logger):
 class TFSC_General_Sample(SolcarCellSample, EntryData):
     m_def = Section(
         a_eln=dict(
-            hide=['users', 'components', 'elemental_composition'],
+            hide=['users', 'components', 'elemental_composition', 'figures'],
             properties=dict(
                 order=['datetime', 'name', 'substrate', 'architecture', 'batch_id', 'subbatch_id']
             ),
