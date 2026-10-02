@@ -312,7 +312,7 @@ class TFSC_General_Sample(SolcarCellSample, EntryData):
 class TFSC_General_Batch(Batch, EntryData):
     m_def = Section(
         a_eln=dict(
-            hide=['users', 'samples'],
+            hide=['users', 'samples', 'figures'],
             properties=dict(order=['name', 'export_batch_ids', 'csv_export_file']),
         )
     )
@@ -321,7 +321,7 @@ class TFSC_General_Batch(Batch, EntryData):
 class TFSC_General_SubBatch(Batch, EntryData):
     m_def = Section(
         a_eln=dict(
-            hide=['users', 'samples'],
+            hide=['users', 'samples', 'figures'],
             properties=dict(order=['name', 'export_batch_ids', 'csv_export_file']),
         )
     )
@@ -735,7 +735,7 @@ class TFSC_General_JVmeasurement(JVMeasurement, EntryData):
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
                 jv_dict, location = get_jv_data(f.read(), self.data_file)
                 self.location = location
-                get_jv_archive(jv_dict, self.data_file, self, archive)
+                get_jv_archive(jv_dict, self.data_file, self, archive, logger)
 
         super().normalize(archive, logger)
 
