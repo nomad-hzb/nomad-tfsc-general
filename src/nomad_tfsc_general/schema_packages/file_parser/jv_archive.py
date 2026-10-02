@@ -24,7 +24,14 @@ from baseclasses.solar_energy.jvmeasurement import (
 from nomad.units import ureg
 
 
-def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
+def get_jv_archive(jv_dict, mainfile, jvm, archive, logger=None):
+    # Each jv_set.normalize() call below is required, not optional: jv_curve
+    # is built here, inside the measurement's own normalize() call, and
+    # NOMAD's recursive normalizer captures a section's subsections *before*
+    # calling that section's normalize() - so it never visits curves created
+    # this way on its own. Normalizing explicitly is what sets curve-level
+    # derived fields (pixel_id, scan_direction, cell_params()-computed
+    # values for the 'Hereon' branch, ...).
     jvm.file_name = os.path.basename(mainfile)
     if jv_dict.get('datetime'):
         jvm.datetime = jv_dict.get('datetime')
@@ -34,8 +41,7 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
     jvm.settling_time = jv_dict['settling_time'] if 'settling_time' in jv_dict else None
     jvm.averaging = jv_dict['averaging'] if 'averaging' in jv_dict else None
     jvm.compliance = jv_dict['compliance'] if 'compliance' in jv_dict else None
-    if not append:
-        jvm.jv_curve = []
+    jvm.jv_curve = []
     light_idx = 0
     for curve_idx, curve in enumerate(jv_dict['jv_curve']):
         if jv_dict.get('location', '') == 'Hereon':
@@ -44,7 +50,7 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
                 voltage=curve['voltage'] * ureg('V'),
                 current_density=curve['current_density'] * ureg('A/cm**2'),
             )
-            jv_set.normalize(archive, None)
+            jv_set.normalize(archive, logger)
         elif 'pixel' in curve['name'].lower():  # for location 1 of tfsc plugin
             # Extract pixel number from name to use correct index
             pixel_num = int(curve['name'].split('_')[1]) - 1  # Convert to 0-based index
@@ -61,6 +67,7 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
                 current_density_at_maximun_power_point=round(jv_dict['J_MPP'][pixel_num], 8)
                 * ureg('mA/cm^2'),
             )
+            jv_set.normalize(archive, logger)
         elif 'loc2' in curve['name'].lower():  # for location 2 of tfsc plugin
             jv_set = SolarCellJVCurveCustom(
                 cell_name=curve['name'],
@@ -75,6 +82,7 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
                 current_density_at_maximun_power_point=round(jv_dict['J_MPP'][curve_idx], 8)
                 * ureg('mA/cm^2'),
             )
+            jv_set.normalize(archive, logger)
         elif jv_dict.get('location') == 'Location 2 Outdoor':
             jv_set = SolarCellJVCurveCustom(
                 cell_name=curve['name'],
@@ -89,5 +97,6 @@ def get_jv_archive(jv_dict, mainfile, jvm, archive, append=False):
                 current_density_at_maximun_power_point=round(jv_dict['J_MPP'][curve_idx], 8)
                 * ureg('mA/cm^2'),
             )
+            jv_set.normalize(archive, logger)
         light_idx += 1
         jvm.jv_curve.append(jv_set)
