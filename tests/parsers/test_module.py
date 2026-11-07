@@ -58,9 +58,10 @@ def test_module(monkeypatch):
     assert m.data.module_configuration.is_module
     assert m.data.module_configuration.pixel_connection == 'parallel'
     # active area and fill factor entered directly, dead area left empty
-    assert m.data.module_configuration.module_active_area == 5.0 * ureg('cm**2')
-    assert m.data.module_configuration.module_geometrical_fill_factor == 0.8
-    assert m.data.module_configuration.module_aperture_area == 6.25 * ureg('cm**2')
-    assert m.data.module_configuration.module_dead_area == 1.25 * ureg('cm**2')
-    assert m.results.properties.optoelectronic.solar_cell.device_area == 5.0 * ureg('cm**2')
+    assert m.data.module_configuration.module_active_area == 0.9 * ureg('cm**2')
+    assert m.data.module_configuration.module_geometrical_fill_factor == 0.9
+    assert m.data.module_configuration.module_aperture_area == 1 * ureg('cm**2')
+    assert m.data.module_configuration.module_dead_area == 0.1 * ureg('cm**2')
+    assert m.results.properties.optoelectronic.solar_cell.device_area == 0.9 * ureg('cm**2')
     delete_json()
+    
