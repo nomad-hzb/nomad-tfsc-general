@@ -46,9 +46,8 @@ def test_module(monkeypatch):
     assert len(sub_archives) == 1
     normalize_all(sub_archives[0])
     s = sub_archives[0]
-    assert s.data.active_area == 0.9 * ureg('cm**2')
-    assert s.data.dead_area == 0.1 * ureg('cm**2')
-    assert s.data.geometrical_fill_factor == 0.9
+    assert s.data.pixel_area == 0.16 * ureg('cm**2')
+    assert s.data.number_of_pixels == 6
 
     # find sample archives where module info is
     mod_archives = [m for m in measurement_archives if hasattr(m.data, 'module_configuration')]
@@ -58,7 +57,10 @@ def test_module(monkeypatch):
     normalize_all(m)
     assert m.data.module_configuration.is_module
     assert m.data.module_configuration.pixel_connection == 'parallel'
-    assert m.data.module_configuration.module_active_area == 5.4 * ureg('cm**2')
-    assert round(m.data.module_configuration.module_dead_area, 1) == 0.6 * ureg('cm**2')
-    assert m.data.module_configuration.module_aperture_area == 6 * ureg('cm**2')
+    # active area and fill factor entered directly, dead area left empty
+    assert m.data.module_configuration.module_active_area == 5.0 * ureg('cm**2')
+    assert m.data.module_configuration.module_geometrical_fill_factor == 0.8
+    assert m.data.module_configuration.module_aperture_area == 6.25 * ureg('cm**2')
+    assert m.data.module_configuration.module_dead_area == 1.25 * ureg('cm**2')
+    assert m.results.properties.optoelectronic.solar_cell.device_area == 5.0 * ureg('cm**2')
     delete_json()
