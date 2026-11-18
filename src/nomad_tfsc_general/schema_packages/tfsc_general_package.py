@@ -777,8 +777,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
 
         if not self.samples and self.data_file:
             search_id = self.data_file.split('.')[0]
-            search_id_regex = re.fullmatch(
-                r'(?P<sample_id>.+)_(?P<pixel_id>cell\d+_\d+)', search_id)
+            search_id_regex = re.fullmatch(r'(?P<sample_id>.+)_(?P<pixel_id>cell\d+_\d+)', search_id)
             if search_id_regex:
                 # Implies sample_id has ..._cellx_n format
                 # TODO store pixel_id
