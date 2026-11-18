@@ -18,6 +18,7 @@
 
 
 import re
+
 import numpy as np
 from baseclasses import (
     BaseMeasurement,

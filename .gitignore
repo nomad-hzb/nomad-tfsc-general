@@ -128,7 +128,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-nohup.out
 
 # Office lock files (LibreOffice .~lock.*#, Microsoft Office ~$*)
 .~lock.*#
