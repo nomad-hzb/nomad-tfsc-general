@@ -781,7 +781,7 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
             if search_id_regex:
                 # Implies sample_id has ..._cellx_n format
                 sample_pixel_id = search_id_regex.group()
-                sample_id, pixel_id, measurement_no = sample_pixel_id.split('_')
+                search_id, pixel_id, measurement_no = sample_pixel_id.split('_')
                 # TODO store pixel_id
                 self.pixel_id = '_'.join([pixel_id, measurement_no])
             set_sample_reference(archive, self, search_id, upload_id=archive.metadata.upload_id)
