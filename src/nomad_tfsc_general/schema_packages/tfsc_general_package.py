@@ -17,6 +17,7 @@
 #
 
 
+import re
 import numpy as np
 from baseclasses import (
     BaseMeasurement,
@@ -775,6 +776,13 @@ class TFSC_General_SimpleMPPTracking(MPPTracking, EntryData):
 
         if not self.samples and self.data_file:
             search_id = self.data_file.split('.')[0]
+            search_id_regex = re.search(r'[A-z]-\d+_cell\d+_\d+', search_id)
+            if search_id_regex:
+                # Implies sample_id has ..._cellx_n format
+                sample_pixel_id = search_id_regex.group()
+                sample_id, pixel_id, measurement_no = sample_pixel_id.split('_')
+                # TODO store pixel_id
+                self.pixel_id = '_'.join([pixel_id, measurement_no])
             set_sample_reference(archive, self, search_id, upload_id=archive.metadata.upload_id)
 
         if self.data_file:
