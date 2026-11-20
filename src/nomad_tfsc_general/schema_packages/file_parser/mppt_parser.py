@@ -97,7 +97,7 @@ def read_mppt_data_location_2(filedata, filename=None):
 
 
 def read_mppt_file(filedata, filename):
-    if 'MPP' in filename.split('.')[-1]:
+    if 'mpp' in filename.lower().split('.')[-1]:
         return read_mppt_data_location_1(filedata, filename)
     elif filedata.strip().split('\t')[0] == 'Time (s)':
         return read_mppt_data_location_2(filedata, filename)
